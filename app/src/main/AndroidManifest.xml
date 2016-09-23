@@ -18,6 +18,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SearchActivity" />
+        <activity
+            android:name=".GameGridActivity"
+            android:label="@string/title_activity_game_grid"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.eddev.android.gamesight.MainActivity" />
+        </activity>
+        <activity
+            android:name=".GameDetailActivity"
+            android:label="@string/title_activity_game_detail"
+            android:parentActivityName=".GameGridActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.eddev.android.gamesight.GameGridActivity" />
+        </activity>
     </application>
 
 </manifest>
