@@ -54,6 +54,7 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     apt 'net.simonvt.schematic:schematic-compiler:0.6.7'
     compile 'net.simonvt.schematic:schematic:0.6.7'
-    compile 'com.facebook.stetho:stetho-okhttp:1.4.1'
+    compile 'com.facebook.stetho:stetho:1.4.1'
+    compile 'com.facebook.stetho:stetho-okhttp3:1.4.1'
     testCompile 'junit:junit:4.12'
 }
