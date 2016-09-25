@@ -31,5 +31,5 @@ public class Game {
     private List<Video> videos = new ArrayList<Video>();
     private double completion;
     private @CollectionName String collection;
-    
+
 }
