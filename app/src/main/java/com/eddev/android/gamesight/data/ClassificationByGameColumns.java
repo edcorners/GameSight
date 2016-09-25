@@ -1,6 +1,8 @@
 package com.eddev.android.gamesight.data;
 
+import net.simonvt.schematic.annotation.AutoIncrement;
 import net.simonvt.schematic.annotation.DataType;
+import net.simonvt.schematic.annotation.PrimaryKey;
 import net.simonvt.schematic.annotation.References;
 
 /**
@@ -8,6 +10,10 @@ import net.simonvt.schematic.annotation.References;
  */
 
 public interface ClassificationByGameColumns {
+    @DataType(DataType.Type.INTEGER)
+    @PrimaryKey
+    @AutoIncrement
+    String _ID = "_id";
 
     @DataType(DataType.Type.INTEGER)
     @References(column = GameColumns.GAME_ID, table = GameSightDatabase.GAMES)

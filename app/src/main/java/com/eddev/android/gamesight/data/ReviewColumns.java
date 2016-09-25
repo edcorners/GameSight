@@ -7,11 +7,6 @@ import net.simonvt.schematic.annotation.PrimaryKey;
 import net.simonvt.schematic.annotation.References;
 import net.simonvt.schematic.annotation.Unique;
 
-import java.util.Date;
-
-import static android.R.attr.description;
-import static android.R.attr.id;
-
 /**
  * Created by Edison on 9/25/2016.
  */

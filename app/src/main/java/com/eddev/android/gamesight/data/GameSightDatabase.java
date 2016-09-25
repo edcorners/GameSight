@@ -6,8 +6,8 @@ import net.simonvt.schematic.annotation.Table;
 /**
  * Created by Edison on 9/25/2016.
  */
-@Database(version = GameSightDatabase.VERSION)
-public class GameSightDatabase {
+@Database(version = GameSightDatabase.VERSION, packageName = "com.eddev.android.gamesight.provider")
+public final class GameSightDatabase {
     public static final int VERSION = 1;
 
     @Table(GameColumns.class) public static final String GAMES = "games";

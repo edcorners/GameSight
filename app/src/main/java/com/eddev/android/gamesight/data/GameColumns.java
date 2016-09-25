@@ -1,19 +1,10 @@
 package com.eddev.android.gamesight.data;
 
-import com.eddev.android.gamesight.model.ClassificationAttribute;
-import com.eddev.android.gamesight.model.Game;
-import com.eddev.android.gamesight.model.Review;
-import com.eddev.android.gamesight.model.Video;
-
 import net.simonvt.schematic.annotation.AutoIncrement;
 import net.simonvt.schematic.annotation.DataType;
 import net.simonvt.schematic.annotation.NotNull;
 import net.simonvt.schematic.annotation.PrimaryKey;
 import net.simonvt.schematic.annotation.Unique;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Edison on 9/25/2016.
