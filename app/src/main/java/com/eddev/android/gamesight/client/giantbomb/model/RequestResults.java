@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Games {
+public class RequestResults {
 
     @SerializedName("error")
     @Expose
@@ -181,7 +181,7 @@ public class Games {
 
     @Override
     public String toString() {
-        return "Games{" +
+        return "RequestResults{" +
                 "error='" + error + '\'' +
                 ", limit=" + limit +
                 ", offset=" + offset +
@@ -196,18 +196,18 @@ public class Games {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Games)) return false;
+        if (!(o instanceof RequestResults)) return false;
 
-        Games games = (Games) o;
+        RequestResults requestResults = (RequestResults) o;
 
-        if (limit != games.limit) return false;
-        if (offset != games.offset) return false;
-        if (numberOfPageResults != games.numberOfPageResults) return false;
-        if (numberOfTotalResults != games.numberOfTotalResults) return false;
-        if (statusCode != games.statusCode) return false;
-        if (error != null ? !error.equals(games.error) : games.error != null) return false;
-        if (results != null ? !results.equals(games.results) : games.results != null) return false;
-        return version != null ? version.equals(games.version) : games.version == null;
+        if (limit != requestResults.limit) return false;
+        if (offset != requestResults.offset) return false;
+        if (numberOfPageResults != requestResults.numberOfPageResults) return false;
+        if (numberOfTotalResults != requestResults.numberOfTotalResults) return false;
+        if (statusCode != requestResults.statusCode) return false;
+        if (error != null ? !error.equals(requestResults.error) : requestResults.error != null) return false;
+        if (results != null ? !results.equals(requestResults.results) : requestResults.results != null) return false;
+        return version != null ? version.equals(requestResults.version) : requestResults.version == null;
 
     }
 

@@ -8,8 +8,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-@Generated("org.jsonschema2pojo")
-public class Platform {
+public class Genre {
 
     @SerializedName("api_detail_url")
     @Expose
@@ -23,9 +22,6 @@ public class Platform {
     @SerializedName("site_detail_url")
     @Expose
     private String siteDetailUrl;
-    @SerializedName("abbreviation")
-    @Expose
-    private String abbreviation;
 
     /**
      * 
@@ -99,24 +95,6 @@ public class Platform {
         this.siteDetailUrl = siteDetailUrl;
     }
 
-    /**
-     * 
-     * @return
-     *     The abbreviation
-     */
-    public String getAbbreviation() {
-        return abbreviation;
-    }
-
-    /**
-     * 
-     * @param abbreviation
-     *     The abbreviation
-     */
-    public void setAbbreviation(String abbreviation) {
-        this.abbreviation = abbreviation;
-    }
-
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
@@ -124,7 +102,7 @@ public class Platform {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(apiDetailUrl).append(id).append(name).append(siteDetailUrl).append(abbreviation).toHashCode();
+        return new HashCodeBuilder().append(apiDetailUrl).append(id).append(name).append(siteDetailUrl).toHashCode();
     }
 
     @Override
@@ -132,11 +110,11 @@ public class Platform {
         if (other == this) {
             return true;
         }
-        if ((other instanceof Platform) == false) {
+        if ((other instanceof Genre) == false) {
             return false;
         }
-        Platform rhs = ((Platform) other);
-        return new EqualsBuilder().append(apiDetailUrl, rhs.apiDetailUrl).append(id, rhs.id).append(name, rhs.name).append(siteDetailUrl, rhs.siteDetailUrl).append(abbreviation, rhs.abbreviation).isEquals();
+        Genre rhs = ((Genre) other);
+        return new EqualsBuilder().append(apiDetailUrl, rhs.apiDetailUrl).append(id, rhs.id).append(name, rhs.name).append(siteDetailUrl, rhs.siteDetailUrl).isEquals();
     }
 
 }

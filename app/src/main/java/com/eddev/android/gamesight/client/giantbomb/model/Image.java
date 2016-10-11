@@ -1,8 +1,13 @@
 
 package com.eddev.android.gamesight.client.giantbomb.model;
 
+import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 
 public class Image {
 
@@ -156,48 +161,24 @@ public class Image {
 
     @Override
     public String toString() {
-        return "Image{" +
-                "iconUrl='" + iconUrl + '\'' +
-                ", mediumUrl='" + mediumUrl + '\'' +
-                ", screenUrl='" + screenUrl + '\'' +
-                ", smallUrl='" + smallUrl + '\'' +
-                ", superUrl='" + superUrl + '\'' +
-                ", thumbUrl='" + thumbUrl + '\'' +
-                ", tinyUrl='" + tinyUrl + '\'' +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Image)) return false;
-
-        Image image = (Image) o;
-
-        if (iconUrl != null ? !iconUrl.equals(image.iconUrl) : image.iconUrl != null) return false;
-        if (mediumUrl != null ? !mediumUrl.equals(image.mediumUrl) : image.mediumUrl != null)
-            return false;
-        if (screenUrl != null ? !screenUrl.equals(image.screenUrl) : image.screenUrl != null)
-            return false;
-        if (smallUrl != null ? !smallUrl.equals(image.smallUrl) : image.smallUrl != null)
-            return false;
-        if (superUrl != null ? !superUrl.equals(image.superUrl) : image.superUrl != null)
-            return false;
-        if (thumbUrl != null ? !thumbUrl.equals(image.thumbUrl) : image.thumbUrl != null)
-            return false;
-        return tinyUrl != null ? tinyUrl.equals(image.tinyUrl) : image.tinyUrl == null;
-
+        return ToStringBuilder.reflectionToString(this);
     }
 
     @Override
     public int hashCode() {
-        int result = iconUrl != null ? iconUrl.hashCode() : 0;
-        result = 31 * result + (mediumUrl != null ? mediumUrl.hashCode() : 0);
-        result = 31 * result + (screenUrl != null ? screenUrl.hashCode() : 0);
-        result = 31 * result + (smallUrl != null ? smallUrl.hashCode() : 0);
-        result = 31 * result + (superUrl != null ? superUrl.hashCode() : 0);
-        result = 31 * result + (thumbUrl != null ? thumbUrl.hashCode() : 0);
-        result = 31 * result + (tinyUrl != null ? tinyUrl.hashCode() : 0);
-        return result;
+        return new HashCodeBuilder().append(iconUrl).append(mediumUrl).append(screenUrl).append(smallUrl).append(superUrl).append(thumbUrl).append(tinyUrl).toHashCode();
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        if ((other instanceof Image) == false) {
+            return false;
+        }
+        Image rhs = ((Image) other);
+        return new EqualsBuilder().append(iconUrl, rhs.iconUrl).append(mediumUrl, rhs.mediumUrl).append(screenUrl, rhs.screenUrl).append(smallUrl, rhs.smallUrl).append(superUrl, rhs.superUrl).append(thumbUrl, rhs.thumbUrl).append(tinyUrl, rhs.tinyUrl).isEquals();
+    }
+
 }
