@@ -15,6 +15,7 @@ public interface GiantBombService {
     @GET("games")
     Call<GBResponse> getGames(@Query("format") String format,
                               @Query("filter") String filter,
+                              @Query("field_list")String fieldList,
                               @Query("sort") String sort,
                               @Query("limit") String limit,
                               @Query("api_key") String apiKey);

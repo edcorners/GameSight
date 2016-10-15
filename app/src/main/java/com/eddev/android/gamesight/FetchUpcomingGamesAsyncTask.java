@@ -57,13 +57,14 @@ public class FetchUpcomingGamesAsyncTask extends AsyncTask<Void, Void, Void> {
         String sort = "original_release_date:asc";
         String limit = "3";
         String format = "json";
+        String fieldList = "id,name,image";
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(context.getString(R.string.giant_bomb_api_base_url))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         GiantBombService service = retrofit.create(GiantBombService.class);
-        Call<GBResponse> getGamesCall = service.getGames(format, filter, sort, limit, BuildConfig.GIANT_BOMB_API_KEY);
+        Call<GBResponse> getGamesCall = service.getGames(format, filter, fieldList, sort, limit, BuildConfig.GIANT_BOMB_API_KEY);
         GBResponse GBResponse = null;
         try {
             Response<GBResponse> response = getGamesCall.execute();

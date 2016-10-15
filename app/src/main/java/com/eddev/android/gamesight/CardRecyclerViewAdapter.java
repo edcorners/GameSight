@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.eddev.android.gamesight.model.Game;
 import com.squareup.picasso.Picasso;
@@ -46,7 +45,7 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
     public CardRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.game_list_item, parent, false);
+                .inflate(R.layout.card_game_thumbnail, parent, false);
 
         // set the view's size, margins, paddings and layout parameters
 
