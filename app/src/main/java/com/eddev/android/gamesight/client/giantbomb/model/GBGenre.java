@@ -1,14 +1,10 @@
 
 package com.eddev.android.gamesight.client.giantbomb.model;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class Genre {
+public class GBGenre {
 
     @SerializedName("api_detail_url")
     @Expose
@@ -95,26 +91,5 @@ public class Genre {
         this.siteDetailUrl = siteDetailUrl;
     }
 
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(apiDetailUrl).append(id).append(name).append(siteDetailUrl).toHashCode();
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-        if ((other instanceof Genre) == false) {
-            return false;
-        }
-        Genre rhs = ((Genre) other);
-        return new EqualsBuilder().append(apiDetailUrl, rhs.apiDetailUrl).append(id, rhs.id).append(name, rhs.name).append(siteDetailUrl, rhs.siteDetailUrl).isEquals();
-    }
 
 }

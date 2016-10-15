@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class RequestResults {
+public class GBResponse {
 
     @SerializedName("error")
     @Expose
@@ -30,7 +30,7 @@ public class RequestResults {
     private int statusCode;
     @SerializedName("results")
     @Expose
-    private List<Game> results = new ArrayList<Game>();
+    private List<GBGame> results = new ArrayList<GBGame>();
     @SerializedName("version")
     @Expose
     private String version;
@@ -148,7 +148,7 @@ public class RequestResults {
      * @return
      *     The results
      */
-    public List<Game> getResults() {
+    public List<GBGame> getResults() {
         return results;
     }
 
@@ -157,7 +157,7 @@ public class RequestResults {
      * @param results
      *     The results
      */
-    public void setResults(List<Game> results) {
+    public void setResults(List<GBGame> results) {
         this.results = results;
     }
 
@@ -181,7 +181,7 @@ public class RequestResults {
 
     @Override
     public String toString() {
-        return "RequestResults{" +
+        return "GBResponse{" +
                 "error='" + error + '\'' +
                 ", limit=" + limit +
                 ", offset=" + offset +
@@ -196,18 +196,18 @@ public class RequestResults {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof RequestResults)) return false;
+        if (!(o instanceof GBResponse)) return false;
 
-        RequestResults requestResults = (RequestResults) o;
+        GBResponse GBResponse = (GBResponse) o;
 
-        if (limit != requestResults.limit) return false;
-        if (offset != requestResults.offset) return false;
-        if (numberOfPageResults != requestResults.numberOfPageResults) return false;
-        if (numberOfTotalResults != requestResults.numberOfTotalResults) return false;
-        if (statusCode != requestResults.statusCode) return false;
-        if (error != null ? !error.equals(requestResults.error) : requestResults.error != null) return false;
-        if (results != null ? !results.equals(requestResults.results) : requestResults.results != null) return false;
-        return version != null ? version.equals(requestResults.version) : requestResults.version == null;
+        if (limit != GBResponse.limit) return false;
+        if (offset != GBResponse.offset) return false;
+        if (numberOfPageResults != GBResponse.numberOfPageResults) return false;
+        if (numberOfTotalResults != GBResponse.numberOfTotalResults) return false;
+        if (statusCode != GBResponse.statusCode) return false;
+        if (error != null ? !error.equals(GBResponse.error) : GBResponse.error != null) return false;
+        if (results != null ? !results.equals(GBResponse.results) : GBResponse.results != null) return false;
+        return version != null ? version.equals(GBResponse.version) : GBResponse.version == null;
 
     }
 

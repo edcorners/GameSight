@@ -16,17 +16,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.eddev.android.gamesight.client.giantbomb.model.GBGame;
+import com.eddev.android.gamesight.model.Game;
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.OkHttpClient;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, FetchUpcomingGamesAsyncTask.Callback {
 
     @BindView(R.id.discover_card_recycler_view)
-    private RecyclerView mDiscoverCardRecyclerView;
+    RecyclerView mDiscoverCardRecyclerView;
     private RecyclerView.Adapter mDiscoverCardAdapter;
     private RecyclerView.LayoutManager mDiscoverCardLayoutManager;
     private Cursor mCursor;
@@ -43,24 +47,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-
-        Stetho.initializeWithDefaults(this);
-        new OkHttpClient.Builder()
-                .addNetworkInterceptor(new StethoInterceptor())
-                .build();
-    }
-
-    @Override
-    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
         ButterKnife.bind(this);
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -70,10 +56,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mDiscoverCardLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mDiscoverCardRecyclerView.setLayoutManager(mDiscoverCardLayoutManager);
 
-        // specify an adapter (see also next example)
-        mDiscoverCardAdapter = new CardRecyclerViewAdapter(new String[]{});
-        mDiscoverCardRecyclerView.setAdapter(mDiscoverCardAdapter);
-        return super.onCreateView(parent, name, context, attrs);
+        FetchUpcomingGamesAsyncTask fetchUpcomingGamesAsyncTask = new FetchUpcomingGamesAsyncTask(this, this);
+        fetchUpcomingGamesAsyncTask.execute();
+
+        Stetho.initializeWithDefaults(this);
+        new OkHttpClient.Builder()
+                .addNetworkInterceptor(new StethoInterceptor())
+                .build();
     }
 
     @Override
@@ -97,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         return super.onOptionsItemSelected(item);
     }
-    
+
     /**
     * Loader
     */
@@ -115,5 +104,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+    /**
+     * Fetch upcoming GBGames callback
+     */
+
+    @Override
+    public void onUpcomingGamesLoaded(List<Game> games) {
+        mDiscoverCardAdapter = new CardRecyclerViewAdapter(games, this);
+        mDiscoverCardRecyclerView.setAdapter(mDiscoverCardAdapter);
     }
 }

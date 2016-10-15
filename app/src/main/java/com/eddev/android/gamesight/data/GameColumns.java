@@ -45,7 +45,7 @@ public interface GameColumns {
     String ORIGINAL_RELEASE_DATE = "originalReleaseDate";
 
     //private List<ReviewColumns> reviews = new ArrayList<ReviewColumns>();
-    //private List<Video> videos = new ArrayList<Video>();
+    //private List<GBVideo> videos = new ArrayList<GBVideo>();
 
     @DataType(DataType.Type.REAL)
     String COMPLETION = "completion";

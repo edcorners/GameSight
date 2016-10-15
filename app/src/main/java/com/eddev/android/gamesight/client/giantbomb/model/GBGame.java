@@ -1,6 +1,8 @@
 
 package com.eddev.android.gamesight.client.giantbomb.model;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -8,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Game {
+public class GBGame {
 
     @SerializedName("deck")
     @Expose
@@ -27,7 +29,7 @@ public class Game {
     private int id;
     @SerializedName("image")
     @Expose
-    private Image image;
+    private GBImage gBImage;
     @SerializedName("name")
     @Expose
     private String name;
@@ -37,18 +39,18 @@ public class Game {
     @SerializedName("original_release_date")
     @Expose
     private String originalReleaseDate;
-    @SerializedName("platforms")
+    @SerializedName("gBPlatforms")
     @Expose
-    private List<Platform> platforms = new ArrayList<Platform>();
-    @SerializedName("videos")
+    private List<GBPlatform> gBPlatforms = new ArrayList<GBPlatform>();
+    @SerializedName("gBVideos")
     @Expose
-    private List<Video> videos = new ArrayList<Video>();
+    private List<GBVideo> gBVideos = new ArrayList<GBVideo>();
     @SerializedName("genres")
     @Expose
-    private List<Genre> genres = new ArrayList<Genre>();
-    @SerializedName("publishers")
+    private List<GBGenre> genres = new ArrayList<GBGenre>();
+    @SerializedName("GBPublishers")
     @Expose
-    private List<Publisher> publishers = new ArrayList<Publisher>();
+    private List<GBPublisher> GBPublishers = new ArrayList<GBPublisher>();
 
     /**
      *
@@ -143,19 +145,19 @@ public class Game {
     /**
      *
      * @return
-     *     The image
+     *     The gBImage
      */
-    public Image getImage() {
-        return image;
+    public GBImage getGBImage() {
+        return gBImage;
     }
 
     /**
      *
-     * @param image
-     *     The image
+     * @param GBImage
+     *     The gBImage
      */
-    public void setImage(Image image) {
-        this.image = image;
+    public void setGBImage(GBImage GBImage) {
+        this.gBImage = GBImage;
     }
 
     /**
@@ -215,37 +217,37 @@ public class Game {
     /**
      *
      * @return
-     *     The platforms
+     *     The gBPlatforms
      */
-    public List<Platform> getPlatforms() {
-        return platforms;
+    public List<GBPlatform> getGBPlatforms() {
+        return gBPlatforms;
     }
 
     /**
      *
-     * @param platforms
-     *     The platforms
+     * @param GBPlatforms
+     *     The gBPlatforms
      */
-    public void setPlatforms(List<Platform> platforms) {
-        this.platforms = platforms;
+    public void setGBPlatforms(List<GBPlatform> GBPlatforms) {
+        this.gBPlatforms = GBPlatforms;
     }
 
     /**
      *
      * @return
-     *     The videos
+     *     The gBVideos
      */
-    public List<Video> getVideos() {
-        return videos;
+    public List<GBVideo> getGBVideos() {
+        return gBVideos;
     }
 
     /**
      *
-     * @param videos
-     *     The videos
+     * @param GBVideos
+     *     The gBVideos
      */
-    public void setVideos(List<Video> videos) {
-        this.videos = videos;
+    public void setGBVideos(List<GBVideo> GBVideos) {
+        this.gBVideos = GBVideos;
     }
 
     /**
@@ -253,7 +255,7 @@ public class Game {
      * @return
      *     The genres
      */
-    public List<Genre> getGenres() {
+    public List<GBGenre> getGenres() {
         return genres;
     }
 
@@ -262,25 +264,33 @@ public class Game {
      * @param genres
      *     The genres
      */
-    public void setGenres(List<Genre> genres) {
+    public void setGenres(List<GBGenre> genres) {
         this.genres = genres;
     }
 
     /**
      *
      * @return
-     *     The publishers
+     *     The GBPublishers
      */
-    public List<Publisher> getPublishers() {
-        return publishers;
+    public List<GBPublisher> getGBPublishers() {
+        return GBPublishers;
     }
 
     /**
      *
-     * @param publishers
-     *     The publishers
+     * @param GBPublishers
+     *     The GBPublishers
      */
-    public void setPublishers(List<Publisher> publishers) {
-        this.publishers = publishers;
+    public void setGBPublishers(List<GBPublisher> GBPublishers) {
+        this.GBPublishers = GBPublishers;
+    }
+
+    public boolean hasThumb() {
+        return this.gBImage != null && !TextUtils.isEmpty(this.gBImage.getThumbUrl());
+    }
+
+    public String getThumb() {
+        return hasThumb() ? this.gBImage.getThumbUrl() : null;
     }
 }

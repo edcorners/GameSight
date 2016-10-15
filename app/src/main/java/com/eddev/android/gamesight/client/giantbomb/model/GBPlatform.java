@@ -1,14 +1,10 @@
 
 package com.eddev.android.gamesight.client.giantbomb.model;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class Publisher {
+public class GBPlatform {
 
     @SerializedName("api_detail_url")
     @Expose
@@ -22,6 +18,9 @@ public class Publisher {
     @SerializedName("site_detail_url")
     @Expose
     private String siteDetailUrl;
+    @SerializedName("abbreviation")
+    @Expose
+    private String abbreviation;
 
     /**
      * 
@@ -95,26 +94,21 @@ public class Publisher {
         this.siteDetailUrl = siteDetailUrl;
     }
 
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+    /**
+     * 
+     * @return
+     *     The abbreviation
+     */
+    public String getAbbreviation() {
+        return abbreviation;
     }
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(apiDetailUrl).append(id).append(name).append(siteDetailUrl).toHashCode();
+    /**
+     * 
+     * @param abbreviation
+     *     The abbreviation
+     */
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
     }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-        if ((other instanceof Publisher) == false) {
-            return false;
-        }
-        Publisher rhs = ((Publisher) other);
-        return new EqualsBuilder().append(apiDetailUrl, rhs.apiDetailUrl).append(id, rhs.id).append(name, rhs.name).append(siteDetailUrl, rhs.siteDetailUrl).isEquals();
-    }
-
 }

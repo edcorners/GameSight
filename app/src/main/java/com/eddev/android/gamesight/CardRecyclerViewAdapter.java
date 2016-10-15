@@ -1,46 +1,57 @@
 package com.eddev.android.gamesight;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.eddev.android.gamesight.model.Game;
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
+
+import static android.media.CamcorderProfile.get;
 
 /**
  * Created by Edison on 10/10/2016.
  */
 
 public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerViewAdapter.ViewHolder>{
-    private String[] mDataset;
+    private List<Game> mDataset;
+    private Context mContext;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView mTextView;
-        public ViewHolder(TextView v) {
+        public ImageView mGameCoverImageView;
+        public ViewHolder(View v) {
             super(v);
-            mTextView = v;
+            mGameCoverImageView = (ImageView) v.findViewById(R.id.game_cover_thumb);
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public CardRecyclerViewAdapter(String[] myDataset) {
-        mDataset = myDataset;
+    public CardRecyclerViewAdapter(List<Game> gameList, Context context) {
+        mDataset = gameList;
+        mContext = context;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
     public CardRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        //View v = LayoutInflater.from(parent.getContext())
-        //        .inflate(R.layout.my_text_view, parent, false);
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.game_list_item, parent, false);
+
         // set the view's size, margins, paddings and layout parameters
 
-        //ViewHolder vh = new ViewHolder(v);
-        //return vh;
-        return null;
+        ViewHolder vh = new ViewHolder(v);
+        return vh;
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -48,13 +59,18 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.mTextView.setText(mDataset[position]);
+        //holder.mTextView.setText(mDataset.get(position));
+        Picasso.with(mContext)
+                .load(mDataset.get(position).getThumbnailUrl())
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_launcher)
+                .into(holder.mGameCoverImageView);
 
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mDataset.size();
     }
 }
