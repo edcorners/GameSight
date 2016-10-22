@@ -18,7 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SearchActivity">
+        <activity android:name=".SearchableActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -43,6 +43,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.eddev.android.gamesight.GameGridActivity" />
         </activity>
+        <!-- enable the search dialog to send searches to SearchableActivity -->
+        <meta-data android:name="android.app.default_searchable"
+            android:value=".SearchableActivity" />
     </application>
 
 </manifest>
