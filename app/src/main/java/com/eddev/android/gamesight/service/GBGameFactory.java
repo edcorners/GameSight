@@ -1,7 +1,7 @@
-package com.eddev.android.gamesight.model;
+package com.eddev.android.gamesight.service;
 
 import com.eddev.android.gamesight.client.giantbomb.model.GBGame;
-import com.eddev.android.gamesight.client.giantbomb.model.GBImage;
+import com.eddev.android.gamesight.model.Game;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,15 +10,15 @@ import java.util.List;
  * Created by Edison on 10/15/2016.
  */
 
-public class GameFactory {
+public class GBGameFactory {
 
-    private static GameFactory instance = new GameFactory();
+    private static GBGameFactory instance = new GBGameFactory();
 
-    public static GameFactory getInstance() {
+    public static GBGameFactory getInstance() {
         return instance;
     }
 
-    private GameFactory() {
+    private GBGameFactory() {
     }
 
     public Game createGamePreview(GBGame gBGame){

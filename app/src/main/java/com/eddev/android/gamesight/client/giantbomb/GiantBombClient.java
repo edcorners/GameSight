@@ -11,7 +11,7 @@ import retrofit2.http.Query;
  * Created by Edison on 9/22/2016.
  */
 
-public interface GiantBombService {
+public interface GiantBombClient {
     @GET("games")
     Call<GBResponse> getGames(@Query("format") String format,
                               @Query("filter") String filter,

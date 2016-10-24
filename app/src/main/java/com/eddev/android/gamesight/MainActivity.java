@@ -4,23 +4,20 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.eddev.android.gamesight.client.giantbomb.model.GBGame;
 import com.eddev.android.gamesight.model.Game;
+import com.eddev.android.gamesight.service.GameSearchService;
+import com.eddev.android.gamesight.service.GamesLoadedCallback;
+import com.eddev.android.gamesight.service.GiantBombSearchService;
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 
@@ -30,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.OkHttpClient;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, FetchUpcomingGamesAsyncTask.Callback {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, GamesLoadedCallback {
 
     @BindView(R.id.discover_card_recycler_view)
     RecyclerView mDiscoverCardRecyclerView;
@@ -38,10 +35,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private RecyclerView.LayoutManager mDiscoverCardLayoutManager;
     private Cursor mCursor;
 
+    private GameSearchService mGameSearchService;
+
     /**
      * Activity lifecycle
      */
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +57,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mDiscoverCardLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mDiscoverCardRecyclerView.setLayoutManager(mDiscoverCardLayoutManager);
 
-        FetchUpcomingGamesAsyncTask fetchUpcomingGamesAsyncTask = new FetchUpcomingGamesAsyncTask(this, this);
-        fetchUpcomingGamesAsyncTask.execute();
+        mGameSearchService = new GiantBombSearchService(this);
+        mGameSearchService.fetchUpcomingGamesPreview(this);
 
         Stetho.initializeWithDefaults(this);
         new OkHttpClient.Builder()
@@ -122,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
      */
 
     @Override
-    public void onUpcomingGamesLoaded(List<Game> games) {
+    public void onGamesLoaded(List<Game> games) {
         mDiscoverCardAdapter = new CardRecyclerViewAdapter(games, this);
         mDiscoverCardRecyclerView.setAdapter(mDiscoverCardAdapter);
     }

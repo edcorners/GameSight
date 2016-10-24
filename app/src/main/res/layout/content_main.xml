@@ -31,7 +31,7 @@
                 android:id="@+id/discover_card_recycler_view" />
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/main_toolbar"
+                android:id="@+id/d_card_toolbar"
                 android:layout_width="match_parent"
                 android:layout_weight="1"
                 android:layout_height="?attr/actionBarSize"
@@ -43,7 +43,7 @@
                     android:layout_width="match_parent"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="Discover"
-                    android:id="@+id/d_card_toolbar"
+                    android:id="@+id/d_card_toolbar_text_view"
                     android:drawableStart="@mipmap/ic_launcher"
                     android:gravity="center_vertical"
                     android:textColor="?android:attr/textColorPrimaryInverse"/>

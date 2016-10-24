@@ -11,33 +11,57 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 
 import com.eddev.android.gamesight.model.Game;
+import com.eddev.android.gamesight.service.GameSearchService;
+import com.eddev.android.gamesight.service.GamesLoadedCallback;
+import com.eddev.android.gamesight.service.GiantBombSearchService;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class SearchableActivity extends ListActivity{
+public class SearchableActivity extends ListActivity implements GamesLoadedCallback{
 
     private final String LOG_TAG = SearchableActivity.class.getSimpleName();
+    private GameSearchService mGameSearchService;
+    private SearchResultsAdapter mSearchResultsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mGameSearchService = new GiantBombSearchService(this);
+        mSearchResultsAdapter = new SearchResultsAdapter(this, 0, new ArrayList<Game>());
+        setListAdapter(mSearchResultsAdapter);
         setContentView(R.layout.activity_search);
         // Get the intent, verify the action and get the query
-        Intent intent = getIntent();
+        handleIntent(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        handleIntent(intent);
+        super.onNewIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            findGames(query);
-            Log.d(LOG_TAG, query);//(query);
+            Log.d(LOG_TAG, query);
+            mGameSearchService.searchGamesByName(query, this);
         }
-        setListAdapter(new SearchResultsAdapter(this,0, new ArrayList<Game>()));
     }
 
     private void findGames(String query) {
+
     }
 
     @Override
     public boolean onSearchRequested(){
         Log.d(LOG_TAG, "onSearchRequested()");
         return true;
+    }
+
+    @Override
+    public void onGamesLoaded(List<Game> games) {
+        mSearchResultsAdapter.addAll(games);
     }
 }
