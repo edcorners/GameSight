@@ -1,6 +1,7 @@
-
 package com.eddev.android.gamesight.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.StringDef;
 
 import java.lang.annotation.Retention;
@@ -10,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class Game {
+public class Game implements Parcelable {
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({OWNED, TRACKING})
@@ -159,4 +160,94 @@ public class Game {
     public void setCollection(String collection) {
         this.collection = collection;
     }
+
+    protected Game(Parcel in) {
+        id = in.readLong();
+        description = in.readString();
+        long tmpExpectedReleaseDate = in.readLong();
+        expectedReleaseDate = tmpExpectedReleaseDate != -1 ? new Date(tmpExpectedReleaseDate) : null;
+        imageUrl = in.readString();
+        thumbnailUrl = in.readString();
+        name = in.readString();
+        if (in.readByte() == 0x01) {
+            classificationAttributes = new ArrayList<ClassificationAttribute>();
+            in.readList(classificationAttributes, ClassificationAttribute.class.getClassLoader());
+        } else {
+            classificationAttributes = null;
+        }
+        numberOfUserReviews = in.readInt();
+        long tmpOriginalReleaseDate = in.readLong();
+        originalReleaseDate = tmpOriginalReleaseDate != -1 ? new Date(tmpOriginalReleaseDate) : null;
+        if (in.readByte() == 0x01) {
+            reviews = new ArrayList<Review>();
+            in.readList(reviews, Review.class.getClassLoader());
+        } else {
+            reviews = null;
+        }
+        if (in.readByte() == 0x01) {
+            videos = new ArrayList<Video>();
+            in.readList(videos, Video.class.getClassLoader());
+        } else {
+            videos = null;
+        }
+        completion = in.readDouble();
+        switch (in.readString()){
+            case TRACKING:
+                collection = TRACKING;
+                break;
+            case OWNED:
+                collection = OWNED;
+                break;
+        }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(description);
+        dest.writeLong(expectedReleaseDate != null ? expectedReleaseDate.getTime() : -1L);
+        dest.writeString(imageUrl);
+        dest.writeString(thumbnailUrl);
+        dest.writeString(name);
+        if (classificationAttributes == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(classificationAttributes);
+        }
+        dest.writeInt(numberOfUserReviews);
+        dest.writeLong(originalReleaseDate != null ? originalReleaseDate.getTime() : -1L);
+        if (reviews == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(reviews);
+        }
+        if (videos == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(videos);
+        }
+        dest.writeDouble(completion);
+        dest.writeString(collection);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Game> CREATOR = new Parcelable.Creator<Game>() {
+        @Override
+        public Game createFromParcel(Parcel in) {
+            return new Game(in);
+        }
+
+        @Override
+        public Game[] newArray(int size) {
+            return new Game[size];
+        }
+    };
 }

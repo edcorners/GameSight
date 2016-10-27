@@ -1,6 +1,7 @@
 package com.eddev.android.gamesight;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +27,7 @@ public class SearchResultsAdapter extends ArrayAdapter<Game> {
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Game game = getItem(position);
+        final Game game = getItem(position);
         View rootView = LayoutInflater.from(getContext()).inflate(R.layout.search_result, parent, false);
 
         ImageView image = (ImageView) rootView.findViewById(R.id.game_result_thumb);
@@ -35,6 +36,15 @@ public class SearchResultsAdapter extends ArrayAdapter<Game> {
         titleDate.setText(game.getName()+" - "+game.getOriginalReleaseDate());
         TextView description = (TextView)rootView.findViewById(R.id.game_description);
         description.setText(game.getDescription());
+
+        rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent detailsIntent = new Intent(getContext(), GameDetailActivity.class);
+                detailsIntent.putExtra("game_object", game);
+                getContext().startActivity(detailsIntent);
+            }
+        });
 
         return rootView;
     }
