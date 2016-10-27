@@ -5,6 +5,7 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import com.eddev.android.gamesight.service.GiantBombSearchService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.eddev.android.gamesight.R.id.toolbar;
 
 public class SearchableActivity extends ListActivity implements GamesLoadedCallback{
 
@@ -31,6 +34,7 @@ public class SearchableActivity extends ListActivity implements GamesLoadedCallb
         mSearchResultsAdapter = new SearchResultsAdapter(this, 0, new ArrayList<Game>());
         setListAdapter(mSearchResultsAdapter);
         setContentView(R.layout.activity_search);
+
         // Get the intent, verify the action and get the query
         handleIntent(getIntent());
     }
@@ -52,6 +56,10 @@ public class SearchableActivity extends ListActivity implements GamesLoadedCallb
 
     private void findGames(String query) {
 
+    }
+
+    public void back(View view){
+        finish();
     }
 
     @Override
