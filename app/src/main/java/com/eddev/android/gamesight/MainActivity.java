@@ -2,6 +2,7 @@ package com.eddev.android.gamesight;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -13,6 +14,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.eddev.android.gamesight.model.Game;
 import com.eddev.android.gamesight.service.GameSearchService;
@@ -121,7 +123,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onGamesLoaded(List<Game> games) {
-        mDiscoverCardAdapter = new CardRecyclerViewAdapter(games, this);
+        mDiscoverCardAdapter = new CardRecyclerViewAdapter(games, this, new CardRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Game game) {
+                Intent detailsIntent = new Intent(getApplicationContext(), GameDetailActivity.class);
+                detailsIntent.putExtra("game", game);
+                startActivity(detailsIntent);
+            }
+        });
         mDiscoverCardRecyclerView.setAdapter(mDiscoverCardAdapter);
     }
 }

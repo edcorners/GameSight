@@ -22,22 +22,17 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
     private List<Game> mDataset;
     private Context mContext;
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
-        public ImageView mGameCoverImageView;
-        public ViewHolder(View v) {
-            super(v);
-            mGameCoverImageView = (ImageView) v.findViewById(R.id.game_cover_thumb);
-        }
+    public interface OnItemClickListener {
+        void onItemClick(Game game);
     }
 
+    private final OnItemClickListener mListener;
+
     // Provide a suitable constructor (depends on the kind of dataset)
-    public CardRecyclerViewAdapter(List<Game> gameList, Context context) {
+    public CardRecyclerViewAdapter(List<Game> gameList, Context context, OnItemClickListener listener) {
         mDataset = gameList;
         mContext = context;
+        mListener = listener;
     }
 
     // Create new views (invoked by the layout manager)
@@ -46,7 +41,6 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_game_thumbnail, parent, false);
-
         // set the view's size, margins, paddings and layout parameters
 
         ViewHolder vh = new ViewHolder(v);
@@ -59,11 +53,7 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         //holder.mTextView.setText(mDataset.get(position));
-        Picasso.with(mContext)
-                .load(mDataset.get(position).getThumbnailUrl())
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .into(holder.mGameCoverImageView);
+        holder.bind(mDataset.get(position), mListener);
 
     }
 
@@ -72,4 +62,31 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
     public int getItemCount() {
         return mDataset.size();
     }
+
+    // Provide a reference to the views for each data item
+    // Complex data items may need more than one view per item, and
+    // you provide access to all the views for a data item in a view holder
+    public static class ViewHolder extends RecyclerView.ViewHolder{
+        // each data item is just a string in this case
+        public ImageView mGameCoverImageView;
+        public ViewHolder(View v) {
+            super(v);
+            mGameCoverImageView = (ImageView) v.findViewById(R.id.game_cover_thumb);
+        }
+
+        public void bind(final Game game, final OnItemClickListener listener) {
+            Picasso.with(itemView.getContext())
+                    .load(game.getThumbnailUrl())
+                    .placeholder(R.mipmap.ic_launcher)
+                    .error(R.mipmap.ic_launcher)
+                    .into(mGameCoverImageView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    listener.onItemClick(game);
+                }
+            });
+        }
+    }
+
+
 }

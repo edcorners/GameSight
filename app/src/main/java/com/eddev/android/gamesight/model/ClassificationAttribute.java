@@ -25,16 +25,19 @@ public class ClassificationAttribute implements Parcelable {
 
     protected ClassificationAttribute(Parcel in) {
         id = in.readLong();
-        switch (in.readString()){
-            case GENRE :
-                type = GENRE;
-                break;
-            case PLATFORM :
-                type = PLATFORM;
-                break;
-            case PUBLISHER :
-                type = PUBLISHER;
-                break;
+        String valueString = in.readString();
+        if(valueString != null) {
+            switch (valueString) {
+                case GENRE:
+                    type = GENRE;
+                    break;
+                case PLATFORM:
+                    type = PLATFORM;
+                    break;
+                case PUBLISHER:
+                    type = PUBLISHER;
+                    break;
+            }
         }
         value = in.readString();
     }

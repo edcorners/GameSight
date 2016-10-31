@@ -191,13 +191,16 @@ public class Game implements Parcelable {
             videos = null;
         }
         completion = in.readDouble();
-        switch (in.readString()){
-            case TRACKING:
-                collection = TRACKING;
-                break;
-            case OWNED:
-                collection = OWNED;
-                break;
+        String collectionString = in.readString();
+        if(collectionString != null) {
+            switch (collectionString) {
+                case TRACKING:
+                    collection = TRACKING;
+                    break;
+                case OWNED:
+                    collection = OWNED;
+                    break;
+            }
         }
     }
 

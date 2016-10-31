@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- When selected, use favorited -->
+    <item android:drawable="@color/colorAccent"
+        android:state_checked="true" />
+    <!-- When not selected, use nonfavorite-->
+    <item android:drawable="@color/cardview_dark_background"
+        android:state_checked="false"/>
+</selector>

@@ -9,14 +9,16 @@ import android.view.ViewGroup;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class GameDetailActivityFragment extends Fragment {
+public class GameDetailFragment extends Fragment {
 
-    public GameDetailActivityFragment() {
+    public GameDetailFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_game_detail, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_game_detail, container, false);
+
+        return rootView;
     }
 }
