@@ -41,7 +41,7 @@ public class SearchResultsAdapter extends ArrayAdapter<Game> {
             @Override
             public void onClick(View v) {
                 Intent detailsIntent = new Intent(getContext(), GameDetailActivity.class);
-                detailsIntent.putExtra("game", game);
+                detailsIntent.putExtra(getContext().getString(R.string.parcelable_game_key), game);
                 getContext().startActivity(detailsIntent);
             }
         });

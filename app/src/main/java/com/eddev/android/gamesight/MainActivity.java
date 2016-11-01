@@ -14,12 +14,11 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.eddev.android.gamesight.model.Game;
-import com.eddev.android.gamesight.service.GameSearchService;
-import com.eddev.android.gamesight.service.GamesLoadedCallback;
-import com.eddev.android.gamesight.service.GiantBombSearchService;
+import com.eddev.android.gamesight.service.IGameSearchService;
+import com.eddev.android.gamesight.service.IGamesLoadedCallback;
+import com.eddev.android.gamesight.service.GiantBombSearchServiceI;
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 
@@ -29,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.OkHttpClient;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, GamesLoadedCallback {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, IGamesLoadedCallback {
 
     @BindView(R.id.discover_card_recycler_view)
     RecyclerView mDiscoverCardRecyclerView;
@@ -37,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private RecyclerView.LayoutManager mDiscoverCardLayoutManager;
     private Cursor mCursor;
 
-    private GameSearchService mGameSearchService;
+    private IGameSearchService mIGameSearchService;
 
     /**
      * Activity lifecycle
@@ -59,8 +58,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mDiscoverCardLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mDiscoverCardRecyclerView.setLayoutManager(mDiscoverCardLayoutManager);
 
-        mGameSearchService = new GiantBombSearchService(this);
-        mGameSearchService.fetchUpcomingGamesPreview(this);
+        mIGameSearchService = new GiantBombSearchServiceI(this);
+        mIGameSearchService.fetchUpcomingGamesPreview(this);
 
         Stetho.initializeWithDefaults(this);
         new OkHttpClient.Builder()
@@ -127,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public void onItemClick(Game game) {
                 Intent detailsIntent = new Intent(getApplicationContext(), GameDetailActivity.class);
-                detailsIntent.putExtra("game", game);
+                detailsIntent.putExtra(getString(R.string.parcelable_game_key), game);
                 startActivity(detailsIntent);
             }
         });

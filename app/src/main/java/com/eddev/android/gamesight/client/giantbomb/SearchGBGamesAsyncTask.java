@@ -10,13 +10,12 @@ import com.eddev.android.gamesight.BuildConfig;
 import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.client.giantbomb.model.GBGame;
 import com.eddev.android.gamesight.client.giantbomb.model.GBResponse;
-import com.eddev.android.gamesight.service.GBGameFactory;
-import com.eddev.android.gamesight.service.GamesLoadedCallback;
+import com.eddev.android.gamesight.service.GameFactoryForGB;
+import com.eddev.android.gamesight.service.IGamesLoadedCallback;
 
 import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,13 +41,13 @@ public class SearchGBGamesAsyncTask extends AsyncTask<HashMap<String,String>, Vo
 
     private final String LOG_TAG = SearchGBGamesAsyncTask.class.getSimpleName();
     private Context mContext;
-    private GamesLoadedCallback callback;
+    private IGamesLoadedCallback callback;
 
     /**
      * Default constructor
      * @param mContext application mContext
      */
-    public SearchGBGamesAsyncTask(Context mContext, GamesLoadedCallback callback) {
+    public SearchGBGamesAsyncTask(Context mContext, IGamesLoadedCallback callback) {
         this.mContext = mContext;
         this.callback = callback;
     }
@@ -88,6 +87,6 @@ public class SearchGBGamesAsyncTask extends AsyncTask<HashMap<String,String>, Vo
     @Override
     protected void onPostExecute(List<GBGame> gBGames) {
         super.onPostExecute(gBGames);
-        callback.onGamesLoaded(GBGameFactory.getInstance().createGamePreviewList(gBGames));
+        callback.onGamesLoaded(GameFactoryForGB.getInstance().createGamePreviewList(gBGames));
     }
 }

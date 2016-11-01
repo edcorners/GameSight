@@ -2,9 +2,9 @@ package com.eddev.android.gamesight.service;
 
 import android.content.Context;
 
+import com.eddev.android.gamesight.Utility;
 import com.eddev.android.gamesight.client.giantbomb.SearchGBGamesAsyncTask;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,25 +19,24 @@ import static com.eddev.android.gamesight.client.giantbomb.SearchGBGamesAsyncTas
  * Created by Edison on 10/22/2016.
  */
 
-public class GiantBombSearchService implements GameSearchService{
+public class GiantBombSearchServiceI implements IGameSearchService {
 
-    private SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private final Context mContext;
     private HashMap<String, String> mParameters;
 
-    public GiantBombSearchService(Context context) {
+    public GiantBombSearchServiceI(Context context) {
         this.mContext = context;
         this.mParameters = new HashMap<>();
     }
 
-    public void fetchUpcomingGamesPreview(GamesLoadedCallback callback){
+    public void fetchUpcomingGamesPreview(IGamesLoadedCallback callback){
         mParameters.clear();
         Calendar cal = Calendar.getInstance();
         Date now = cal.getTime();
         cal.add(Calendar.MONTH, 3);
         Date inThreeMonths = cal.getTime();
 
-        mParameters.put(FILTER, "original_release_date:"+mDateFormat.format(now)+"|"+mDateFormat.format(inThreeMonths));
+        mParameters.put(FILTER, "original_release_date:"+ Utility.dateTimeFormat.format(now)+"|"+Utility.dateTimeFormat.format(inThreeMonths));
         mParameters.put(SORT, "original_release_date:asc");
         mParameters.put(LIMIT, "3");
         mParameters.put(FORMAT, "json");
@@ -47,7 +46,7 @@ public class GiantBombSearchService implements GameSearchService{
         searchGBGamesAsyncTask.execute(mParameters);
     }
 
-    public void searchGamesByName(String name, GamesLoadedCallback callback){
+    public void searchGamesByName(String name, IGamesLoadedCallback callback){
         mParameters.clear();
         mParameters.put(FILTER, "name:"+name);
         mParameters.put(SORT, "number_of_user_reviews:desc");

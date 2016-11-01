@@ -3,34 +3,28 @@ package com.eddev.android.gamesight;
 import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.Intent;
-import android.database.DataSetObserver;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListAdapter;
 
 import com.eddev.android.gamesight.model.Game;
-import com.eddev.android.gamesight.service.GameSearchService;
-import com.eddev.android.gamesight.service.GamesLoadedCallback;
-import com.eddev.android.gamesight.service.GiantBombSearchService;
+import com.eddev.android.gamesight.service.IGameSearchService;
+import com.eddev.android.gamesight.service.IGamesLoadedCallback;
+import com.eddev.android.gamesight.service.GiantBombSearchServiceI;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.eddev.android.gamesight.R.id.toolbar;
-
-public class SearchableActivity extends ListActivity implements GamesLoadedCallback{
+public class SearchableActivity extends ListActivity implements IGamesLoadedCallback {
 
     private final String LOG_TAG = SearchableActivity.class.getSimpleName();
-    private GameSearchService mGameSearchService;
+    private IGameSearchService mIGameSearchService;
     private SearchResultsAdapter mSearchResultsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mGameSearchService = new GiantBombSearchService(this);
+        mIGameSearchService = new GiantBombSearchServiceI(this);
         mSearchResultsAdapter = new SearchResultsAdapter(this, 0, new ArrayList<Game>());
         setListAdapter(mSearchResultsAdapter);
         setContentView(R.layout.activity_search);
@@ -50,7 +44,7 @@ public class SearchableActivity extends ListActivity implements GamesLoadedCallb
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             Log.d(LOG_TAG, query);
-            mGameSearchService.searchGamesByName(query, this);
+            mIGameSearchService.searchGamesByName(query, this);
         }
     }
 

@@ -17,13 +17,13 @@ public class GBGame {
     private String deck;
     @SerializedName("expected_release_day")
     @Expose
-    private Object expectedReleaseDay;
+    private String expectedReleaseDay;
     @SerializedName("expected_release_month")
     @Expose
-    private Object expectedReleaseMonth;
+    private String expectedReleaseMonth;
     @SerializedName("expected_release_year")
     @Expose
-    private Object expectedReleaseYear;
+    private String expectedReleaseYear;
     @SerializedName("id")
     @Expose
     private int id;
@@ -84,7 +84,7 @@ public class GBGame {
      * @param expectedReleaseDay
      *     The expected_release_day
      */
-    public void setExpectedReleaseDay(Object expectedReleaseDay) {
+    public void setExpectedReleaseDay(String expectedReleaseDay) {
         this.expectedReleaseDay = expectedReleaseDay;
     }
 
@@ -102,7 +102,7 @@ public class GBGame {
      * @param expectedReleaseMonth
      *     The expected_release_month
      */
-    public void setExpectedReleaseMonth(Object expectedReleaseMonth) {
+    public void setExpectedReleaseMonth(String expectedReleaseMonth) {
         this.expectedReleaseMonth = expectedReleaseMonth;
     }
 
@@ -120,7 +120,7 @@ public class GBGame {
      * @param expectedReleaseYear
      *     The expected_release_year
      */
-    public void setExpectedReleaseYear(Object expectedReleaseYear) {
+    public void setExpectedReleaseYear(String expectedReleaseYear) {
         this.expectedReleaseYear = expectedReleaseYear;
     }
 
@@ -292,5 +292,25 @@ public class GBGame {
 
     public String getThumb() {
         return hasThumb() ? this.gBImage.getThumbUrl() : null;
+    }
+
+    public boolean hasCover() {
+        return this.gBImage != null && !TextUtils.isEmpty(this.gBImage.getMediumUrl());
+    }
+
+    public String getCover() {
+        return  hasCover() ? this.gBImage.getMediumUrl() : null;
+    }
+
+    public String getExpectedReleaseDate(){
+        StringBuilder expectedReleaseDate = new StringBuilder();
+        if (TextUtils.isEmpty(expectedReleaseYear)){
+            expectedReleaseDate.append("");
+        }else{
+            expectedReleaseDate.append(expectedReleaseYear+"-");
+            expectedReleaseDate.append(!TextUtils.isEmpty(expectedReleaseMonth) ? expectedReleaseMonth+"-" : "01");
+            expectedReleaseDate.append(!TextUtils.isEmpty(expectedReleaseDay) ? expectedReleaseDay : "01");
+        }
+        return expectedReleaseDate.toString();
     }
 }
