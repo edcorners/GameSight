@@ -10,7 +10,7 @@ import android.view.View;
 import com.eddev.android.gamesight.model.Game;
 import com.eddev.android.gamesight.service.IGameSearchService;
 import com.eddev.android.gamesight.service.IGamesLoadedCallback;
-import com.eddev.android.gamesight.service.GiantBombSearchServiceI;
+import com.eddev.android.gamesight.service.GiantBombSearchService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class SearchableActivity extends ListActivity implements IGamesLoadedCall
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mIGameSearchService = new GiantBombSearchServiceI(this);
+        mIGameSearchService = new GiantBombSearchService(this);
         mSearchResultsAdapter = new SearchResultsAdapter(this, 0, new ArrayList<Game>());
         setListAdapter(mSearchResultsAdapter);
         setContentView(R.layout.activity_search);

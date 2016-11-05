@@ -29,7 +29,7 @@ public class GBGame {
     private int id;
     @SerializedName("image")
     @Expose
-    private GBImage gBImage;
+    private GBImage image;
     @SerializedName("name")
     @Expose
     private String name;
@@ -39,18 +39,18 @@ public class GBGame {
     @SerializedName("original_release_date")
     @Expose
     private String originalReleaseDate;
-    @SerializedName("gBPlatforms")
+    @SerializedName("platforms")
     @Expose
-    private List<GBPlatform> gBPlatforms = new ArrayList<GBPlatform>();
-    @SerializedName("gBVideos")
+    private List<GBPlatform> platforms = new ArrayList<GBPlatform>();
+    @SerializedName("videos")
     @Expose
-    private List<GBVideo> gBVideos = new ArrayList<GBVideo>();
+    private List<GBVideo> videos = new ArrayList<GBVideo>();
     @SerializedName("genres")
     @Expose
     private List<GBGenre> genres = new ArrayList<GBGenre>();
-    @SerializedName("GBPublishers")
+    @SerializedName("publishers")
     @Expose
-    private List<GBPublisher> GBPublishers = new ArrayList<GBPublisher>();
+    private List<GBPublisher> publishers = new ArrayList<GBPublisher>();
 
     /**
      *
@@ -145,19 +145,19 @@ public class GBGame {
     /**
      *
      * @return
-     *     The gBImage
+     *     The image
      */
-    public GBImage getGBImage() {
-        return gBImage;
+    public GBImage getImage() {
+        return image;
     }
 
     /**
      *
-     * @param GBImage
-     *     The gBImage
+     * @param image
+     *     The image
      */
-    public void setGBImage(GBImage GBImage) {
-        this.gBImage = GBImage;
+    public void setImage(GBImage image) {
+        this.image = image;
     }
 
     /**
@@ -217,37 +217,37 @@ public class GBGame {
     /**
      *
      * @return
-     *     The gBPlatforms
+     *     The platforms
      */
-    public List<GBPlatform> getGBPlatforms() {
-        return gBPlatforms;
+    public List<GBPlatform> getPlatforms() {
+        return platforms;
     }
 
     /**
      *
-     * @param GBPlatforms
-     *     The gBPlatforms
+     * @param platforms
+     *     The platforms
      */
-    public void setGBPlatforms(List<GBPlatform> GBPlatforms) {
-        this.gBPlatforms = GBPlatforms;
+    public void setPlatforms(List<GBPlatform> platforms) {
+        this.platforms = platforms;
     }
 
     /**
      *
      * @return
-     *     The gBVideos
+     *     The videos
      */
-    public List<GBVideo> getGBVideos() {
-        return gBVideos;
+    public List<GBVideo> getVideos() {
+        return videos;
     }
 
     /**
      *
-     * @param GBVideos
-     *     The gBVideos
+     * @param videos
+     *     The videos
      */
-    public void setGBVideos(List<GBVideo> GBVideos) {
-        this.gBVideos = GBVideos;
+    public void setVideos(List<GBVideo> videos) {
+        this.videos = videos;
     }
 
     /**
@@ -271,35 +271,35 @@ public class GBGame {
     /**
      *
      * @return
-     *     The GBPublishers
+     *     The publishers
      */
-    public List<GBPublisher> getGBPublishers() {
-        return GBPublishers;
+    public List<GBPublisher> getPublishers() {
+        return publishers;
     }
 
     /**
      *
-     * @param GBPublishers
-     *     The GBPublishers
+     * @param publishers
+     *     The publishers
      */
-    public void setGBPublishers(List<GBPublisher> GBPublishers) {
-        this.GBPublishers = GBPublishers;
+    public void setPublishers(List<GBPublisher> publishers) {
+        this.publishers = publishers;
     }
 
     public boolean hasThumb() {
-        return this.gBImage != null && !TextUtils.isEmpty(this.gBImage.getThumbUrl());
+        return this.image != null && !TextUtils.isEmpty(this.image.getThumbUrl());
     }
 
     public String getThumb() {
-        return hasThumb() ? this.gBImage.getThumbUrl() : null;
+        return hasThumb() ? this.image.getThumbUrl() : null;
     }
 
     public boolean hasCover() {
-        return this.gBImage != null && !TextUtils.isEmpty(this.gBImage.getMediumUrl());
+        return this.image != null && !TextUtils.isEmpty(this.image.getMediumUrl());
     }
 
     public String getCover() {
-        return  hasCover() ? this.gBImage.getMediumUrl() : null;
+        return  hasCover() ? this.image.getMediumUrl() : null;
     }
 
     public String getExpectedReleaseDate(){

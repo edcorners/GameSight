@@ -48,13 +48,19 @@
             android:layout_weight="4" />
 
         <TextView
-            android:text="TextView"
+            android:text="10%"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/completion_text_view"
+            android:id="@+id/detail_completion_text_view"
             android:layout_weight="1" />
 
     </LinearLayout>
+
+    <TextView
+        android:text="Description"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/detail_description" />
 
     <View
         android:id="@+id/detail_separating_line_1"

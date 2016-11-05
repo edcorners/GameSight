@@ -14,14 +14,20 @@ public class ClassificationAttribute implements Parcelable {
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({GENRE, PLATFORM, PUBLISHER})
     public @interface GameAttribType {}
-    private static final String GENRE = "GENRE";
-    private static final String PLATFORM = "PLATFORM";
-    private static final String PUBLISHER = "PUBLISHER";
+    public static final String GENRE = "GENRE";
+    public static final String PLATFORM = "PLATFORM";
+    public static final String PUBLISHER = "PUBLISHER";
 
     private long id;
     private @GameAttribType
     String type;
     private String value;
+
+    public ClassificationAttribute(long id, @GameAttribType String type, String value) {
+        this.id = id;
+        this.type = type;
+        this.value = value;
+    }
 
     protected ClassificationAttribute(Parcel in) {
         id = in.readLong();

@@ -18,7 +18,7 @@ import android.view.MenuItem;
 import com.eddev.android.gamesight.model.Game;
 import com.eddev.android.gamesight.service.IGameSearchService;
 import com.eddev.android.gamesight.service.IGamesLoadedCallback;
-import com.eddev.android.gamesight.service.GiantBombSearchServiceI;
+import com.eddev.android.gamesight.service.GiantBombSearchService;
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mDiscoverCardLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mDiscoverCardRecyclerView.setLayoutManager(mDiscoverCardLayoutManager);
 
-        mIGameSearchService = new GiantBombSearchServiceI(this);
+        mIGameSearchService = new GiantBombSearchService(this);
         mIGameSearchService.fetchUpcomingGamesPreview(this);
 
         Stetho.initializeWithDefaults(this);

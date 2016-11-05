@@ -23,6 +23,6 @@ public interface GiantBombClient {
     @GET("game/{id}")
     Call<GBResponse> getGame(@Path("id") int gameId,
                              @Query("format") String format,
-                             @Query("filter") String filter,
+                             @Query("fieldList") String fieldList,
                              @Query("api_key") String apiKey);
 }

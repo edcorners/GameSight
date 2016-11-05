@@ -11,6 +11,12 @@ public class Video implements Parcelable {
     private String name;
     private String url;
 
+    public Video(long id, String name, String url) {
+        this.id = id;
+        this.name = name;
+        this.url = url;
+    }
+
     protected Video(Parcel in) {
         id = in.readLong();
         name = in.readString();
