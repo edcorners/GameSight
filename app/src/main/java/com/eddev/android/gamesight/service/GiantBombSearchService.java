@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.eddev.android.gamesight.Utility;
 import com.eddev.android.gamesight.client.giantbomb.FindGBGameAsyncTask;
+import com.eddev.android.gamesight.client.giantbomb.FindGBGameReviewsAsyncTask;
 import com.eddev.android.gamesight.client.giantbomb.SearchGBGamesAsyncTask;
 
 import java.util.Calendar;
@@ -63,7 +64,15 @@ public class GiantBombSearchService implements IGameSearchService {
         findGBGameAsyncTask.execute(mParameters);
     }
 
-    public void findReviewsByGameId(){
+    public void findReviewsByGameId(int id, IGameReviewsLoadedCallback callback){
+        mParameters.clear();
+        mParameters.put(SearchGBGamesAsyncTask.FILTER, "game:"+ id);
+        mParameters.put(SearchGBGamesAsyncTask.SORT, "");
+        mParameters.put(SearchGBGamesAsyncTask.LIMIT, "10");
+        mParameters.put(SearchGBGamesAsyncTask.FORMAT, "json");
+        mParameters.put(SearchGBGamesAsyncTask.FIELD_LIST, "deck,publish_date,score,reviewer");
 
+        FindGBGameReviewsAsyncTask findGBGameReviewsAsyncTask = new FindGBGameReviewsAsyncTask(mContext, callback);
+        findGBGameReviewsAsyncTask.execute(mParameters);
     }
 }

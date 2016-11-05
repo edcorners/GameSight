@@ -7,6 +7,7 @@ import com.eddev.android.gamesight.client.giantbomb.model.GBGame;
 import com.eddev.android.gamesight.client.giantbomb.model.GBGenre;
 import com.eddev.android.gamesight.client.giantbomb.model.GBPlatform;
 import com.eddev.android.gamesight.client.giantbomb.model.GBPublisher;
+import com.eddev.android.gamesight.client.giantbomb.model.GBReview;
 import com.eddev.android.gamesight.client.giantbomb.model.GBVideo;
 import com.eddev.android.gamesight.model.ClassificationAttribute;
 import com.eddev.android.gamesight.model.Game;
@@ -114,4 +115,7 @@ public class GameFactoryForGB {
         return classificationAttributes;
     }
 
+    public Game createGameReviews(List<GBReview> gbReviews) {
+        return null;
+    }
 }

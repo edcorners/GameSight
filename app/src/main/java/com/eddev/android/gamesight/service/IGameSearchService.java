@@ -6,4 +6,6 @@ package com.eddev.android.gamesight.service;
 public interface IGameSearchService {
     public void fetchUpcomingGamesPreview(IGamesLoadedCallback callback);
     public void searchGamesByName(String name, IGamesLoadedCallback callback);
+    public void findGameById(int id, IGameLoadedCallback callback);
+    public void findReviewsByGameId(int id, IGameReviewsLoadedCallback callback);
 }

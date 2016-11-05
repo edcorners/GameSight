@@ -4,11 +4,8 @@ package com.eddev.android.gamesight.client.giantbomb.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-import java.util.List;
 
-
-public class GBResponse {
+public abstract class GBResponse {
 
     @SerializedName("error")
     @Expose
@@ -28,9 +25,7 @@ public class GBResponse {
     @SerializedName("status_code")
     @Expose
     private int statusCode;
-    @SerializedName("results")
-    @Expose
-    private List<GBGame> results = new ArrayList<GBGame>();
+
     @SerializedName("version")
     @Expose
     private String version;
@@ -143,23 +138,7 @@ public class GBResponse {
         this.statusCode = statusCode;
     }
 
-    /**
-     * 
-     * @return
-     *     The results
-     */
-    public List<GBGame> getResults() {
-        return results;
-    }
 
-    /**
-     * 
-     * @param results
-     *     The results
-     */
-    public void setResults(List<GBGame> results) {
-        this.results = results;
-    }
 
     /**
      * 
@@ -188,7 +167,6 @@ public class GBResponse {
                 ", numberOfPageResults=" + numberOfPageResults +
                 ", numberOfTotalResults=" + numberOfTotalResults +
                 ", statusCode=" + statusCode +
-                ", results=" + results +
                 ", version='" + version + '\'' +
                 '}';
     }
@@ -206,7 +184,6 @@ public class GBResponse {
         if (numberOfTotalResults != GBResponse.numberOfTotalResults) return false;
         if (statusCode != GBResponse.statusCode) return false;
         if (error != null ? !error.equals(GBResponse.error) : GBResponse.error != null) return false;
-        if (results != null ? !results.equals(GBResponse.results) : GBResponse.results != null) return false;
         return version != null ? version.equals(GBResponse.version) : GBResponse.version == null;
 
     }
@@ -219,7 +196,6 @@ public class GBResponse {
         result = 31 * result + numberOfPageResults;
         result = 31 * result + numberOfTotalResults;
         result = 31 * result + statusCode;
-        result = 31 * result + (results != null ? results.hashCode() : 0);
         result = 31 * result + (version != null ? version.hashCode() : 0);
         return result;
     }

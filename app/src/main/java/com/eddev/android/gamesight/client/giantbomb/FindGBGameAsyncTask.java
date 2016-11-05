@@ -8,7 +8,7 @@ import android.util.Log;
 import com.eddev.android.gamesight.BuildConfig;
 import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.client.giantbomb.model.GBGame;
-import com.eddev.android.gamesight.client.giantbomb.model.GBResponse;
+import com.eddev.android.gamesight.client.giantbomb.model.GBGameResponse;
 import com.eddev.android.gamesight.service.GameFactoryForGB;
 import com.eddev.android.gamesight.service.IGameLoadedCallback;
 
@@ -65,16 +65,16 @@ public class FindGBGameAsyncTask extends AsyncTask<HashMap<String,String>, Void,
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         GiantBombClient service = retrofit.create(GiantBombClient.class);
-        Call<GBResponse> getGamesCall = service.getGame(Integer.parseInt(params.get(GAME_ID)),
+        Call<GBGameResponse> getGamesCall = service.getGame(Integer.parseInt(params.get(GAME_ID)),
                 params.get(FORMAT),
                 params.get(FIELD_LIST),
                 BuildConfig.GIANT_BOMB_API_KEY);
-        GBResponse GBResponse = null;
+        GBGameResponse gbGameResponse = null;
         try {
-            Response<GBResponse> response = getGamesCall.execute();
+            Response<GBGameResponse> response = getGamesCall.execute();
             Log.v(LOG_TAG, response.raw().toString());
-            GBResponse = response.body();
-            gBGame = GBResponse.getResults().get(0);
+            gbGameResponse = response.body();
+            gBGame = gbGameResponse.getResults().get(0);
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error ", e);
         }
