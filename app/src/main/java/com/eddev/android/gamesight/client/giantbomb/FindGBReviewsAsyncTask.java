@@ -7,10 +7,10 @@ import android.util.Log;
 
 import com.eddev.android.gamesight.BuildConfig;
 import com.eddev.android.gamesight.R;
-import com.eddev.android.gamesight.client.giantbomb.model.GBGameReviewResponse;
+import com.eddev.android.gamesight.client.giantbomb.model.GBReviewsResponse;
 import com.eddev.android.gamesight.client.giantbomb.model.GBReview;
-import com.eddev.android.gamesight.service.GameFactoryForGB;
-import com.eddev.android.gamesight.service.IGameReviewsLoadedCallback;
+import com.eddev.android.gamesight.service.factory.GameFactoryFromGB;
+import com.eddev.android.gamesight.service.callback.IGameReviewsLoadedCallback;
 
 import java.io.IOException;
 import java.lang.annotation.Retention;
@@ -27,7 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Edison on 10/10/2016.
  */
 
-public class FindGBGameReviewsAsyncTask extends AsyncTask<HashMap<String,String>, Void, List<GBReview>> {
+public class FindGBReviewsAsyncTask extends AsyncTask<HashMap<String,String>, Void, List<GBReview>> {
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({FILTER, SORT, LIMIT, FORMAT, FIELD_LIST})
@@ -38,7 +38,7 @@ public class FindGBGameReviewsAsyncTask extends AsyncTask<HashMap<String,String>
     public static final String FORMAT = "format";
     public static final String FIELD_LIST = "fieldList";
 
-    private final String LOG_TAG = FindGBGameReviewsAsyncTask.class.getSimpleName();
+    private final String LOG_TAG = FindGBReviewsAsyncTask.class.getSimpleName();
     private Context mContext;
     private IGameReviewsLoadedCallback callback;
 
@@ -46,7 +46,7 @@ public class FindGBGameReviewsAsyncTask extends AsyncTask<HashMap<String,String>
      * Default constructor
      * @param mContext application mContext
      */
-    public FindGBGameReviewsAsyncTask(Context mContext, IGameReviewsLoadedCallback callback) {
+    public FindGBReviewsAsyncTask(Context mContext, IGameReviewsLoadedCallback callback) {
         this.mContext = mContext;
         this.callback = callback;
     }
@@ -65,15 +65,15 @@ public class FindGBGameReviewsAsyncTask extends AsyncTask<HashMap<String,String>
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         GiantBombClient service = retrofit.create(GiantBombClient.class);
-        Call<GBGameReviewResponse> getGamesCall = service.getReviews(params.get(FORMAT),
+        Call<GBReviewsResponse> getGamesCall = service.getReviews(params.get(FORMAT),
                 params.get(FILTER),
                 params.get(FIELD_LIST),
                 params.get(SORT),
                 params.get(LIMIT),
                 BuildConfig.GIANT_BOMB_API_KEY);
-        GBGameReviewResponse GBResponse = null;
+        GBReviewsResponse GBResponse = null;
         try {
-            Response<GBGameReviewResponse> response = getGamesCall.execute();
+            Response<GBReviewsResponse> response = getGamesCall.execute();
             Log.v(LOG_TAG, response.raw().toString());
             GBResponse = response.body();
             gbReviews = GBResponse.getResults();
@@ -86,6 +86,6 @@ public class FindGBGameReviewsAsyncTask extends AsyncTask<HashMap<String,String>
     @Override
     protected void onPostExecute(List<GBReview> gbReviews) {
         super.onPostExecute(gbReviews);
-        callback.onGameReviewLoaded(GameFactoryForGB.getInstance().createGameReviews(gbReviews));
+        callback.onGameReviewLoaded(GameFactoryFromGB.getInstance().createGameReviews(gbReviews));
     }
 }

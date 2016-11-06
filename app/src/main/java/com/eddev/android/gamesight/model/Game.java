@@ -19,7 +19,7 @@ public class Game implements Parcelable {
     private static final String OWNED = "OWNED";
     private static final String TRACKING = "TRACKING";
 
-    private long id;
+    private int id;
     private String description;
     private Date expectedReleaseDate;
     private String imageUrl;
@@ -30,16 +30,17 @@ public class Game implements Parcelable {
     private Date originalReleaseDate;
     private List<Review> reviews = new ArrayList<Review>();
     private List<Video> videos = new ArrayList<Video>();
-    private double completion;
+    private double completion = 0;
     private @CollectionName String collection;
 
-    public Game(int id, String thumbUrl, String name) {
+    public Game(int id, String thumbUrl, String name, String description, Date expectedReleaseDate, Date originalReleaseDate) {
         this.id = id;
         this.thumbnailUrl = thumbUrl;
         this.name = name;
+        this.description = description;
     }
 
-    public Game(long id, String description, Date expectedReleaseDate, String imageUrl, String thumbnailUrl,
+    public Game(int id, String description, Date expectedReleaseDate, String imageUrl, String thumbnailUrl,
                 String name, List<ClassificationAttribute> classificationAttributes, int numberOfUserReviews,
                 Date originalReleaseDate, List<Review> reviews, List<Video> videos, double completion, String collection) {
         this.id = id;
@@ -57,11 +58,48 @@ public class Game implements Parcelable {
         this.collection = collection;
     }
 
-    public long getId() {
+    public void copyBasicFields(Game game) {
+        //this.id = game.id;
+        //this.description = game.description;
+        this.expectedReleaseDate = game.expectedReleaseDate;
+        //this.imageUrl = game.imageUrl;
+        //this.thumbnailUrl = game.thumbnailUrl;
+        //this.name = this.name == null ? game.name : this.name;
+        this.classificationAttributes = game.classificationAttributes;
+        this.numberOfUserReviews = game.numberOfUserReviews;
+        this.originalReleaseDate = game.originalReleaseDate;
+        this.videos = game.videos;
+    }
+
+    public List<String> getClassificationAttributeValues(@ClassificationAttribute.GameAttribType String classificationAttribute) {
+        List<String> results = new ArrayList<>();
+        for(ClassificationAttribute current: classificationAttributes){
+            if(current.typeEquals(classificationAttribute)) {
+                results.add(current.getValue());
+            }
+        }
+        return results;
+    }
+
+    public List<Integer> getClassificationAttributeIds(@ClassificationAttribute.GameAttribType String classificationAttribute) {
+        List<Integer> results = new ArrayList<>();
+        for(ClassificationAttribute current: classificationAttributes){
+            if(current.typeEquals(classificationAttribute)) {
+                results.add(current.getId());
+            }
+        }
+        return results;
+    }
+
+    public Date getReleaseDate() {
+        return originalReleaseDate == null ? expectedReleaseDate : originalReleaseDate;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -162,7 +200,7 @@ public class Game implements Parcelable {
     }
 
     protected Game(Parcel in) {
-        id = in.readLong();
+        id = in.readInt();
         description = in.readString();
         long tmpExpectedReleaseDate = in.readLong();
         expectedReleaseDate = tmpExpectedReleaseDate != -1 ? new Date(tmpExpectedReleaseDate) : null;
@@ -211,7 +249,7 @@ public class Game implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
+        dest.writeInt(id);
         dest.writeString(description);
         dest.writeLong(expectedReleaseDate != null ? expectedReleaseDate.getTime() : -1L);
         dest.writeString(imageUrl);

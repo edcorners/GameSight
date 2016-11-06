@@ -4,8 +4,11 @@ import android.content.Context;
 
 import com.eddev.android.gamesight.Utility;
 import com.eddev.android.gamesight.client.giantbomb.FindGBGameAsyncTask;
-import com.eddev.android.gamesight.client.giantbomb.FindGBGameReviewsAsyncTask;
-import com.eddev.android.gamesight.client.giantbomb.SearchGBGamesAsyncTask;
+import com.eddev.android.gamesight.client.giantbomb.FindGBReviewsAsyncTask;
+import com.eddev.android.gamesight.client.giantbomb.FindGBGamesAsyncTask;
+import com.eddev.android.gamesight.service.callback.IGameLoadedCallback;
+import com.eddev.android.gamesight.service.callback.IGameReviewsLoadedCallback;
+import com.eddev.android.gamesight.service.callback.IGamesLoadedCallback;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -26,37 +29,37 @@ public class GiantBombSearchService implements IGameSearchService {
     }
 
     public void fetchUpcomingGamesPreview(IGamesLoadedCallback callback){
-        mParameters.clear();
+        mParameters = new HashMap<>();
         Calendar cal = Calendar.getInstance();
         Date now = cal.getTime();
         cal.add(Calendar.MONTH, 3);
         Date inThreeMonths = cal.getTime();
 
-        mParameters.put(SearchGBGamesAsyncTask.FILTER, "original_release_date:"+ Utility.dateTimeFormat.format(now)+"|"+Utility.dateTimeFormat.format(inThreeMonths));
-        mParameters.put(SearchGBGamesAsyncTask.SORT, "original_release_date:asc");
-        mParameters.put(SearchGBGamesAsyncTask.LIMIT, "3");
-        mParameters.put(SearchGBGamesAsyncTask.FORMAT, "json");
-        mParameters.put(SearchGBGamesAsyncTask.FIELD_LIST, "id,name,image");
+        mParameters.put(FindGBGamesAsyncTask.FILTER, "original_release_date:"+ Utility.dateTimeFormat.format(now)+"|"+Utility.dateTimeFormat.format(inThreeMonths));
+        mParameters.put(FindGBGamesAsyncTask.SORT, "original_release_date:asc");
+        mParameters.put(FindGBGamesAsyncTask.LIMIT, "3");
+        mParameters.put(FindGBGamesAsyncTask.FORMAT, "json");
+        mParameters.put(FindGBGamesAsyncTask.FIELD_LIST, "id,name,image,deck,expected_release_day,expected_release_month,expected_release_year,original_release_date");
 
-        SearchGBGamesAsyncTask searchGBGamesAsyncTask = new SearchGBGamesAsyncTask(mContext, callback);
-        searchGBGamesAsyncTask.execute(mParameters);
+        FindGBGamesAsyncTask findGBGamesAsyncTask = new FindGBGamesAsyncTask(mContext, callback);
+        findGBGamesAsyncTask.execute(mParameters);
     }
 
     public void searchGamesByName(String name, IGamesLoadedCallback callback){
-        mParameters.clear();
-        mParameters.put(SearchGBGamesAsyncTask.FILTER, "name:"+name);
-        mParameters.put(SearchGBGamesAsyncTask.SORT, "number_of_user_reviews:desc");
-        mParameters.put(SearchGBGamesAsyncTask.LIMIT, "20");
-        mParameters.put(SearchGBGamesAsyncTask.FORMAT, "json");
-        mParameters.put(SearchGBGamesAsyncTask.FIELD_LIST, "id,name,image,deck");
+        mParameters = new HashMap<>();
+        mParameters.put(FindGBGamesAsyncTask.FILTER, "name:"+name);
+        mParameters.put(FindGBGamesAsyncTask.SORT, "number_of_user_reviews:desc");
+        mParameters.put(FindGBGamesAsyncTask.LIMIT, "20");
+        mParameters.put(FindGBGamesAsyncTask.FORMAT, "json");
+        mParameters.put(FindGBGamesAsyncTask.FIELD_LIST, "id,name,image,deck,expected_release_day,expected_release_month,expected_release_year,original_release_date");
 
-        SearchGBGamesAsyncTask searchGBGamesAsyncTask = new SearchGBGamesAsyncTask(mContext, callback);
-        searchGBGamesAsyncTask.execute(mParameters);
+        FindGBGamesAsyncTask findGBGamesAsyncTask = new FindGBGamesAsyncTask(mContext, callback);
+        findGBGamesAsyncTask.execute(mParameters);
     }
 
     public void findGameById(int id, IGameLoadedCallback callback){
-        mParameters.clear();
-        mParameters.put(FindGBGameAsyncTask.GAME_ID, "game:"+id);
+        mParameters = new HashMap<>();
+        mParameters.put(FindGBGameAsyncTask.GAME_ID, String.valueOf(id));
         mParameters.put(FindGBGameAsyncTask.FORMAT, "json");
         mParameters.put(FindGBGameAsyncTask.FIELD_LIST, "deck,expected_release_day,expected_release_month,expected_release_year,id,image,name,number_of_user_reviews,original_release_date,platforms,images,videos,genres,publishers,reviews");
 
@@ -65,14 +68,14 @@ public class GiantBombSearchService implements IGameSearchService {
     }
 
     public void findReviewsByGameId(int id, IGameReviewsLoadedCallback callback){
-        mParameters.clear();
-        mParameters.put(SearchGBGamesAsyncTask.FILTER, "game:"+ id);
-        mParameters.put(SearchGBGamesAsyncTask.SORT, "");
-        mParameters.put(SearchGBGamesAsyncTask.LIMIT, "10");
-        mParameters.put(SearchGBGamesAsyncTask.FORMAT, "json");
-        mParameters.put(SearchGBGamesAsyncTask.FIELD_LIST, "deck,publish_date,score,reviewer");
+        mParameters = new HashMap<>();
+        mParameters.put(FindGBGamesAsyncTask.FILTER, "game:"+ id);
+        mParameters.put(FindGBGamesAsyncTask.SORT, "");
+        mParameters.put(FindGBGamesAsyncTask.LIMIT, "10");
+        mParameters.put(FindGBGamesAsyncTask.FORMAT, "json");
+        mParameters.put(FindGBGamesAsyncTask.FIELD_LIST, "deck,publish_date,score,reviewer");
 
-        FindGBGameReviewsAsyncTask findGBGameReviewsAsyncTask = new FindGBGameReviewsAsyncTask(mContext, callback);
-        findGBGameReviewsAsyncTask.execute(mParameters);
+        FindGBReviewsAsyncTask findGBReviewsAsyncTask = new FindGBReviewsAsyncTask(mContext, callback);
+        findGBReviewsAsyncTask.execute(mParameters);
     }
 }

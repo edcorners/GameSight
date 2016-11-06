@@ -40,7 +40,7 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
     public CardRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.card_game_thumbnail, parent, false);
+                .inflate(R.layout.item_game_cover_thumbnail, parent, false);
         // set the view's size, margins, paddings and layout parameters
 
         ViewHolder vh = new ViewHolder(v);

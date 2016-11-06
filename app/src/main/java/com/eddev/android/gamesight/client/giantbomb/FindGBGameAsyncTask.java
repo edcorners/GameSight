@@ -9,8 +9,8 @@ import com.eddev.android.gamesight.BuildConfig;
 import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.client.giantbomb.model.GBGame;
 import com.eddev.android.gamesight.client.giantbomb.model.GBGameResponse;
-import com.eddev.android.gamesight.service.GameFactoryForGB;
-import com.eddev.android.gamesight.service.IGameLoadedCallback;
+import com.eddev.android.gamesight.service.callback.IGameLoadedCallback;
+import com.eddev.android.gamesight.service.factory.GameFactoryFromGB;
 
 import java.io.IOException;
 import java.lang.annotation.Retention;
@@ -22,8 +22,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.eddev.android.gamesight.client.giantbomb.SearchGBGamesAsyncTask.FILTER;
-import static com.eddev.android.gamesight.client.giantbomb.SearchGBGamesAsyncTask.LIMIT;
+import static com.eddev.android.gamesight.client.giantbomb.FindGBGamesAsyncTask.FILTER;
+import static com.eddev.android.gamesight.client.giantbomb.FindGBGamesAsyncTask.LIMIT;
 
 /**
  * Created by Edison on 10/10/2016.
@@ -69,12 +69,12 @@ public class FindGBGameAsyncTask extends AsyncTask<HashMap<String,String>, Void,
                 params.get(FORMAT),
                 params.get(FIELD_LIST),
                 BuildConfig.GIANT_BOMB_API_KEY);
-        GBGameResponse gbGameResponse = null;
+        GBGameResponse gbGamesResponse = null;
         try {
             Response<GBGameResponse> response = getGamesCall.execute();
             Log.v(LOG_TAG, response.raw().toString());
-            gbGameResponse = response.body();
-            gBGame = gbGameResponse.getResults().get(0);
+            gbGamesResponse = response.body();
+            gBGame = gbGamesResponse.getResults();
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error ", e);
         }
@@ -84,6 +84,6 @@ public class FindGBGameAsyncTask extends AsyncTask<HashMap<String,String>, Void,
     @Override
     protected void onPostExecute(GBGame gBGame) {
         super.onPostExecute(gBGame);
-        callback.onGameLoaded(GameFactoryForGB.getInstance().createGame(gBGame));
+        callback.onGameLoaded(GameFactoryFromGB.getInstance().createGame(gBGame));
     }
 }

@@ -7,18 +7,18 @@ import android.os.Parcelable;
  * Created by Edison on 9/24/2016.
  */
 public class Video implements Parcelable {
-    private long id;
+    private int id;
     private String name;
     private String url;
 
-    public Video(long id, String name, String url) {
+    public Video(int id, String name, String url) {
         this.id = id;
         this.name = name;
         this.url = url;
     }
 
     protected Video(Parcel in) {
-        id = in.readLong();
+        id = in.readInt();
         name = in.readString();
         url = in.readString();
     }
@@ -30,7 +30,7 @@ public class Video implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
+        dest.writeInt(id);
         dest.writeString(name);
         dest.writeString(url);
     }

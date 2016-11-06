@@ -17,7 +17,7 @@ import android.view.MenuItem;
 
 import com.eddev.android.gamesight.model.Game;
 import com.eddev.android.gamesight.service.IGameSearchService;
-import com.eddev.android.gamesight.service.IGamesLoadedCallback;
+import com.eddev.android.gamesight.service.callback.IGamesLoadedCallback;
 import com.eddev.android.gamesight.service.GiantBombSearchService;
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;

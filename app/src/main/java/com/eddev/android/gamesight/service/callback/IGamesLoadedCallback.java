@@ -1,4 +1,4 @@
-package com.eddev.android.gamesight.service;
+package com.eddev.android.gamesight.service.callback;
 
 import com.eddev.android.gamesight.model.Game;
 

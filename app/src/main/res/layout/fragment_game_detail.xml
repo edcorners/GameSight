@@ -60,7 +60,7 @@
         android:text="Description"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/detail_description" />
+        android:id="@+id/detail_description_text_view" />
 
     <View
         android:id="@+id/detail_separating_line_1"

@@ -5,25 +5,72 @@ import android.os.Parcelable;
 
 import java.util.Date;
 
-import static android.R.attr.id;
-
 /**
  * Created by Edison on 9/24/2016.
  */
 public class Review implements Parcelable {
-    private long id;
+    private int id;
     private String description;
     private Date date;
     private double score;
     private String reviewer;
 
+
+    public Review(int id, String description, Date date, double score, String reviewer) {
+        this.id = id;
+        this.description = description;
+        this.date = date;
+        this.score = score;
+        this.reviewer = reviewer;
+    }
+
     protected Review(Parcel in) {
-        id = in.readLong();
+        id = in.readInt();
         description = in.readString();
         long tmpDate = in.readLong();
         date = tmpDate != -1 ? new Date(tmpDate) : null;
         score = in.readDouble();
         reviewer = in.readString();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
+    }
+
+    public String getReviewer() {
+        return reviewer;
+    }
+
+    public void setReviewer(String reviewer) {
+        this.reviewer = reviewer;
     }
 
     @Override
@@ -33,7 +80,7 @@ public class Review implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
+        dest.writeInt(id);
         dest.writeString(description);
         dest.writeLong(date != null ? date.getTime() : -1L);
         dest.writeDouble(score);

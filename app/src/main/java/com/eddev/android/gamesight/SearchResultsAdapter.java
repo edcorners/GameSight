@@ -28,12 +28,12 @@ public class SearchResultsAdapter extends ArrayAdapter<Game> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final Game game = getItem(position);
-        View rootView = LayoutInflater.from(getContext()).inflate(R.layout.search_result, parent, false);
+        View rootView = LayoutInflater.from(getContext()).inflate(R.layout.item_search_result, parent, false);
 
         ImageView image = (ImageView) rootView.findViewById(R.id.game_result_thumb);
         Picasso.with(getContext()).load(game.getThumbnailUrl()).into(image);
         TextView titleDate = (TextView)rootView.findViewById(R.id.game_title_date);
-        titleDate.setText(game.getName()+" - "+game.getOriginalReleaseDate());
+        titleDate.setText(game.getName()+" - "+game.getReleaseDate());
         TextView description = (TextView)rootView.findViewById(R.id.game_description);
         description.setText(game.getDescription());
 

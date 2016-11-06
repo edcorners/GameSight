@@ -11,6 +11,7 @@ import java.lang.annotation.RetentionPolicy;
  * Created by Edison on 9/24/2016.
  */
 public class ClassificationAttribute implements Parcelable {
+
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({GENRE, PLATFORM, PUBLISHER})
     public @interface GameAttribType {}
@@ -18,19 +19,19 @@ public class ClassificationAttribute implements Parcelable {
     public static final String PLATFORM = "PLATFORM";
     public static final String PUBLISHER = "PUBLISHER";
 
-    private long id;
+    private int id;
     private @GameAttribType
     String type;
     private String value;
 
-    public ClassificationAttribute(long id, @GameAttribType String type, String value) {
+    public ClassificationAttribute(int id, @GameAttribType String type, String value) {
         this.id = id;
         this.type = type;
         this.value = value;
     }
 
     protected ClassificationAttribute(Parcel in) {
-        id = in.readLong();
+        id = in.readInt();
         String valueString = in.readString();
         if(valueString != null) {
             switch (valueString) {
@@ -55,7 +56,7 @@ public class ClassificationAttribute implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
+        dest.writeInt(id);
         dest.writeString(type);
         dest.writeString(value);
     }
@@ -72,4 +73,33 @@ public class ClassificationAttribute implements Parcelable {
             return new ClassificationAttribute[size];
         }
     };
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public boolean typeEquals(@GameAttribType String classificationAttribute) {
+        return this.type.equals(classificationAttribute);
+    }
+
 }

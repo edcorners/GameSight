@@ -8,9 +8,9 @@ import android.util.Log;
 import com.eddev.android.gamesight.BuildConfig;
 import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.client.giantbomb.model.GBGame;
-import com.eddev.android.gamesight.client.giantbomb.model.GBGameResponse;
-import com.eddev.android.gamesight.service.GameFactoryForGB;
-import com.eddev.android.gamesight.service.IGamesLoadedCallback;
+import com.eddev.android.gamesight.client.giantbomb.model.GBGamesResponse;
+import com.eddev.android.gamesight.service.factory.GameFactoryFromGB;
+import com.eddev.android.gamesight.service.callback.IGamesLoadedCallback;
 
 import java.io.IOException;
 import java.lang.annotation.Retention;
@@ -27,7 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Edison on 10/10/2016.
  */
 
-public class SearchGBGamesAsyncTask extends AsyncTask<HashMap<String,String>, Void, List<GBGame>> {
+public class FindGBGamesAsyncTask extends AsyncTask<HashMap<String,String>, Void, List<GBGame>> {
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({FILTER, SORT, LIMIT, FORMAT, FIELD_LIST})
@@ -38,7 +38,7 @@ public class SearchGBGamesAsyncTask extends AsyncTask<HashMap<String,String>, Vo
     public static final String FORMAT = "format";
     public static final String FIELD_LIST = "fieldList";
 
-    private final String LOG_TAG = SearchGBGamesAsyncTask.class.getSimpleName();
+    private final String LOG_TAG = FindGBGamesAsyncTask.class.getSimpleName();
     private Context mContext;
     private IGamesLoadedCallback callback;
 
@@ -46,7 +46,7 @@ public class SearchGBGamesAsyncTask extends AsyncTask<HashMap<String,String>, Vo
      * Default constructor
      * @param mContext application mContext
      */
-    public SearchGBGamesAsyncTask(Context mContext, IGamesLoadedCallback callback) {
+    public FindGBGamesAsyncTask(Context mContext, IGamesLoadedCallback callback) {
         this.mContext = mContext;
         this.callback = callback;
     }
@@ -65,18 +65,18 @@ public class SearchGBGamesAsyncTask extends AsyncTask<HashMap<String,String>, Vo
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         GiantBombClient service = retrofit.create(GiantBombClient.class);
-        Call<GBGameResponse> getGamesCall = service.getGames(params.get(FORMAT),
+        Call<GBGamesResponse> getGamesCall = service.getGames(params.get(FORMAT),
                 params.get(FILTER),
                 params.get(FIELD_LIST),
                 params.get(SORT),
                 params.get(LIMIT),
                 BuildConfig.GIANT_BOMB_API_KEY);
-        GBGameResponse gbGameResponse = null;
+        GBGamesResponse gbGamesResponse = null;
         try {
-            Response<GBGameResponse> response = getGamesCall.execute();
+            Response<GBGamesResponse> response = getGamesCall.execute();
             Log.v(LOG_TAG, response.raw().toString());
-            gbGameResponse = response.body();
-            gBGames = gbGameResponse.getResults();
+            gbGamesResponse = response.body();
+            gBGames = gbGamesResponse.getResults();
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error ", e);
         }
@@ -86,6 +86,6 @@ public class SearchGBGamesAsyncTask extends AsyncTask<HashMap<String,String>, Vo
     @Override
     protected void onPostExecute(List<GBGame> gBGames) {
         super.onPostExecute(gBGames);
-        callback.onGamesLoaded(GameFactoryForGB.getInstance().createGamePreviewList(gBGames));
+        callback.onGamesLoaded(GameFactoryFromGB.getInstance().createGamePreviewList(gBGames));
     }
 }

@@ -41,7 +41,7 @@ public class GameDetailActivity extends AppCompatActivity {
             arguments.putParcelable(gameKey, game);
 
             collapsingToolbarLayout.setTitle(game.getName());
-            //collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
+            collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
             Picasso.with(this)
                     .load(game.getImageUrl())
                     .placeholder(R.mipmap.ic_launcher)
@@ -75,7 +75,7 @@ public class GameDetailActivity extends AppCompatActivity {
         int primary = getResources().getColor(R.color.colorPrimary);
         collapsingToolbarLayout.setContentScrimColor(palette.getMutedColor(primary));
         collapsingToolbarLayout.setStatusBarScrimColor(palette.getDarkMutedColor(primaryDark));
-        //supportStartPostponedEnterTransition();
+        supportStartPostponedEnterTransition();
     }
 
 }

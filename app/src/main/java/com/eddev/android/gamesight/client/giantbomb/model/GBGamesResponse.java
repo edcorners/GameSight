@@ -3,21 +3,24 @@ package com.eddev.android.gamesight.client.giantbomb.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by ed on 11/5/16.
  */
 
-public class GBGameResponse extends GBResponse{
+public class GBGamesResponse extends GBResponse{
     @SerializedName("results")
     @Expose
-    private GBGame results = new GBGame();
+    private List<GBGame> results = new ArrayList<GBGame>();
 
     /**
      *
      * @return
      *     The results
      */
-    public GBGame getResults() {
+    public List<GBGame> getResults() {
         return results;
     }
 
@@ -26,7 +29,7 @@ public class GBGameResponse extends GBResponse{
      * @param results
      *     The results
      */
-    public void setResults(GBGame results) {
+    public void setResults(List<GBGame> results) {
         this.results = results;
     }
 
@@ -36,7 +39,7 @@ public class GBGameResponse extends GBResponse{
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
-        GBGameResponse that = (GBGameResponse) o;
+        GBGamesResponse that = (GBGamesResponse) o;
 
         return results != null ? results.equals(that.results) : that.results == null;
 

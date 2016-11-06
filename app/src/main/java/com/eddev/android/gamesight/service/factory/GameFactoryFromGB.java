@@ -1,4 +1,4 @@
-package com.eddev.android.gamesight.service;
+package com.eddev.android.gamesight.service.factory;
 
 import android.support.annotation.NonNull;
 
@@ -11,6 +11,7 @@ import com.eddev.android.gamesight.client.giantbomb.model.GBReview;
 import com.eddev.android.gamesight.client.giantbomb.model.GBVideo;
 import com.eddev.android.gamesight.model.ClassificationAttribute;
 import com.eddev.android.gamesight.model.Game;
+import com.eddev.android.gamesight.model.Review;
 import com.eddev.android.gamesight.model.Video;
 
 import java.util.ArrayList;
@@ -20,15 +21,15 @@ import java.util.List;
  * Created by Edison on 10/15/2016.
  */
 
-public class GameFactoryForGB {
+public class GameFactoryFromGB {
 
-    private static GameFactoryForGB instance = new GameFactoryForGB();
+    private static GameFactoryFromGB instance = new GameFactoryFromGB();
 
-    public static GameFactoryForGB getInstance() {
+    public static GameFactoryFromGB getInstance() {
         return instance;
     }
 
-    private GameFactoryForGB() {
+    private GameFactoryFromGB() {
     }
 
     public Game createGamePreview(GBGame gBGame){
@@ -92,30 +93,41 @@ public class GameFactoryForGB {
     private List<ClassificationAttribute> getClassificationAttributes(GBGame gBGame) {
         List<ClassificationAttribute> classificationAttributes = new ArrayList<>();
 
-        for (GBPlatform current: gBGame.getPlatforms()) {
-            ClassificationAttribute classificationAttribute = new ClassificationAttribute(current.getId(),
-                    ClassificationAttribute.PLATFORM,
-                    current.getName());
-            classificationAttributes.add(classificationAttribute);
+        if(gBGame.getPlatforms() != null) {
+            for (GBPlatform current : gBGame.getPlatforms()) {
+                ClassificationAttribute classificationAttribute = new ClassificationAttribute(current.getId(),
+                        ClassificationAttribute.PLATFORM,
+                        current.getName());
+                classificationAttributes.add(classificationAttribute);
+            }
         }
 
-        for (GBGenre current: gBGame.getGenres()) {
-            ClassificationAttribute classificationAttribute = new ClassificationAttribute(current.getId(),
-                    ClassificationAttribute.GENRE,
-                    current.getName());
-            classificationAttributes.add(classificationAttribute);
+        if(gBGame.getGenres() != null) {
+            for (GBGenre current : gBGame.getGenres()) {
+                ClassificationAttribute classificationAttribute = new ClassificationAttribute(current.getId(),
+                        ClassificationAttribute.GENRE,
+                        current.getName());
+                classificationAttributes.add(classificationAttribute);
+            }
         }
 
-        for (GBPublisher current: gBGame.getPublishers()) {
-            ClassificationAttribute classificationAttribute = new ClassificationAttribute(current.getId(),
-                    ClassificationAttribute.PUBLISHER,
-                    current.getName());
-            classificationAttributes.add(classificationAttribute);
+        if(gBGame.getPublishers() != null) {
+            for (GBPublisher current : gBGame.getPublishers()) {
+                ClassificationAttribute classificationAttribute = new ClassificationAttribute(current.getId(),
+                        ClassificationAttribute.PUBLISHER,
+                        current.getName());
+                classificationAttributes.add(classificationAttribute);
+            }
         }
         return classificationAttributes;
     }
 
-    public Game createGameReviews(List<GBReview> gbReviews) {
-        return null;
+    public List<Review> createGameReviews(List<GBReview> gbReviews) {
+        List<Review> reviews = new ArrayList<>();
+        for(GBReview current: gbReviews){
+            Review newReview = new Review(0, current.getDeck(), Utility.getDateTime(current.getPublishDate()), current.getScore(), current.getReviewer());
+            reviews.add(newReview);
+        }
+        return reviews;
     }
 }
