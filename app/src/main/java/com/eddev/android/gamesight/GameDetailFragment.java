@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.eddev.android.gamesight.model.ClassificationAttribute;
@@ -22,6 +21,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.techery.properratingbar.ProperRatingBar;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -90,14 +90,14 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
         mPublisherTextView.setText(TextUtils.isEmpty(publishers) ? "Not available" : publishers);
         mReleaseDateTextView.setText(Utility.dateFormat.format(mGame.getReleaseDate()));
         String genres = TextUtils.join(", ", mGame.getClassificationAttributeValues(ClassificationAttribute.GENRE));
-        mGenreTextView.setText(TextUtils.isEmpty(genres) ? "Not available" : publishers);
+        mGenreTextView.setText(TextUtils.isEmpty(genres) ? "Not available" : genres);
     }
 
     private void updateReviewsView(List<Review> reviews) {
         for(Review current : reviews) {
             LinearLayout reviewItemLinearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.item_review, null, false);
-            RatingBar ratingBar = (RatingBar) reviewItemLinearLayout.findViewById(R.id.review_rating_bar);
-            ratingBar.setRating((float)current.getScore());
+            ProperRatingBar ratingBar = (ProperRatingBar) reviewItemLinearLayout.findViewById(R.id.review_rating_bar);
+            ratingBar.setRating((int)current.getScore());
             TextView reviewContent = (TextView) reviewItemLinearLayout.findViewById(R.id.review_content_text_view);
             reviewContent.setText(current.getDescription());
             TextView reviewDate = (TextView) reviewItemLinearLayout.findViewById(R.id.review_date_text_view);
