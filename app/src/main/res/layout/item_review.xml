@@ -12,25 +12,24 @@
         android:layout_height="wrap_content"
         android:id="@+id/review_rating_date_layout">
 
-
         <io.techery.properratingbar.ProperRatingBar
             android:id="@+id/review_rating_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="22sp"
             android:textStyle="bold"
-            app:prb_tickSelectedDrawable="@mipmap/ic_launcher"
-            app:prb_tickNormalDrawable="@mipmap/ic_launcher"
+            app:prb_symbolicTick="★"
             app:prb_defaultRating="4"
             app:prb_symbolicTickNormalColor="@android:color/darker_gray"
-            app:prb_symbolicTickSelectedColor="@android:color/holo_green_dark"
+            app:prb_symbolicTickSelectedColor="@android:color/holo_orange_light"
             app:prb_totalTicks="5"
             />
 
         <TextView
             android:text="TextView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="10sp"
             android:id="@+id/review_date_text_view"
             android:layout_weight="1"
             android:gravity="right|center_vertical" />

@@ -4,7 +4,9 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
@@ -17,6 +19,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class GameDetailActivity extends AppCompatActivity {
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
     @BindView(R.id.details_collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.detail_backdrop)
@@ -26,7 +33,7 @@ public class GameDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.details_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ButterKnife.bind(this);
@@ -41,7 +48,8 @@ public class GameDetailActivity extends AppCompatActivity {
             arguments.putParcelable(gameKey, game);
 
             collapsingToolbarLayout.setTitle(game.getName());
-            collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
+            collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, android.R.color.transparent));
+            toolbar.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
             Picasso.with(this)
                     .load(game.getImageUrl())
                     .placeholder(R.mipmap.ic_launcher)

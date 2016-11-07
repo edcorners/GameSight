@@ -1,7 +1,14 @@
 package com.eddev.android.gamesight;
 
+import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +19,7 @@ import android.widget.TextView;
 import com.eddev.android.gamesight.model.ClassificationAttribute;
 import com.eddev.android.gamesight.model.Game;
 import com.eddev.android.gamesight.model.Review;
+import com.eddev.android.gamesight.model.Video;
 import com.eddev.android.gamesight.service.GiantBombSearchService;
 import com.eddev.android.gamesight.service.IGameSearchService;
 import com.eddev.android.gamesight.service.callback.IGameLoadedCallback;
@@ -28,6 +36,10 @@ import io.techery.properratingbar.ProperRatingBar;
  */
 public class GameDetailFragment extends Fragment implements IGameLoadedCallback, IGameReviewsLoadedCallback{
 
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
     private Game mGame;
     private IGameSearchService mIGameSearchService;
 
@@ -41,6 +53,8 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     TextView mReleaseDateTextView;
     @BindView(R.id.detail_genre_text_view)
     TextView mGenreTextView;
+    @BindView(R.id.detail_platforms_text_view)
+    TextView mPlatformsTextView;
     @BindView(R.id.detail_platforms_linear_layout)
     LinearLayout mPlatformsLinearLayout;
     @BindView(R.id.detail_reviews_layout)
@@ -49,11 +63,13 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     LinearLayout mVideosLinearLayout;
 
     public GameDetailFragment() {
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View rootView = inflater.inflate(R.layout.fragment_game_detail, container, false);
         ButterKnife.bind(this, rootView);
         mIGameSearchService = new GiantBombSearchService(getContext());
@@ -91,6 +107,27 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
         mReleaseDateTextView.setText(Utility.dateFormat.format(mGame.getReleaseDate()));
         String genres = TextUtils.join(", ", mGame.getClassificationAttributeValues(ClassificationAttribute.GENRE));
         mGenreTextView.setText(TextUtils.isEmpty(genres) ? "Not available" : genres);
+        String platforms = TextUtils.join(", ", mGame.getClassificationAttributeValues(ClassificationAttribute.PLATFORM));
+        mPlatformsTextView.setText(TextUtils.isEmpty(platforms) ? "Not available" : platforms);
+
+        for(final Video current: mGame.getVideos()){
+            TextView videoTitleTextView = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.item_video, null, false);
+            videoTitleTextView.setText(current.getName());
+            videoTitleTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent openVideoIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(current.getUrl()));
+                    getContext().startActivity(openVideoIntent);
+                }
+            });
+            Drawable playIcon = ContextCompat.getDrawable(getActivity(), R.drawable.ic_play_circle_filled_black_24dp);
+            playIcon.setBounds(0,0,60,60);
+            videoTitleTextView.setCompoundDrawables(playIcon,null,null,null);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                videoTitleTextView.setCompoundDrawableTintList(ColorStateList.valueOf(ContextCompat.getColor(getActivity(), R.color.colorAccent)));
+            }
+            mVideosLinearLayout.addView(videoTitleTextView);
+        }
     }
 
     private void updateReviewsView(List<Review> reviews) {

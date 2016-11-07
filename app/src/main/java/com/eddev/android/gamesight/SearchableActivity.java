@@ -8,9 +8,9 @@ import android.util.Log;
 import android.view.View;
 
 import com.eddev.android.gamesight.model.Game;
+import com.eddev.android.gamesight.service.GiantBombSearchService;
 import com.eddev.android.gamesight.service.IGameSearchService;
 import com.eddev.android.gamesight.service.callback.IGamesLoadedCallback;
-import com.eddev.android.gamesight.service.GiantBombSearchService;
 
 import java.util.ArrayList;
 import java.util.List;

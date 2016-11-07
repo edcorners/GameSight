@@ -19,48 +19,68 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:id="@+id/detail_progress_layout">
+        android:id="@+id/detail_progress_layout"
+        android:layout_margin="6dp">
 
         <ToggleButton
             android:id="@+id/detail_favorite_toggle_button"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textOff=""
-            android:textOn=""
-            android:layout_margin="10dp"
-            android:background="@drawable/favorite"
             android:textColor="@color/colorAccent"
             android:focusableInTouchMode="false"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"/>
+            android:background="@drawable/favorite"
+            android:textOn=""
+            android:textOff=""
+            android:text=""
+            android:padding="4dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:backgroundTint="@android:color/holo_red_dark" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@mipmap/ic_launcher"
+            app:srcCompat="@drawable/ic_videogame_asset_white_24px"
             android:id="@+id/detail_owned_icon"
-            android:layout_weight="1"/>
+            android:layout_weight="0"
+            android:tint="@android:color/darker_gray"
+            android:padding="4dp" />
 
         <SeekBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/detail_seek_bar"
-            android:layout_weight="4" />
+            android:layout_weight="4"
+            android:visibility="visible"
+            />
 
         <TextView
             android:text="10%"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/detail_completion_text_view"
-            android:layout_weight="1" />
+            android:layout_weight="0"
+            android:padding="4dp" />
 
     </LinearLayout>
+
+    <View
+        android:id="@+id/detail_separating_line_0"
+        style="@style/horizontal_line" />
 
     <TextView
         android:text="Description"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/detail_description_text_view" />
+        android:id="@+id/detail_description_text_view"
+        android:layout_margin="6dp"
+        android:padding="2dp" />
+
+    <LinearLayout
+        android:id="@+id/detail_platforms_linear_layout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        />
 
     <View
         android:id="@+id/detail_separating_line_1"
@@ -70,64 +90,80 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/detail_publisher_rdate_title_layout">
+        android:id="@+id/detail_publisher_rdate_title_layout"
+        android:layout_margin="6dp"
+        android:padding="2dp">
 
         <TextView
             android:text="Publisher"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/detail_publisher_title"
-            android:layout_weight="1" />
+            android:layout_weight="2"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal|bold" />
+        <TextView
+            android:text="Publisher"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/detail_publisher_text_view"
+            android:layout_weight="1"
+            android:paddingStart="4dp"
+            android:paddingEnd="2dp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/detail_publisher_rdate_content_layout"
+        android:layout_margin="6dp"
+        android:padding="2dp">
 
         <TextView
             android:text="Release date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/detail_rdate_title"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/detail_publisher_rdate_content_layout">
+            android:fontFamily="sans-serif"
+            android:layout_weight="2"
+            android:textStyle="normal|bold" />
 
         <TextView
-            android:text="TextView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/detail_publisher_text_view"
-            android:layout_weight="1" />
-
-        <TextView
-            android:text="TextView"
+            android:text="1990-10-1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/detail_release_date_text_view"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:paddingStart="2dp"
+            android:paddingEnd="4dp" />
     </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/detail_genre_platforms_title_layout">
+        android:id="@+id/detail_genre_platforms_title_layout"
+        android:layout_margin="6dp"
+        android:padding="2dp">
 
         <TextView
             android:text="Genre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/detail_genre_title"
-            android:layout_weight="1"
+            android:fontFamily="sans-serif"
+            android:layout_weight="2"
+            android:textStyle="normal|bold"
             />
 
         <TextView
-            android:text="Platforms"
+            android:text="RPG"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/detail_platforms_title"
+            android:id="@+id/detail_genre_text_view"
             android:layout_weight="1" />
 
     </LinearLayout>
@@ -136,25 +172,27 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/detail_genre_platforms_content_layout">
+        android:id="@+id/detail_genre_platforms_content_layout"
+        android:layout_margin="6dp"
+        android:padding="2dp">
 
         <TextView
-            android:text="TextView"
+            android:text="Platforms"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/detail_genre_text_view"
+            android:id="@+id/detail_platforms_title"
+            android:layout_weight="2"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal|bold" />
+
+        <TextView
+            android:text="Wii U"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/detail_platforms_text_view"
             android:layout_weight="1" />
 
-        <LinearLayout
-            android:id="@+id/detail_platforms_linear_layout"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
-
     </LinearLayout>
-
 
     <View
         android:id="@+id/detail_separating_line2"
@@ -164,13 +202,18 @@
         android:text="Reviews"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/detail_reviews_title" />
+        android:id="@+id/detail_reviews_title"
+        android:fontFamily="sans-serif"
+        android:layout_margin="6dp"
+        android:padding="2dp"/>
 
     <LinearLayout
         android:id="@+id/detail_reviews_layout"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:padding="2dp"/>
 
     <View
         android:id="@+id/detail_separating_line3"
@@ -180,12 +223,17 @@
         android:id="@+id/detail_videos_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Videos" />
+        android:text="Videos"
+        android:fontFamily="sans-serif"
+        android:layout_margin="6dp"
+        android:padding="2dp"/>
 
     <LinearLayout
         android:id="@+id/detail_videos_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"/>
+        android:orientation="vertical"
+        android:layout_margin="6dp"
+        android:padding="2dp"/>
 
 </LinearLayout>
