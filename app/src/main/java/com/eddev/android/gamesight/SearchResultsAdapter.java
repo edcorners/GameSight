@@ -33,7 +33,7 @@ public class SearchResultsAdapter extends ArrayAdapter<Game> {
         ImageView image = (ImageView) rootView.findViewById(R.id.game_result_thumb);
         Picasso.with(getContext()).load(game.getThumbnailUrl()).into(image);
         TextView titleDate = (TextView)rootView.findViewById(R.id.game_title_date);
-        titleDate.setText(game.getName()+" - "+game.getReleaseDate());
+        titleDate.setText(game.getName());
         TextView description = (TextView)rootView.findViewById(R.id.game_description);
         description.setText(game.getDescription());
 

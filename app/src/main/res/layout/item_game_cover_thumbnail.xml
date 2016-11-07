@@ -5,7 +5,7 @@
     android:layout_width="90dp"
     android:layout_height="90dp"
     android:id="@+id/game_item_frame"
-    android:background="@android:color/background_dark">
+    >
 
     <ImageView
         android:layout_width="wrap_content"
@@ -14,7 +14,8 @@
         android:id="@+id/game_cover_thumb"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:layout_margin="4dp"
-        android:padding="1dp" />
+        android:layout_margin="1dp"
+        android:padding="1dp"
+        android:background="@android:color/background_dark"/>
 
 </FrameLayout>

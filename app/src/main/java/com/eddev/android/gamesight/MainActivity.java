@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -30,6 +32,10 @@ import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, IGamesLoadedCallback {
 
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
     @BindView(R.id.discover_card_recycler_view)
     RecyclerView mDiscoverCardRecyclerView;
     private RecyclerView.Adapter mDiscoverCardAdapter;
@@ -37,6 +43,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private Cursor mCursor;
 
     private IGameSearchService mIGameSearchService;
+
+    @BindView(R.id.d_card_toolbar)
+    Toolbar mDCardToolbar;
 
     /**
      * Activity lifecycle
@@ -49,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setLogo(ContextCompat.getDrawable(this,R.drawable.ic_gamepad_white_24px));
         ButterKnife.bind(this);
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -57,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // use a linear layout manager
         mDiscoverCardLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mDiscoverCardRecyclerView.setLayoutManager(mDiscoverCardLayoutManager);
+        mDCardToolbar.setLogo(ContextCompat.getDrawable(this, R.drawable.ic_find_in_page_white_24px));
 
         mIGameSearchService = new GiantBombSearchService(this);
         mIGameSearchService.fetchUpcomingGamesPreview(this);
