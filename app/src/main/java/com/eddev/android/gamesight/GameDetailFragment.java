@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,12 +113,14 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     }
 
     @Override
-    public void onGameReviewLoaded(List<Review> reviews) {
-        //if(TextUtils.isEmpty(error)){
+    public void onGameReviewLoaded(List<Review> reviews, String error) {
+        if(TextUtils.isEmpty(error)){
             mGame.setReviews(reviews);
             mReviewsLoaded = true;
             updateReviewsView();
-        //}
+        }else{
+            Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void updateGameView() {
@@ -131,41 +134,71 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
         String platforms = TextUtils.join(", ", mGame.getClassificationAttributeValues(ClassificationAttribute.PLATFORM));
         mPlatformsTextView.setText(TextUtils.isEmpty(platforms) ? "Not available" : platforms);
 
-        for(final Video current: mGame.getVideos()){
-            TextView videoTitleTextView = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.item_video, null, false);
-            videoTitleTextView.setText(current.getName());
-            videoTitleTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent openVideoIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(current.getUrl()));
-                    getContext().startActivity(openVideoIntent);
-                }
-            });
-            Drawable playIcon = ContextCompat.getDrawable(getActivity(), R.drawable.ic_play_circle_filled_black_24dp);
-            playIcon.setBounds(0,0,60,60);
-            videoTitleTextView.setCompoundDrawables(playIcon,null,null,null);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                videoTitleTextView.setCompoundDrawableTintList(ColorStateList.valueOf(ContextCompat.getColor(getActivity(), R.color.colorAccent)));
+        updateVideosView();
+    }
+
+    private void updateVideosView() {
+        List<Video> videos = mGame.getVideos();
+        if(videos.size()>0) {
+            for (final Video current : videos) {
+                createVideoView(current);
             }
-            mVideosLinearLayout.addView(videoTitleTextView);
+        }else{
+            setEmptyListMessage(mVideosLinearLayout, "No videos available");
         }
+    }
+
+    private void createVideoView(final Video current) {
+        TextView videoTitleTextView = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.item_video, null, false);
+        videoTitleTextView.setText(current.getName());
+        videoTitleTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent openVideoIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(current.getUrl()));
+                getContext().startActivity(openVideoIntent);
+            }
+        });
+        Drawable playIcon = ContextCompat.getDrawable(getActivity(), R.drawable.ic_play_circle_filled_black_24dp);
+        playIcon.setBounds(0, 0, 60, 60);
+        videoTitleTextView.setCompoundDrawables(playIcon, null, null, null);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            videoTitleTextView.setCompoundDrawableTintList(ColorStateList.valueOf(ContextCompat.getColor(getActivity(), R.color.colorAccent)));
+        }
+        mVideosLinearLayout.addView(videoTitleTextView);
     }
 
     private void updateReviewsView() {
         List<Review> reviews = mGame.getReviews();
-        for(Review current : reviews) {
-            LinearLayout reviewItemLinearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.item_review, null, false);
-            ProperRatingBar ratingBar = (ProperRatingBar) reviewItemLinearLayout.findViewById(R.id.review_rating_bar);
-            ratingBar.setRating((int)current.getScore());
-            TextView reviewContent = (TextView) reviewItemLinearLayout.findViewById(R.id.review_content_text_view);
-            reviewContent.setText(current.getDescription());
-            TextView reviewDate = (TextView) reviewItemLinearLayout.findViewById(R.id.review_date_text_view);
-            reviewDate.setText(Utility.dateTimeFormat.format(current.getDate()));
-            TextView reviewAuthor = (TextView) reviewItemLinearLayout.findViewById(R.id.review_author_text_view);
-            reviewAuthor.setText(current.getReviewer());
-            mReviewsLinearLayout.addView(reviewItemLinearLayout);
+        if(reviews.size() > 0) {
+            for (Review current : reviews) {
+                createReviewView(current);
+            }
+        }else{
+            setEmptyListMessage(mReviewsLinearLayout, "No reviews available");
         }
+    }
 
+    private void createReviewView(Review current) {
+        LinearLayout reviewItemLinearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.item_review, null, false);
+        ProperRatingBar ratingBar = (ProperRatingBar) reviewItemLinearLayout.findViewById(R.id.review_rating_bar);
+        ratingBar.setRating((int) current.getScore());
+        TextView reviewContent = (TextView) reviewItemLinearLayout.findViewById(R.id.review_content_text_view);
+        reviewContent.setText(current.getDescription());
+        TextView reviewDate = (TextView) reviewItemLinearLayout.findViewById(R.id.review_date_text_view);
+        reviewDate.setText(Utility.dateTimeFormat.format(current.getDate()));
+        TextView reviewAuthor = (TextView) reviewItemLinearLayout.findViewById(R.id.review_author_text_view);
+        reviewAuthor.setText(current.getReviewer());
+        mReviewsLinearLayout.addView(reviewItemLinearLayout);
+    }
+
+    private void setEmptyListMessage(LinearLayout layout, String message) {
+        TextView emptyList = new TextView(getContext());
+        emptyList.setText(message);
+        emptyList.setTextColor(ContextCompat.getColor(getContext(), R.color.emptyViewMessage));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        params.gravity = Gravity.CENTER_HORIZONTAL ;
+        emptyList.setLayoutParams(params);
+        layout.addView(emptyList);
     }
 
     @Override

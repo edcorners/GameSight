@@ -82,10 +82,6 @@
         android:layout_weight="1"
         />
 
-    <View
-        android:id="@+id/detail_separating_line_1"
-        style="@style/horizontal_line" />
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -111,7 +107,6 @@
             android:layout_height="match_parent"
             android:id="@+id/detail_publisher_text_view"
             android:layout_weight="1"
-            android:paddingStart="4dp"
             android:paddingEnd="2dp" />
 
     </LinearLayout>
@@ -143,7 +138,6 @@
             android:layout_height="match_parent"
             android:id="@+id/detail_release_date_text_view"
             android:layout_weight="1"
-            android:paddingStart="2dp"
             android:paddingEnd="4dp" />
     </LinearLayout>
 
@@ -217,6 +211,7 @@
         android:id="@+id/detail_reviews_title"
         android:fontFamily="sans-serif"
         android:layout_margin="6dp"
+        android:visibility="gone"
         android:padding="2dp"/>
 
     <LinearLayout
@@ -236,6 +231,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Videos"
+        android:visibility="gone"
         android:fontFamily="sans-serif"
         android:layout_margin="6dp"
         android:padding="2dp"/>

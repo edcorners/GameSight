@@ -59,8 +59,8 @@ public class GameDetailActivity extends AppCompatActivity {
         collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, android.R.color.transparent));
         Picasso.with(this)
                 .load(mGame.getImageUrl())
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
+                .placeholder(R.color.mainBackground)
+                .error(R.color.mainBackground)
                 .into(backdrop,new Callback() {
                     @Override public void onSuccess() {
                         Bitmap bitmap = ((BitmapDrawable) backdrop.getDrawable()).getBitmap();

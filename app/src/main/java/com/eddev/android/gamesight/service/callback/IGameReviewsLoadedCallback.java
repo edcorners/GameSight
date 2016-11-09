@@ -9,5 +9,5 @@ import java.util.List;
  */
 
 public interface IGameReviewsLoadedCallback {
-    void onGameReviewLoaded(List<Review> reviews);
+    void onGameReviewLoaded(List<Review> reviews, String error);
 }

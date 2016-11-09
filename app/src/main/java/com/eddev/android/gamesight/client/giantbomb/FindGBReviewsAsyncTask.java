@@ -40,15 +40,16 @@ public class FindGBReviewsAsyncTask extends AsyncTask<HashMap<String,String>, Vo
 
     private final String LOG_TAG = FindGBReviewsAsyncTask.class.getSimpleName();
     private Context mContext;
-    private IGameReviewsLoadedCallback callback;
+    private IGameReviewsLoadedCallback mCallback;
+    private String mError = null;
 
     /**
      * Default constructor
-     * @param mContext application mContext
+     * @param context application mContext
      */
-    public FindGBReviewsAsyncTask(Context mContext, IGameReviewsLoadedCallback callback) {
-        this.mContext = mContext;
-        this.callback = callback;
+    public FindGBReviewsAsyncTask(Context context, IGameReviewsLoadedCallback callback) {
+        this.mContext = context;
+        this.mCallback = callback;
     }
 
     @Override
@@ -78,6 +79,7 @@ public class FindGBReviewsAsyncTask extends AsyncTask<HashMap<String,String>, Vo
             GBResponse = response.body();
             gbReviews = GBResponse.getResults();
         } catch (IOException e) {
+            mError = "Failed to retrieve reviews. Giant bomb service unavailable.";
             Log.e(LOG_TAG, "Error ", e);
         }
         return gbReviews;
@@ -86,6 +88,6 @@ public class FindGBReviewsAsyncTask extends AsyncTask<HashMap<String,String>, Vo
     @Override
     protected void onPostExecute(List<GBReview> gbReviews) {
         super.onPostExecute(gbReviews);
-        callback.onGameReviewLoaded(GameFactoryFromGB.getInstance().createGameReviews(gbReviews));
+        mCallback.onGameReviewLoaded(GameFactoryFromGB.getInstance().createGameReviews(gbReviews), mError);
     }
 }
