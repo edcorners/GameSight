@@ -50,10 +50,12 @@ public class GameFactoryFromGB {
         return newGame;
     }
 
-    public List<Game> createGamePreviewList(List<GBGame> GBGames){
+    public List<Game> createGamePreviewList(List<GBGame> gBGames){
         List<Game> newGamesList = new ArrayList<Game>();
-        for (GBGame current : GBGames) {
-            newGamesList.add(createGamePreview(current));
+        if(gBGames != null) {
+            for (GBGame current : gBGames) {
+                newGamesList.add(createGamePreview(current));
+            }
         }
         return newGamesList;
     }

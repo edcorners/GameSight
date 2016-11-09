@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
@@ -14,23 +15,23 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.eddev.android.gamesight.model.Game;
+import com.eddev.android.gamesight.service.GiantBombSearchService;
 import com.eddev.android.gamesight.service.IGameSearchService;
 import com.eddev.android.gamesight.service.callback.IGamesLoadedCallback;
-import com.eddev.android.gamesight.service.GiantBombSearchService;
-import com.facebook.stetho.Stetho;
-import com.facebook.stetho.okhttp3.StethoInterceptor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.OkHttpClient;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, IGamesLoadedCallback {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, IGamesLoadedCallback{
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -46,6 +47,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @BindView(R.id.d_card_toolbar)
     Toolbar mDCardToolbar;
+
+    private List<Game> mDiscoverGames;
+    private boolean mDiscoverGamesLoaded = false;
 
     /**
      * Activity lifecycle
@@ -69,13 +73,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mDiscoverCardRecyclerView.setLayoutManager(mDiscoverCardLayoutManager);
         mDCardToolbar.setLogo(ContextCompat.getDrawable(this, R.drawable.ic_find_in_page_white_24px));
 
-        mIGameSearchService = new GiantBombSearchService(this);
-        mIGameSearchService.fetchUpcomingGamesPreview(this);
+        if(savedInstanceState !=null){
+            mDiscoverGames = savedInstanceState.getParcelableArrayList("discoverGames");
+            mDiscoverGamesLoaded = true;
+            initDiscoverCardRecyclerView();
+        }else{
+            mIGameSearchService = new GiantBombSearchService(this);
+            mIGameSearchService.fetchUpcomingGamesPreview(this);
+        }
 
-        Stetho.initializeWithDefaults(this);
+        /*Stetho.initializeWithDefaults(this);
         new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())
-                .build();
+                .build();*/
     }
 
     @Override
@@ -108,6 +118,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if(mDiscoverGamesLoaded) {
+            outState.putParcelableArrayList("discoverGames", (ArrayList<? extends Parcelable>) mDiscoverGames);
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
     /**
     * Loader
     */
@@ -132,8 +155,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
      */
 
     @Override
-    public void onGamesLoaded(List<Game> games) {
-        mDiscoverCardAdapter = new CardRecyclerViewAdapter(games, this, new CardRecyclerViewAdapter.OnItemClickListener() {
+    public void onGamesLoaded(List<Game> games, String error) {
+        if(!TextUtils.isEmpty(error)){
+            Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+        }else {
+            mDiscoverGames = games;
+            mDiscoverGamesLoaded = true;
+            initDiscoverCardRecyclerView();
+        }
+    }
+
+    private void initDiscoverCardRecyclerView() {
+        mDiscoverCardAdapter = new CardRecyclerViewAdapter(mDiscoverGames, this, new CardRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Game game) {
                 Intent detailsIntent = new Intent(getApplicationContext(), GameDetailActivity.class);

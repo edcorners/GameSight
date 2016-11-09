@@ -28,6 +28,7 @@ public class GameDetailActivity extends AppCompatActivity {
     CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.detail_backdrop)
     ImageView backdrop;
+    private Game mGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,54 +37,60 @@ public class GameDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.details_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
+
         ButterKnife.bind(this);
-
+        String gameKey = getString(R.string.parcelable_game_key);
         if (savedInstanceState == null) {
-            // Create the detail fragment and add it to the activity
-            // using a fragment transaction.
-
+            mGame = getIntent().getParcelableExtra(gameKey);
             Bundle arguments = new Bundle();
-            String gameKey = getString(R.string.parcelable_game_key);
-            Game game = getIntent().getParcelableExtra(gameKey);
-            arguments.putParcelable(gameKey, game);
-
-            collapsingToolbarLayout.setTitle(game.getName());
-            collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, android.R.color.transparent));
-            toolbar.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
-            Picasso.with(this)
-                    .load(game.getImageUrl())
-                    .placeholder(R.mipmap.ic_launcher)
-                    .error(R.mipmap.ic_launcher)
-                    .into(backdrop,new Callback() {
-                        @Override public void onSuccess() {
-                            Bitmap bitmap = ((BitmapDrawable) backdrop.getDrawable()).getBitmap();
-                            Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-                                public void onGenerated(Palette palette) {
-                                    applyPalette(palette);
-                                }
-                            });
-                        }
-
-                        @Override public void onError() {
-
-                        }
-                    });
-
+            arguments.putParcelable(gameKey, mGame);
             GameDetailFragment detailFragment = new GameDetailFragment();
             detailFragment.setArguments(arguments);
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.game_detail_container, detailFragment)
+                    .replace(R.id.game_detail_container, detailFragment)
                     .commit();
+        }else {
+            mGame = savedInstanceState.getParcelable("currentGame");
         }
+
+        collapsingToolbarLayout.setTitle(mGame.getName());
+        collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, android.R.color.transparent));
+        Picasso.with(this)
+                .load(mGame.getImageUrl())
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_launcher)
+                .into(backdrop,new Callback() {
+                    @Override public void onSuccess() {
+                        Bitmap bitmap = ((BitmapDrawable) backdrop.getDrawable()).getBitmap();
+                        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+                            public void onGenerated(Palette palette) {
+                                applyPalette(palette);
+                            }
+                        });
+                    }
+
+                    @Override public void onError() {
+
+                    }
+                });
+
+
+
     }
 
     private void applyPalette(Palette palette) {
-        int primaryDark = getResources().getColor(R.color.colorPrimaryDark);
-        int primary = getResources().getColor(R.color.colorPrimary);
+        int primaryDark = ContextCompat.getColor(this, R.color.colorPrimaryDark);
+        int primary = ContextCompat.getColor(this, R.color.colorPrimary);
         collapsingToolbarLayout.setContentScrimColor(palette.getMutedColor(primary));
         collapsingToolbarLayout.setStatusBarScrimColor(palette.getDarkMutedColor(primaryDark));
         supportStartPostponedEnterTransition();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable("currentGame", mGame);
+        super.onSaveInstanceState(outState);
+    }
 }

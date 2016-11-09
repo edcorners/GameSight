@@ -7,5 +7,5 @@ import com.eddev.android.gamesight.model.Game;
  */
 
 public interface IGameLoadedCallback {
-    void onGameLoaded(Game game);
+    void onGameLoaded(Game game, String error);
 }

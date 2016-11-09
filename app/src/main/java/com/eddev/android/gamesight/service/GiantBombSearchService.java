@@ -1,6 +1,7 @@
 package com.eddev.android.gamesight.service;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.eddev.android.gamesight.Utility;
 import com.eddev.android.gamesight.client.giantbomb.FindGBGameAsyncTask;
@@ -28,7 +29,7 @@ public class GiantBombSearchService implements IGameSearchService {
         this.mParameters = new HashMap<>();
     }
 
-    public void fetchUpcomingGamesPreview(IGamesLoadedCallback callback){
+    public void fetchUpcomingGamesPreview(@NonNull IGamesLoadedCallback callback){
         mParameters = new HashMap<>();
         Calendar cal = Calendar.getInstance();
         Date now = cal.getTime();
@@ -45,7 +46,7 @@ public class GiantBombSearchService implements IGameSearchService {
         findGBGamesAsyncTask.execute(mParameters);
     }
 
-    public void searchGamesByName(String name, IGamesLoadedCallback callback){
+    public void searchGamesByName(String name, @NonNull IGamesLoadedCallback callback){
         mParameters = new HashMap<>();
         mParameters.put(FindGBGamesAsyncTask.FILTER, "name:"+name);
         mParameters.put(FindGBGamesAsyncTask.SORT, "number_of_user_reviews:desc");
@@ -57,7 +58,7 @@ public class GiantBombSearchService implements IGameSearchService {
         findGBGamesAsyncTask.execute(mParameters);
     }
 
-    public void findGameById(int id, IGameLoadedCallback callback){
+    public void findGameById(int id, @NonNull IGameLoadedCallback callback){
         mParameters = new HashMap<>();
         mParameters.put(FindGBGameAsyncTask.GAME_ID, String.valueOf(id));
         mParameters.put(FindGBGameAsyncTask.FORMAT, "json");

@@ -4,8 +4,10 @@ import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.eddev.android.gamesight.model.Game;
 import com.eddev.android.gamesight.service.GiantBombSearchService;
@@ -48,10 +50,6 @@ public class SearchableActivity extends ListActivity implements IGamesLoadedCall
         }
     }
 
-    private void findGames(String query) {
-
-    }
-
     public void back(View view){
         finish();
     }
@@ -63,7 +61,11 @@ public class SearchableActivity extends ListActivity implements IGamesLoadedCall
     }
 
     @Override
-    public void onGamesLoaded(List<Game> games) {
-        mSearchResultsAdapter.addAll(games);
+    public void onGamesLoaded(List<Game> games, String error) {
+        if(TextUtils.isEmpty(error)) {
+            mSearchResultsAdapter.addAll(games);
+        }else{
+            Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+        }
     }
 }

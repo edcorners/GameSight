@@ -12,8 +12,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import static android.media.CamcorderProfile.get;
-
 /**
  * Created by Edison on 10/10/2016.
  */
@@ -60,7 +58,7 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return mDataset != null ? mDataset.size() : 0;
     }
 
     // Provide a reference to the views for each data item

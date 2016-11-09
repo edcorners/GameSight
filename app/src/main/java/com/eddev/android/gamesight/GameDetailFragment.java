@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.eddev.android.gamesight.model.ClassificationAttribute;
 import com.eddev.android.gamesight.model.Game;
@@ -62,8 +63,10 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     @BindView(R.id.detail_videos_linear_layout)
     LinearLayout mVideosLinearLayout;
 
-    public GameDetailFragment() {
+    private boolean mGameLoaded = false;
+    private boolean mReviewsLoaded = false;
 
+    public GameDetailFragment() {
     }
 
     @Override
@@ -74,10 +77,20 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
         ButterKnife.bind(this, rootView);
         mIGameSearchService = new GiantBombSearchService(getContext());
 
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            mGame = arguments.getParcelable(getString(R.string.parcelable_game_key));
-            loadFullGame();
+        if(savedInstanceState != null){
+            mGame = savedInstanceState.getParcelable("currentGame");
+            mReviewsLoaded = true;
+            mGameLoaded = true;
+            updateGameView();
+            updateReviewsView();
+        }else {
+            Bundle arguments = getArguments();
+            if (arguments != null) {
+                mGame = arguments.getParcelable(getString(R.string.parcelable_game_key));
+                loadFullGame();
+            }else{
+                //TODO show error
+            }
         }
         return rootView;
     }
@@ -88,15 +101,23 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     }
 
     @Override
-    public void onGameLoaded(Game game) {
-        mGame.copyBasicFields(game);// Reviews not included
-        updateGameView();
+    public void onGameLoaded(Game game, String error) {
+        if(TextUtils.isEmpty(error)){
+            mGame.copyBasicFields(game);// Reviews not included
+            mGameLoaded = true;
+            updateGameView();
+        }else{
+            Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onGameReviewLoaded(List<Review> reviews) {
-        mGame.setReviews(reviews);
-        updateReviewsView(reviews);
+        //if(TextUtils.isEmpty(error)){
+            mGame.setReviews(reviews);
+            mReviewsLoaded = true;
+            updateReviewsView();
+        //}
     }
 
     private void updateGameView() {
@@ -130,7 +151,8 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
         }
     }
 
-    private void updateReviewsView(List<Review> reviews) {
+    private void updateReviewsView() {
+        List<Review> reviews = mGame.getReviews();
         for(Review current : reviews) {
             LinearLayout reviewItemLinearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.item_review, null, false);
             ProperRatingBar ratingBar = (ProperRatingBar) reviewItemLinearLayout.findViewById(R.id.review_rating_bar);
@@ -144,6 +166,14 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
             mReviewsLinearLayout.addView(reviewItemLinearLayout);
         }
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if(mGameLoaded & mReviewsLoaded){
+            outState.putParcelable("currentGame", mGame);
+        }
+        super.onSaveInstanceState(outState);
     }
 
 }

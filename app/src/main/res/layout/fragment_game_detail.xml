@@ -90,9 +90,12 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/detail_publisher_rdate_title_layout"
-        android:layout_margin="6dp"
-        android:padding="2dp">
+        android:id="@+id/detail_publisher_layout"
+        android:padding="2dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp">
 
         <TextView
             android:text="Publisher"
@@ -118,9 +121,12 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/detail_publisher_rdate_content_layout"
-        android:layout_margin="6dp"
-        android:padding="2dp">
+        android:id="@+id/detail_rdate_layout"
+        android:padding="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp">
 
         <TextView
             android:text="Release date"
@@ -146,8 +152,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/detail_genre_platforms_title_layout"
-        android:layout_margin="6dp"
-        android:padding="2dp">
+        android:padding="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp">
 
         <TextView
             android:text="Genre"
@@ -173,8 +182,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/detail_genre_platforms_content_layout"
-        android:layout_margin="6dp"
-        android:padding="2dp">
+        android:padding="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="6dp">
 
         <TextView
             android:text="Platforms"

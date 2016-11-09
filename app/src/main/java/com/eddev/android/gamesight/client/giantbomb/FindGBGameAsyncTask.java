@@ -40,15 +40,17 @@ public class FindGBGameAsyncTask extends AsyncTask<HashMap<String,String>, Void,
 
     private final String LOG_TAG = FindGBGameAsyncTask.class.getSimpleName();
     private Context mContext;
-    private IGameLoadedCallback callback;
+    private IGameLoadedCallback mCallback;
+    private String mError = null;
 
     /**
      * Default constructor
-     * @param mContext application mContext
+     * @param context application context
+     *
      */
-    public FindGBGameAsyncTask(Context mContext, IGameLoadedCallback callback) {
-        this.mContext = mContext;
-        this.callback = callback;
+    public FindGBGameAsyncTask(Context context, IGameLoadedCallback callback) {
+        this.mContext = context;
+        this.mCallback = callback;
     }
 
     @Override
@@ -76,6 +78,7 @@ public class FindGBGameAsyncTask extends AsyncTask<HashMap<String,String>, Void,
             gbGamesResponse = response.body();
             gBGame = gbGamesResponse.getResults();
         } catch (IOException e) {
+            mError = "Failed to connect to giant bomb service";
             Log.e(LOG_TAG, "Error ", e);
         }
         return gBGame;
@@ -84,6 +87,6 @@ public class FindGBGameAsyncTask extends AsyncTask<HashMap<String,String>, Void,
     @Override
     protected void onPostExecute(GBGame gBGame) {
         super.onPostExecute(gBGame);
-        callback.onGameLoaded(GameFactoryFromGB.getInstance().createGame(gBGame));
+        mCallback.onGameLoaded(GameFactoryFromGB.getInstance().createGame(gBGame), mError);
     }
 }

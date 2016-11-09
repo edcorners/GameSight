@@ -9,5 +9,5 @@ import java.util.List;
  */
 
 public interface IGamesLoadedCallback {
-    void onGamesLoaded(List<Game> games);
+    void onGamesLoaded(List<Game> games, String error);
 }
