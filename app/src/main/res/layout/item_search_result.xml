@@ -1,53 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/search_result"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/cardview_light_background"
-    android:padding="4dp">
+    android:background="@android:color/background_light"
+    android:padding="1dp">
 
     <FrameLayout
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:id="@+id/game_result_frame"
-        android:background="@android:color/background_dark">
+        android:id="@+id/game_cover_frame"
+        android:background="@android:color/background_dark"
+        >
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:srcCompat="@mipmap/ic_launcher"
-            android:id="@+id/game_result_thumb"
+            app:srcCompat="@color/mainBackground"
+            android:id="@+id/search_result_game_thumb"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:layout_margin="2dp"
             android:padding="1dp" />
     </FrameLayout>
-    <LinearLayout
-        android:orientation="vertical"
+
+    <TextView
+        android:text="Game title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="2"
-        android:padding="2dp">
+        android:layout_height="wrap_content"
+        android:id="@+id/search_result_game_title"
+        android:textSize="12sp"
+        android:fontFamily="sans-serif"
+        android:maxLines="1"
+        android:ellipsize="end"
+        tools:textStyle="bold"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:layout_toEndOf="@id/game_cover_frame"/>
 
-        <TextView
-            android:text="Game title - date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/game_title_date"
-            android:textSize="12sp"
-            android:fontFamily="sans-serif"
-            tools:textStyle="bold"
-            android:paddingStart="4dp" />
+    <TextView
+        android:text="Game description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/search_result_game_description"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:textSize="10sp"
+        android:maxLines="4"
+        android:ellipsize="end"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:layout_toEndOf="@id/game_cover_frame"
+        android:layout_below="@id/search_result_game_title"/>
 
-        <TextView
-            android:text="Game description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/game_description"
-            android:paddingStart="4dp"
-            android:textSize="10sp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-    </LinearLayout>
-</LinearLayout>
+    <View
+        android:id="@+id/result_separating_line"
+        style="@style/horizontal_line"
+        android:layout_alignBottom="@id/game_cover_frame"/>
+
+</RelativeLayout>

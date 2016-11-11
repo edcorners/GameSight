@@ -8,48 +8,19 @@
     android:id="@+id/activity_search"
     tools:context="com.eddev.android.gamesight.SearchableActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/content_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/cardview_shadow_start_color">
-
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/main_activity_app_bar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:elevation="2dp"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/search_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                android:elevation="2dp"
-                android:onClick="back">
-
-                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_height="match_parent"
-                    android:layout_width="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="GameSight"
-                    android:id="@+id/main_activity_title"
-                    android:drawableStart="@mipmap/ic_launcher"
-                    android:gravity="center_vertical"
-                    android:textColor="?android:attr/textColorPrimaryInverse"/>
-
-            </android.support.v7.widget.Toolbar>
-
-        </android.support.design.widget.AppBarLayout>
-
-        <ListView android:id="@android:id/list"
+        android:background="@color/mainBackground"
+        android:gravity="center_vertical|center_horizontal">
+        
+        <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawSelectorOnTop="false" />
+            android:id="@+id/search_results_recycler_view"
+            />
 
-    </LinearLayout>
+    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
