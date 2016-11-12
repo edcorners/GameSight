@@ -18,6 +18,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.eddev.android.gamesight.model.Game;
@@ -47,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @BindView(R.id.d_card_toolbar)
     Toolbar mDCardToolbar;
+    @BindView(R.id.d_card_progress_bar)
+    ProgressBar mDCardProgressBar;
 
     private List<Game> mDiscoverGames;
     private boolean mDiscoverGamesLoaded = false;
@@ -73,9 +77,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mDiscoverCardRecyclerView.setLayoutManager(mDiscoverCardLayoutManager);
         mDCardToolbar.setLogo(ContextCompat.getDrawable(this, R.drawable.ic_find_in_page_white_24px));
 
-        if(savedInstanceState !=null){
-            mDiscoverGames = savedInstanceState.getParcelableArrayList("discoverGames");
+        if(savedInstanceState != null && savedInstanceState.getBoolean("loadedGames")){
             mDiscoverGamesLoaded = true;
+            mDiscoverGames = savedInstanceState.getParcelableArrayList("discoverGames");
             initDiscoverCardRecyclerView();
         }else{
             mIGameSearchService = new GiantBombSearchService(this);
@@ -122,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onSaveInstanceState(Bundle outState) {
         if(mDiscoverGamesLoaded) {
             outState.putParcelableArrayList("discoverGames", (ArrayList<? extends Parcelable>) mDiscoverGames);
+            outState.putBoolean("loadedGames", mDiscoverGamesLoaded);
         }
         super.onSaveInstanceState(outState);
     }
@@ -175,5 +180,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
         mDiscoverCardRecyclerView.setAdapter(mDiscoverCardAdapter);
+        mDCardProgressBar.setVisibility(View.GONE);
+        mDiscoverCardRecyclerView.setVisibility(View.VISIBLE);
     }
 }

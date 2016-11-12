@@ -1,247 +1,257 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/content_game_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
     tools:context="com.eddev.android.gamesight.GameDetailFragment"
     tools:showIn="@layout/activity_game_detail">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:id="@+id/detail_progress_layout"
-        android:layout_margin="6dp">
+        android:layout_margin="8dp"
+        android:id="@+id/detail_content_progress_bar"
+        android:progressDrawable="@android:drawable/progress_horizontal"
+        android:layout_centerInParent="true"/>
 
-        <ToggleButton
-            android:id="@+id/detail_favorite_toggle_button"
-            android:textColor="@color/colorAccent"
-            android:focusableInTouchMode="false"
-            android:background="@drawable/favorite"
-            android:textOn=""
-            android:textOff=""
-            android:text=""
-            android:padding="4dp"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
-            android:backgroundTint="@android:color/holo_red_dark" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_videogame_asset_white_24px"
-            android:id="@+id/detail_owned_icon"
-            android:layout_weight="0"
-            android:tint="@android:color/darker_gray"
-            android:padding="4dp" />
-
-        <SeekBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/detail_seek_bar"
-            android:layout_weight="4"
-            android:visibility="visible"
-            />
-
-        <TextView
-            android:text="10%"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/detail_completion_text_view"
-            android:layout_weight="0"
-            android:padding="4dp" />
-
-    </LinearLayout>
-
-    <View
-        android:id="@+id/detail_separating_line_0"
-        style="@style/horizontal_line" />
-
-    <TextView
-        android:text="Description"
+    <LinearLayout
+        android:id="@+id/detail_content_game"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/detail_description_text_view"
-        android:layout_margin="6dp"
-        android:padding="2dp" />
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:orientation="vertical"
+        android:visibility="visible">
 
-    <LinearLayout
-        android:id="@+id/detail_platforms_linear_layout"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        />
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/detail_publisher_layout"
-        android:padding="2dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="2dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginEnd="6dp">
-
-        <TextView
-            android:text="Publisher"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/detail_publisher_title"
-            android:layout_weight="2"
-            android:fontFamily="sans-serif"
-            android:textStyle="normal|bold" />
+            android:gravity="center_vertical"
+            android:id="@+id/detail_progress_layout"
+            android:layout_margin="2dp"
+            android:visibility="gone">
+
+            <ToggleButton
+                android:id="@+id/detail_favorite_toggle_button"
+                android:textColor="@color/colorAccent"
+                android:focusableInTouchMode="false"
+                android:background="@drawable/favorite"
+                android:textOn=""
+                android:textOff=""
+                android:text=""
+                android:padding="4dp"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:backgroundTint="@android:color/holo_red_dark" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/ic_videogame_asset_white_24px"
+                android:id="@+id/detail_owned_icon"
+                android:layout_weight="0"
+                android:tint="@android:color/darker_gray"
+                android:padding="4dp" />
+
+            <SeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/detail_seek_bar"
+                android:layout_weight="4"
+                />
+
+            <TextView
+                android:text="10%"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/detail_completion_text_view"
+                android:layout_weight="0"
+                android:padding="4dp" />
+
+        </LinearLayout>
+
         <TextView
-            android:text="Publisher"
+            android:text="Description"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/detail_publisher_text_view"
-            android:layout_weight="1"
-            android:paddingEnd="2dp" />
+            android:id="@+id/detail_description_text_view"
+            android:layout_margin="6dp"
+            android:padding="2dp" />
 
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/detail_rdate_layout"
-        android:padding="2dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginEnd="6dp">
-
-        <TextView
-            android:text="Release date"
+        <LinearLayout
+            android:id="@+id/detail_platforms_linear_layout"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/detail_rdate_title"
-            android:fontFamily="sans-serif"
-            android:layout_weight="2"
-            android:textStyle="normal|bold" />
-
-        <TextView
-            android:text="1990-10-1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/detail_release_date_text_view"
             android:layout_weight="1"
-            android:paddingEnd="4dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/detail_genre_platforms_title_layout"
-        android:padding="2dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginEnd="6dp">
-
-        <TextView
-            android:text="Genre"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/detail_genre_title"
-            android:fontFamily="sans-serif"
-            android:layout_weight="2"
-            android:textStyle="normal|bold"
             />
 
-        <TextView
-            android:text="RPG"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/detail_publisher_layout"
+            android:padding="2dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp">
+
+            <TextView
+                android:text="Publisher"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/detail_publisher_title"
+                android:layout_weight="2"
+                android:fontFamily="sans-serif"
+                android:textStyle="normal|bold" />
+            <TextView
+                android:text="Publisher"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/detail_publisher_text_view"
+                android:layout_weight="1"
+                android:paddingEnd="2dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/detail_rdate_layout"
+            android:padding="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp">
+
+            <TextView
+                android:text="Release date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/detail_rdate_title"
+                android:fontFamily="sans-serif"
+                android:layout_weight="2"
+                android:textStyle="normal|bold" />
+
+            <TextView
+                android:text="1990-10-1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/detail_release_date_text_view"
+                android:layout_weight="1"
+                android:paddingEnd="4dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/detail_genre_platforms_title_layout"
+            android:padding="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp">
+
+            <TextView
+                android:text="Genre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/detail_genre_title"
+                android:fontFamily="sans-serif"
+                android:layout_weight="2"
+                android:textStyle="normal|bold"
+                />
+
+            <TextView
+                android:text="RPG"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/detail_genre_text_view"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/detail_genre_platforms_content_layout"
+            android:padding="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="6dp">
+
+            <TextView
+                android:text="Platforms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/detail_platforms_title"
+                android:layout_weight="2"
+                android:fontFamily="sans-serif"
+                android:textStyle="normal|bold" />
+
+            <TextView
+                android:text="Wii U"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/detail_platforms_text_view"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/detail_separating_line2"
+            style="@style/horizontal_line" />
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:id="@+id/detail_reviews_progress_bar"
+            android:progressDrawable="@android:drawable/progress_indeterminate_horizontal"
+            android:layout_gravity="center_horizontal"/>
+
+        <LinearLayout
+            android:id="@+id/detail_reviews_layout"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/detail_genre_text_view"
-            android:layout_weight="1" />
+            android:layout_margin="6dp"
+            android:padding="2dp"
+            android:visibility="gone"/>
+
+        <View
+            android:id="@+id/detail_separating_line3"
+            style="@style/horizontal_line" />
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:id="@+id/detail_videos_progress_bar"
+            android:progressDrawable="@android:drawable/progress_indeterminate_horizontal"
+            android:layout_gravity="center_horizontal"  />
+
+        <LinearLayout
+            android:id="@+id/detail_videos_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="6dp"
+            android:padding="2dp"
+            android:visibility="gone"/>
 
     </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/detail_genre_platforms_content_layout"
-        android:padding="2dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginEnd="6dp"
-        android:layout_marginBottom="6dp">
-
-        <TextView
-            android:text="Platforms"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/detail_platforms_title"
-            android:layout_weight="2"
-            android:fontFamily="sans-serif"
-            android:textStyle="normal|bold" />
-
-        <TextView
-            android:text="Wii U"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/detail_platforms_text_view"
-            android:layout_weight="1" />
-
-    </LinearLayout>
-
-    <View
-        android:id="@+id/detail_separating_line2"
-        style="@style/horizontal_line" />
-
-    <TextView
-        android:text="Reviews"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/detail_reviews_title"
-        android:fontFamily="sans-serif"
-        android:layout_margin="6dp"
-        android:visibility="gone"
-        android:padding="2dp"/>
-
-    <LinearLayout
-        android:id="@+id/detail_reviews_layout"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="6dp"
-        android:padding="2dp"/>
-
-    <View
-        android:id="@+id/detail_separating_line3"
-        style="@style/horizontal_line" />
-
-    <TextView
-        android:id="@+id/detail_videos_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Videos"
-        android:visibility="gone"
-        android:fontFamily="sans-serif"
-        android:layout_margin="6dp"
-        android:padding="2dp"/>
-
-    <LinearLayout
-        android:id="@+id/detail_videos_linear_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="6dp"
-        android:padding="2dp"/>
-
-</LinearLayout>
+</RelativeLayout>

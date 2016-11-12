@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.eddev.android.gamesight.model.Game;
@@ -30,6 +32,9 @@ public class SearchableActivity extends AppCompatActivity implements IGamesLoade
 
     @BindView(R.id.search_results_recycler_view)
     RecyclerView mSearchResultsRecyclerView;
+    @BindView(R.id.search_progress_bar)
+    ProgressBar mSearchProgressBar;
+
     private RecyclerView.Adapter mSearchRecyclerViewAdapter;
     private RecyclerView.LayoutManager mSearchRecyclerViewLayoutManager;
     private List<Game> mResults;
@@ -119,5 +124,6 @@ public class SearchableActivity extends AppCompatActivity implements IGamesLoade
         }else{
             Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
         }
+        mSearchProgressBar.setVisibility(View.GONE);
     }
 }

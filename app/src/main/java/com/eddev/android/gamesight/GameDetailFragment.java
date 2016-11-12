@@ -1,5 +1,6 @@
 package com.eddev.android.gamesight;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +29,7 @@ import com.eddev.android.gamesight.service.IGameSearchService;
 import com.eddev.android.gamesight.service.callback.IGameLoadedCallback;
 import com.eddev.android.gamesight.service.callback.IGameReviewsLoadedCallback;
 
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -59,10 +62,19 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     TextView mPlatformsTextView;
     @BindView(R.id.detail_platforms_linear_layout)
     LinearLayout mPlatformsLinearLayout;
+    @BindView(R.id.detail_content_game)
+    LinearLayout mContentLinearLayout;
     @BindView(R.id.detail_reviews_layout)
     LinearLayout mReviewsLinearLayout;
     @BindView(R.id.detail_videos_linear_layout)
     LinearLayout mVideosLinearLayout;
+
+    @BindView(R.id.detail_videos_progress_bar)
+    ProgressBar mVideosProgressBar;
+    @BindView(R.id.detail_reviews_progress_bar)
+    ProgressBar mReviewsProgressBar;
+    @BindView(R.id.detail_content_progress_bar)
+    ProgressBar mContentProgressBar;
 
     private boolean mGameLoaded = false;
     private boolean mReviewsLoaded = false;
@@ -78,12 +90,15 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
         ButterKnife.bind(this, rootView);
         mIGameSearchService = new GiantBombSearchService(getContext());
 
-        if(savedInstanceState != null){
+        if(savedInstanceState != null && savedInstanceState.getBoolean("gameLoaded")){
             mGame = savedInstanceState.getParcelable("currentGame");
-            mReviewsLoaded = true;
-            mGameLoaded = true;
             updateGameView();
-            updateReviewsView();
+
+            if(savedInstanceState.getBoolean("reviewsLoaded")){
+                updateReviewsView();
+            }else{
+                mIGameSearchService.findReviewsByGameId(mGame.getId(), this);
+            }
         }else {
             Bundle arguments = getArguments();
             if (arguments != null) {
@@ -102,10 +117,20 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if(mGameLoaded & mReviewsLoaded){
+            outState.putParcelable("currentGame", mGame);
+            outState.putBoolean("gameLoaded", mGameLoaded);
+            outState.putBoolean("reviewsLoaded", mReviewsLoaded);
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+
+    @Override
     public void onGameLoaded(Game game, String error) {
         if(TextUtils.isEmpty(error)){
             mGame.copyBasicFields(game);// Reviews not included
-            mGameLoaded = true;
             updateGameView();
         }else{
             Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
@@ -116,7 +141,6 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     public void onGameReviewLoaded(List<Review> reviews, String error) {
         if(TextUtils.isEmpty(error)){
             mGame.setReviews(reviews);
-            mReviewsLoaded = true;
             updateReviewsView();
         }else{
             Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
@@ -124,17 +148,24 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     }
 
     private void updateGameView() {
-        mCompletionTextView.setText(mGame.getCompletion()+"%");
-        mDescriptionTextView.setText(mGame.getDescription());
-        String publishers = TextUtils.join(", ", mGame.getClassificationAttributeValues(ClassificationAttribute.PUBLISHER));
-        mPublisherTextView.setText(TextUtils.isEmpty(publishers) ? "Not available" : publishers);
-        mReleaseDateTextView.setText(Utility.dateFormat.format(mGame.getReleaseDate()));
-        String genres = TextUtils.join(", ", mGame.getClassificationAttributeValues(ClassificationAttribute.GENRE));
-        mGenreTextView.setText(TextUtils.isEmpty(genres) ? "Not available" : genres);
-        String platforms = TextUtils.join(", ", mGame.getClassificationAttributeValues(ClassificationAttribute.PLATFORM));
-        mPlatformsTextView.setText(TextUtils.isEmpty(platforms) ? "Not available" : platforms);
+        if(mGame != null) {
+            mCompletionTextView.setText(mGame.getCompletion() + "%");
+            mDescriptionTextView.setText(mGame.getDescription());
+            String publishers = TextUtils.join(", ", mGame.getClassificationAttributeValues(ClassificationAttribute.PUBLISHER));
+            mPublisherTextView.setText(TextUtils.isEmpty(publishers) ? "Not available" : publishers);
+            Date releaseDate = mGame.getReleaseDate();
+            mReleaseDateTextView.setText(releaseDate != null ? Utility.dateFormat.format(releaseDate) : "Unknown");
+            String genres = TextUtils.join(", ", mGame.getClassificationAttributeValues(ClassificationAttribute.GENRE));
+            mGenreTextView.setText(TextUtils.isEmpty(genres) ? "Not available" : genres);
+            String platforms = TextUtils.join(", ", mGame.getClassificationAttributeValues(ClassificationAttribute.PLATFORM));
+            mPlatformsTextView.setText(TextUtils.isEmpty(platforms) ? "Not available" : platforms);
 
-        updateVideosView();
+            mContentLinearLayout.setVisibility(View.VISIBLE);
+            mContentProgressBar.setVisibility(View.GONE);
+            mGameLoaded = true;
+
+            updateVideosView();
+        }
     }
 
     private void updateVideosView() {
@@ -144,38 +175,48 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
                 createVideoView(current);
             }
         }else{
-            setEmptyListMessage(mVideosLinearLayout, "No videos available");
+            setEmptyLayoutMessage(mVideosLinearLayout, "No videos available");
         }
+        mVideosProgressBar.setVisibility(View.GONE);
+        mVideosLinearLayout.setVisibility(View.VISIBLE);
     }
 
     private void createVideoView(final Video current) {
-        TextView videoTitleTextView = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.item_video, null, false);
-        videoTitleTextView.setText(current.getName());
-        videoTitleTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent openVideoIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(current.getUrl()));
-                getContext().startActivity(openVideoIntent);
+        final Context context = getContext();
+        if(context != null) {
+            TextView videoTitleTextView = (TextView) LayoutInflater.from(context).inflate(R.layout.item_video, null, false);
+            videoTitleTextView.setText(current.getName());
+            videoTitleTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent openVideoIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(current.getUrl()));
+                    context.startActivity(openVideoIntent);
+                }
+            });
+            Drawable playIcon = ContextCompat.getDrawable(getActivity(), R.drawable.ic_play_circle_filled_black_24dp);
+            playIcon.setBounds(0, 0, 60, 60);
+            videoTitleTextView.setCompoundDrawables(playIcon, null, null, null);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                videoTitleTextView.setCompoundDrawableTintList(ColorStateList.valueOf(ContextCompat.getColor(getActivity(), R.color.colorAccent)));
             }
-        });
-        Drawable playIcon = ContextCompat.getDrawable(getActivity(), R.drawable.ic_play_circle_filled_black_24dp);
-        playIcon.setBounds(0, 0, 60, 60);
-        videoTitleTextView.setCompoundDrawables(playIcon, null, null, null);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            videoTitleTextView.setCompoundDrawableTintList(ColorStateList.valueOf(ContextCompat.getColor(getActivity(), R.color.colorAccent)));
+            mVideosLinearLayout.addView(videoTitleTextView);
         }
-        mVideosLinearLayout.addView(videoTitleTextView);
     }
 
     private void updateReviewsView() {
-        List<Review> reviews = mGame.getReviews();
-        if(reviews.size() > 0) {
-            for (Review current : reviews) {
-                createReviewView(current);
+        if(mGame != null) {
+            List<Review> reviews = mGame.getReviews();
+            if (reviews.size() > 0) {
+                for (Review current : reviews) {
+                    createReviewView(current);
+                }
+            } else {
+                setEmptyLayoutMessage(mReviewsLinearLayout, "No reviews available");
             }
-        }else{
-            setEmptyListMessage(mReviewsLinearLayout, "No reviews available");
         }
+        mReviewsLinearLayout.setVisibility(View.VISIBLE);
+        mReviewsProgressBar.setVisibility(View.GONE);
+        mReviewsLoaded = true;
     }
 
     private void createReviewView(Review current) {
@@ -191,22 +232,17 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
         mReviewsLinearLayout.addView(reviewItemLinearLayout);
     }
 
-    private void setEmptyListMessage(LinearLayout layout, String message) {
-        TextView emptyList = new TextView(getContext());
-        emptyList.setText(message);
-        emptyList.setTextColor(ContextCompat.getColor(getContext(), R.color.emptyViewMessage));
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        params.gravity = Gravity.CENTER_HORIZONTAL ;
-        emptyList.setLayoutParams(params);
-        layout.addView(emptyList);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        if(mGameLoaded & mReviewsLoaded){
-            outState.putParcelable("currentGame", mGame);
+    private void setEmptyLayoutMessage(LinearLayout layout, String message) {
+        Context context = getContext();
+        if(context != null){
+            TextView emptyList = new TextView(context);
+            emptyList.setText(message);
+            emptyList.setTextColor(ContextCompat.getColor(context, R.color.emptyViewMessage));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            params.gravity = Gravity.CENTER_HORIZONTAL ;
+            emptyList.setLayoutParams(params);
+            layout.addView(emptyList);
         }
-        super.onSaveInstanceState(outState);
     }
 
 }

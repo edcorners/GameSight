@@ -56,7 +56,7 @@ public class GameDetailActivity extends AppCompatActivity {
         }
 
         collapsingToolbarLayout.setTitle(mGame.getName());
-        collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, android.R.color.transparent));
+        //collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, android.R.color.transparent));
         Picasso.with(this)
                 .load(mGame.getImageUrl())
                 .placeholder(R.color.mainBackground)
