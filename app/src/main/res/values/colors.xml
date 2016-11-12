@@ -5,5 +5,5 @@
     <color name="colorAccent">#fc5621</color>
     <color name="mainBackground">#464646</color>
     <color name="cardBgcolor">#e5e8f3</color>
-    <color name="emptyViewMessage">#B4B4B4</color>
+    <color name="emptyViewMessage">#b4b4b4</color>
 </resources>

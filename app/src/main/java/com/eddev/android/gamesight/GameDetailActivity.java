@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.widget.ImageView;
 
 import com.eddev.android.gamesight.model.Game;
@@ -71,13 +72,8 @@ public class GameDetailActivity extends AppCompatActivity {
                         });
                     }
 
-                    @Override public void onError() {
-
-                    }
+                    @Override public void onError() { }
                 });
-
-
-
     }
 
     private void applyPalette(Palette palette) {
@@ -92,5 +88,11 @@ public class GameDetailActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable("currentGame", mGame);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_game_detail, menu);
+        return true;
     }
 }

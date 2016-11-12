@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setLogo(ContextCompat.getDrawable(this,R.drawable.ic_gamepad_white_24px));
+        toolbar.setLogo(ContextCompat.getDrawable(this,R.drawable.ic_gamepad_white));
         ButterKnife.bind(this);
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // use a linear layout manager
         mDiscoverCardLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mDiscoverCardRecyclerView.setLayoutManager(mDiscoverCardLayoutManager);
-        mDCardToolbar.setLogo(ContextCompat.getDrawable(this, R.drawable.ic_find_in_page_white_24px));
+        mDCardToolbar.setLogo(ContextCompat.getDrawable(this, R.drawable.ic_find_in_page_white));
 
         if(savedInstanceState != null && savedInstanceState.getBoolean("loadedGames")){
             mDiscoverGamesLoaded = true;

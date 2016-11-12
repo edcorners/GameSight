@@ -13,6 +13,9 @@ import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -103,17 +106,13 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
             Bundle arguments = getArguments();
             if (arguments != null) {
                 mGame = arguments.getParcelable(getString(R.string.parcelable_game_key));
-                loadFullGame();
+                mIGameSearchService.findGameById(mGame.getId(), this);
+                mIGameSearchService.findReviewsByGameId(mGame.getId(), this);
             }else{
                 //TODO show error
             }
         }
         return rootView;
-    }
-
-    private void loadFullGame() {
-        mIGameSearchService.findGameById(mGame.getId(), this);
-        mIGameSearchService.findReviewsByGameId(mGame.getId(), this);
     }
 
     @Override
@@ -126,6 +125,27 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.menu_game_detail, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_favorite) {
+            saveGame();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void saveGame() {
+        
+    }
 
     @Override
     public void onGameLoaded(Game game, String error) {
@@ -193,7 +213,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
                     context.startActivity(openVideoIntent);
                 }
             });
-            Drawable playIcon = ContextCompat.getDrawable(getActivity(), R.drawable.ic_play_circle_filled_black_24dp);
+            Drawable playIcon = ContextCompat.getDrawable(getActivity(), R.drawable.ic_play_circle_filled_black);
             playIcon.setBounds(0, 0, 60, 60);
             videoTitleTextView.setCompoundDrawables(playIcon, null, null, null);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
