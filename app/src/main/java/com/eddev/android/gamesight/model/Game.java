@@ -1,12 +1,15 @@
 package com.eddev.android.gamesight.model;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.StringDef;
+import android.text.TextUtils;
 
 import com.eddev.android.gamesight.data.ClassificationByGameColumns;
 import com.eddev.android.gamesight.data.GameColumns;
+import com.eddev.android.gamesight.data.GameSightDatabase;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -20,8 +23,32 @@ public class Game implements Parcelable {
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({OWNED, TRACKING})
     public @interface CollectionName {}
-    private static final String OWNED = "OWNED";
-    private static final String TRACKING = "TRACKING";
+    public static final String OWNED = "OWNED";
+    public static final String TRACKING = "TRACKING";
+
+    public static String[] GAME_PROJECTION = {GameSightDatabase.GAMES+"."+GameColumns.GAME_ID,
+            GameSightDatabase.GAMES+"."+GameColumns.DESCRIPTION,
+            GameSightDatabase.GAMES+"."+GameColumns.EXPECTED_RELEASE_DATE,
+            GameSightDatabase.GAMES+"."+GameColumns.IMAGE_URL,
+            GameSightDatabase.GAMES+"."+GameColumns.THUMBNAIL_URL,
+            GameSightDatabase.GAMES+"."+GameColumns.NAME,
+            GameSightDatabase.GAMES+"."+GameColumns.NUMBER_OF_USER_REVIEWS,
+            GameSightDatabase.GAMES+"."+GameColumns.ORIGINAL_RELEASE_DATE,
+            GameSightDatabase.GAMES+"."+GameColumns.COMPLETION,
+            GameSightDatabase.GAMES+"."+GameColumns.COLLECTION};
+
+    // these indices must match the projection
+    private static final int INDEX_GAME_ID = 0;
+    private static final int INDEX_DESCRIPTION = 1;
+    private static final int INDEX_EXPECTED_RELEASE_DATE = 2;
+    private static final int INDEX_IMAGE_URL = 3;
+    private static final int INDEX_THUMBNAIL_URL = 4;
+    private static final int INDEX_NAME = 5;
+    private static final int INDEX_NUMBER_OF_USER_REVIEWS = 6;
+    private static final int INDEX_ORIGINAL_RELEASE_DATE = 7;
+    private static final int INDEX_COMPLETION = 8;
+    private static final int INDEX_COLLECTION = 9;
+
 
     private int id;
     private String description;
@@ -62,19 +89,45 @@ public class Game implements Parcelable {
         this.videos = videos;
         this.completion = completion;
         this.collection = collection;
+        calculateCollection();
+    }
+
+    public Game(Cursor cursor){
+        this.id = cursor.getInt(INDEX_GAME_ID);
+        this.description = cursor.getString(INDEX_DESCRIPTION);
+
+        int expectedDateInt = cursor.getInt(INDEX_EXPECTED_RELEASE_DATE);
+        if(expectedDateInt > 0) {
+            this.expectedReleaseDate = new Date(expectedDateInt);
+        }
+        this.imageUrl = cursor.getString(INDEX_IMAGE_URL);
+        this.thumbnailUrl = cursor.getString(INDEX_THUMBNAIL_URL);
+        this.name = cursor.getString(INDEX_NAME);
+        this.numberOfUserReviews = cursor.getInt(INDEX_NUMBER_OF_USER_REVIEWS);
+        int origDateLong = cursor.getInt(INDEX_ORIGINAL_RELEASE_DATE);
+        if(origDateLong > 0) {
+            this.originalReleaseDate = new Date(origDateLong);
+        }
+        this.completion = cursor.getDouble(INDEX_COMPLETION);
+
+        switch (cursor.getString(INDEX_COLLECTION)) {
+            case TRACKING:
+                this.collection = TRACKING;
+                break;
+            case OWNED:
+                this.collection = OWNED;
+                break;
+        }
+        calculateCollection();
     }
 
     public void copyBasicFields(Game game) {
-        //this.id = game.id;
-        //this.description = game.description;
         this.expectedReleaseDate = game.expectedReleaseDate;
-        //this.imageUrl = game.imageUrl;
-        //this.thumbnailUrl = game.thumbnailUrl;
-        //this.name = this.name == null ? game.name : this.name;
         this.classificationAttributes = game.classificationAttributes;
         this.numberOfUserReviews = game.numberOfUserReviews;
         this.originalReleaseDate = game.originalReleaseDate;
         this.videos = game.videos;
+        calculateCollection();
     }
 
     public List<String> getClassificationAttributeValues(@ClassificationAttribute.GameAttribType String classificationAttribute) {
@@ -99,6 +152,14 @@ public class Game implements Parcelable {
 
     public Date getReleaseDate() {
         return originalReleaseDate == null ? expectedReleaseDate : originalReleaseDate;
+    }
+
+    public void calculateCollection() {
+        if(originalReleaseDate != null && originalReleaseDate.before(new Date())){
+            this.collection = OWNED;
+        }else{
+            this.collection = TRACKING;
+        }
     }
 
     public ContentValues toContentValues(){
@@ -237,7 +298,7 @@ public class Game implements Parcelable {
     }
 
     public boolean isFavorite() {
-        return favorite;
+        return !TextUtils.isEmpty(collection);
     }
 
     public void setFavorite(boolean favorite) {

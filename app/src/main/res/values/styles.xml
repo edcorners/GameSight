@@ -35,4 +35,14 @@
     </style>
 
     <style name="Gamesight" parent="AppTheme" />
+
+    <style name="card_gallery_recycler_view">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:layout_marginEnd">@dimen/card_recycler_view_horizontal_padding</item>
+        <item name="android:layout_marginStart">@dimen/card_recycler_view_horizontal_padding</item>
+        <item name="android:layout_marginTop">@dimen/card_recycler_view_vertical_padding</item>
+        <item name="android:layout_marginBottom">@dimen/card_recycler_view_vertical_padding</item>
+    </style>
 </resources>

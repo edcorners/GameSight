@@ -38,7 +38,7 @@ public class GiantBombSearchService implements IGameSearchService {
 
         mParameters.put(FindGBGamesAsyncTask.FILTER, "original_release_date:"+ Utility.dateTimeFormat.format(now)+"|"+Utility.dateTimeFormat.format(inThreeMonths));
         mParameters.put(FindGBGamesAsyncTask.SORT, "original_release_date:asc");
-        mParameters.put(FindGBGamesAsyncTask.LIMIT, "3");
+        mParameters.put(FindGBGamesAsyncTask.LIMIT, "5");
         mParameters.put(FindGBGamesAsyncTask.FORMAT, "json");
         mParameters.put(FindGBGamesAsyncTask.FIELD_LIST, "id,name,image,deck,expected_release_day,expected_release_month,expected_release_year,original_release_date");
 

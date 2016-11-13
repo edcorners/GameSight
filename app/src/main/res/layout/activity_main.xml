@@ -7,46 +7,50 @@
     android:fitsSystemWindows="true"
     tools:context="com.eddev.android.gamesight.MainActivity">
 
-    <LinearLayout
-        android:id="@+id/content_main"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/mainBackground"
-        android:elevation="0dp">
+        android:background="@color/mainBackground">
 
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/main_activity_app_bar_layout"
+        <LinearLayout
+            android:id="@+id/content_main"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:elevation="2dp"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:elevation="0dp">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/main_toolbar"
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/main_activity_app_bar_layout"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                android:elevation="2dp">
+                android:layout_height="wrap_content"
+                app:elevation="2dp"
+                android:theme="@style/AppTheme.AppBarOverlay">
 
-                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_height="match_parent"
-                    android:layout_width="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:text="GameSight"
-                    android:id="@+id/main_activity_title"
-                    android:fontFamily="sans-serif"
-                    android:gravity="center_vertical"
-                    android:paddingStart="8dp"
-                    android:textStyle="normal|bold" />
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/main_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary"
+                    app:popupTheme="@style/AppTheme.PopupOverlay"
+                    android:elevation="2dp">
 
-            </android.support.v7.widget.Toolbar>
+                    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:text="GameSight"
+                        android:id="@+id/main_activity_title"
+                        android:fontFamily="sans-serif"
+                        android:gravity="center_vertical"
+                        android:paddingStart="8dp"
+                        android:textStyle="normal|bold" />
 
-        </android.support.design.widget.AppBarLayout>
+                </android.support.v7.widget.Toolbar>
 
-        <include layout="@layout/content_main" />
+            </android.support.design.widget.AppBarLayout>
 
-    </LinearLayout>
+            <include layout="@layout/content_main" />
 
+        </LinearLayout>
+    </ScrollView>
 </android.support.design.widget.CoordinatorLayout>

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
@@ -16,12 +17,15 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.eddev.android.gamesight.data.GameColumns;
+import com.eddev.android.gamesight.data.GameSightProvider;
 import com.eddev.android.gamesight.model.Game;
 import com.eddev.android.gamesight.service.GiantBombSearchService;
 import com.eddev.android.gamesight.service.IGameSearchService;
@@ -38,25 +42,55 @@ import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, IGamesLoadedCallback{
 
+    private static final int TRACKING_LOADER = 0;
+    private static final int OWNED_LOADER = 1;
+    public static final String DISCOVER_GAMES_LOADED_KEY = "discoverGamesLoaded";
+    public static final String DISCOVER_GAMES_KEY = "discoverGames";
+    public static final String TRACKING_GAMES_KEY = "trackingGames";
+    public static final String TRACKING_GAMES_LOADED_KEY = "trackingGamesLoaded";
+    public static final String OWNED_GAMES_KEY = "ownedGames";
+    public static final String OWNED_GAMES_LOADED_KEY = "ownedGamesLoaded";
+
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
+
+    private final String LOG_TAG = MainActivity.class.getSimpleName();
 
     @BindView(R.id.discover_card_recycler_view)
     RecyclerView mDiscoverCardRecyclerView;
     private RecyclerView.Adapter mDiscoverCardAdapter;
     private RecyclerView.LayoutManager mDiscoverCardLayoutManager;
-    private Cursor mCursor;
-
-    private IGameSearchService mIGameSearchService;
-
     @BindView(R.id.d_card_toolbar)
     Toolbar mDCardToolbar;
     @BindView(R.id.d_card_progress_bar)
     ProgressBar mDCardProgressBar;
-
-    private List<Game> mDiscoverGames;
+    private List<Game> mDiscoverGames = new ArrayList<>();
     private boolean mDiscoverGamesLoaded = false;
+
+    @BindView(R.id.tracking_card_recycler_view)
+    RecyclerView mTrackingCardRecyclerView;
+    private RecyclerView.Adapter mTrackingCardAdapter;
+    private RecyclerView.LayoutManager mTrackingCardLayoutManager;
+    @BindView(R.id.t_card_toolbar)
+    Toolbar mTCardToolbar;
+    @BindView(R.id.t_card_progress_bar)
+    ProgressBar mTCardProgressBar;
+    private List<Game> mTrackingGames = new ArrayList<>();
+    private boolean mTrackingGamesLoaded = false;
+
+    @BindView(R.id.owned_card_recycler_view)
+    RecyclerView mOwnedCardRecyclerView;
+    private RecyclerView.Adapter mOwnedCardAdapter;
+    private RecyclerView.LayoutManager mOwnedCardLayoutManager;
+    @BindView(R.id.o_card_toolbar)
+    Toolbar mOCardToolbar;
+    @BindView(R.id.o_card_progress_bar)
+    ProgressBar mOCardProgressBar;
+    private List<Game> mOwnedGames = new ArrayList<>();
+    private boolean mOwnedGamesLoaded = false;
+
+    private IGameSearchService mIGameSearchService;
 
     /**
      * Activity lifecycle
@@ -73,26 +107,59 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ButterKnife.bind(this);
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
-        mDiscoverCardRecyclerView.setHasFixedSize(true);
 
-        // use a linear layout manager
-        mDiscoverCardLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mDiscoverCardRecyclerView.setLayoutManager(mDiscoverCardLayoutManager);
-        mDCardToolbar.setLogo(ContextCompat.getDrawable(this, R.drawable.ic_find_in_page_white));
+        Log.v(LOG_TAG, "Initializing loaders");
+        initializeRecyclerViews();
+        loadData(savedInstanceState);
 
-        if(savedInstanceState != null && savedInstanceState.getBoolean("loadedGames")){
+        Stetho.initializeWithDefaults(this);
+        new OkHttpClient.Builder()
+                .addNetworkInterceptor(new StethoInterceptor())
+                .build();
+    }
+
+    private void loadData(Bundle savedInstanceState) {
+        if(savedInstanceState != null && savedInstanceState.getBoolean(DISCOVER_GAMES_LOADED_KEY)){
             mDiscoverGamesLoaded = true;
-            mDiscoverGames = savedInstanceState.getParcelableArrayList("discoverGames");
+            mDiscoverGames = savedInstanceState.getParcelableArrayList(DISCOVER_GAMES_KEY);
             initDiscoverCardRecyclerView();
         }else{
             mIGameSearchService = new GiantBombSearchService(this);
             mIGameSearchService.fetchUpcomingGamesPreview(this);
         }
 
-        Stetho.initializeWithDefaults(this);
-        new OkHttpClient.Builder()
-                .addNetworkInterceptor(new StethoInterceptor())
-                .build();
+        if(savedInstanceState != null && savedInstanceState.getBoolean(TRACKING_GAMES_LOADED_KEY)){
+            mTrackingGamesLoaded = true;
+            mTrackingGames = savedInstanceState.getParcelableArrayList(TRACKING_GAMES_KEY);
+            initTrackingCardRecyclerView();
+        }else{
+            getSupportLoaderManager().initLoader(TRACKING_LOADER, null, this);
+        }
+
+        if(savedInstanceState != null && savedInstanceState.getBoolean(OWNED_GAMES_LOADED_KEY)){
+            mOwnedGamesLoaded = true;
+            mOwnedGames = savedInstanceState.getParcelableArrayList(OWNED_GAMES_KEY);
+            initOwnedCardRecyclerView();
+        }else{
+            getSupportLoaderManager().initLoader(OWNED_LOADER, null, this);
+        }
+    }
+
+    private void initializeRecyclerViews() {
+        mDiscoverCardRecyclerView.setHasFixedSize(true);
+        mDiscoverCardLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mDiscoverCardRecyclerView.setLayoutManager(mDiscoverCardLayoutManager);
+        mDCardToolbar.setLogo(ContextCompat.getDrawable(this, R.drawable.ic_find_in_page_white));
+
+        mTrackingCardRecyclerView.setHasFixedSize(true);
+        mTrackingCardLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mTrackingCardRecyclerView.setLayoutManager(mTrackingCardLayoutManager);
+        mTCardToolbar.setLogo(ContextCompat.getDrawable(this, R.drawable.ic_location_searching_white));
+
+        mOwnedCardRecyclerView.setHasFixedSize(true);
+        mOwnedCardLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mOwnedCardRecyclerView.setLayoutManager(mOwnedCardLayoutManager);
+        mOCardToolbar.setLogo(ContextCompat.getDrawable(this, R.drawable.ic_videogame_asset_white));
     }
 
     @Override
@@ -112,12 +179,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -128,15 +191,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onSaveInstanceState(Bundle outState) {
         if(mDiscoverGamesLoaded) {
-            outState.putParcelableArrayList("discoverGames", (ArrayList<? extends Parcelable>) mDiscoverGames);
-            outState.putBoolean("loadedGames", mDiscoverGamesLoaded);
+            outState.putParcelableArrayList(DISCOVER_GAMES_KEY, (ArrayList<? extends Parcelable>) mDiscoverGames);
+            outState.putBoolean(DISCOVER_GAMES_LOADED_KEY, mDiscoverGamesLoaded);
+        }
+        if(mTrackingGamesLoaded){
+            outState.putParcelableArrayList(TRACKING_GAMES_KEY, (ArrayList<? extends Parcelable>) mTrackingGames);
+            outState.putBoolean(TRACKING_GAMES_LOADED_KEY, mTrackingGamesLoaded);
+        }
+        if(mOwnedGamesLoaded){
+            outState.putParcelableArrayList(OWNED_GAMES_KEY, (ArrayList<? extends Parcelable>) mOwnedGames);
+            outState.putBoolean(OWNED_GAMES_LOADED_KEY, mOwnedGamesLoaded);
         }
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
     }
 
     /**
@@ -145,12 +211,89 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
+        CursorLoader cursorLoader = null;
+
+        switch (id) {
+            case TRACKING_LOADER:
+                Log.d(LOG_TAG, "onCreateLoader TRACKING_LOADER");
+                cursorLoader = new CursorLoader(this,
+                        GameSightProvider.Games.CONTENT_URI,
+                        Game.GAME_PROJECTION,
+                        GameColumns.COLLECTION + "=?",
+                        new String[]{Game.TRACKING},
+                        null);
+                break;
+            case OWNED_LOADER:
+                Log.d(LOG_TAG, "onCreateLoader OWNED_LOADER");
+                cursorLoader = new CursorLoader(this,
+                        GameSightProvider.Games.CONTENT_URI,
+                        Game.GAME_PROJECTION,
+                        GameColumns.COLLECTION + "=?",
+                        new String[]{Game.OWNED},
+                        null);
+                break;
+        }
+        return cursorLoader;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (data != null ) {
+            switch (loader.getId()) {
+                case TRACKING_LOADER:
+                    Log.d(LOG_TAG, "LoadFinished TRACKING_LOADER ");
+                    data.moveToPosition(-1); //Rewind cursor
+                    mTrackingGames.clear();
+                    //reviewsLinearLayout.removeAllViews();
+                    while (data.moveToNext()) {
+                        Game current = new Game(data);
+                        mTrackingGames.add(current);
+                    }
+                    initTrackingCardRecyclerView();
+                    mTrackingGamesLoaded = true;
+                    break;
+                case OWNED_LOADER:
+                    Log.d(LOG_TAG, "LoadFinished OWNED_LOADER ");
+                    mOwnedGames.clear();
+                    data.moveToPosition(-1); //Rewind cursor
+                    //trailersLinearLayout.removeAllViews();
+                    while (data.moveToNext()) {
+                        Game current = new Game(data);
+                        mOwnedGames.add(current);
+                    }
+                    initOwnedCardRecyclerView();
+                    mOwnedGamesLoaded = true;
+                    break;
+            }
+        }
+    }
 
+    private void initOwnedCardRecyclerView() {
+        mOwnedCardAdapter = new CardRecyclerViewAdapter(mOwnedGames, this, new CardRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Game game) {
+                Intent detailsIntent = new Intent(getApplicationContext(), GameDetailActivity.class);
+                detailsIntent.putExtra(getString(R.string.parcelable_game_key), game);
+                startActivity(detailsIntent);
+            }
+        });
+        mOwnedCardRecyclerView.setAdapter(mOwnedCardAdapter);
+        mOCardProgressBar.setVisibility(View.GONE);
+        mOwnedCardRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    private void initTrackingCardRecyclerView() {
+        mTrackingCardAdapter = new CardRecyclerViewAdapter(mTrackingGames, this, new CardRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Game game) {
+                Intent detailsIntent = new Intent(getApplicationContext(), GameDetailActivity.class);
+                detailsIntent.putExtra(getString(R.string.parcelable_game_key), game);
+                startActivity(detailsIntent);
+            }
+        });
+        mTrackingCardRecyclerView.setAdapter(mTrackingCardAdapter);
+        mTCardProgressBar.setVisibility(View.GONE);
+        mTrackingCardRecyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -186,4 +329,5 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mDCardProgressBar.setVisibility(View.GONE);
         mDiscoverCardRecyclerView.setVisibility(View.VISIBLE);
     }
+
 }

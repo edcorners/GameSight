@@ -3,4 +3,10 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">4dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <!-- Card recycler view dimensions. -->
+
+    <dimen name="card_recycler_view_horizontal_padding">8dp</dimen>
+    <dimen name="card_recycler_view_vertical_padding">18dp</dimen>
+
 </resources>
