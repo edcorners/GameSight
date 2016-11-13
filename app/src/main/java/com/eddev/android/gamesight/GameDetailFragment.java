@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eddev.android.gamesight.data.GameSightDatabaseService;
 import com.eddev.android.gamesight.model.ClassificationAttribute;
 import com.eddev.android.gamesight.model.Game;
 import com.eddev.android.gamesight.model.Review;
@@ -82,8 +83,17 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     private boolean mGameLoaded = false;
     private boolean mReviewsLoaded = false;
 
+    private GameSightDatabaseService mGameSightDatabaseService;
+
     public GameDetailFragment() {
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -91,7 +101,9 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
 
         View rootView = inflater.inflate(R.layout.fragment_game_detail, container, false);
         ButterKnife.bind(this, rootView);
+        setMenuVisibility(false);
         mIGameSearchService = new GiantBombSearchService(getContext());
+        mGameSightDatabaseService = new GameSightDatabaseService(getContext());
 
         if(savedInstanceState != null && savedInstanceState.getBoolean("gameLoaded")){
             mGame = savedInstanceState.getParcelable("currentGame");
@@ -129,22 +141,24 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.menu_game_detail, menu);
+        /*if(mGameLoaded && mReviewsLoaded) {
+            for (int i = 0; i < menu.size(); i++) {
+                menu.getItem(i).setVisible(true);
+            }
+        }*/
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_favorite) {
-            saveGame();
+        if (id == R.id.action_favorite && mGameLoaded) {
+            mGameSightDatabaseService.insertFavorite(mGame);
+            item.setIcon(R.drawable.ic_favorite_white);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void saveGame() {
-        
     }
 
     @Override
@@ -183,6 +197,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
             mContentLinearLayout.setVisibility(View.VISIBLE);
             mContentProgressBar.setVisibility(View.GONE);
             mGameLoaded = true;
+            setMenuVisibility(mReviewsLoaded && mReviewsLoaded);
 
             updateVideosView();
         }
@@ -237,6 +252,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
         mReviewsLinearLayout.setVisibility(View.VISIBLE);
         mReviewsProgressBar.setVisibility(View.GONE);
         mReviewsLoaded = true;
+        setMenuVisibility(mReviewsLoaded && mReviewsLoaded);
     }
 
     private void createReviewView(Review current) {

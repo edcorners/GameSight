@@ -1,7 +1,10 @@
 package com.eddev.android.gamesight.model;
 
+import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.eddev.android.gamesight.data.VideoColumns;
 
 /**
  * Created by Edison on 9/24/2016.
@@ -15,6 +18,15 @@ public class Video implements Parcelable {
         this.id = id;
         this.name = name;
         this.url = url;
+    }
+
+    public ContentValues toContentValues(int gameId) {
+        ContentValues cv = new ContentValues();
+        cv.put(VideoColumns.VIDEO_ID, id);
+        cv.put(VideoColumns.NAME, name);
+        cv.put(VideoColumns.URL, url);
+        cv.put(VideoColumns.GAME_ID, gameId);
+        return cv;
     }
 
     protected Video(Parcel in) {
@@ -71,4 +83,6 @@ public class Video implements Parcelable {
             return new Video[size];
         }
     };
+
+
 }

@@ -1,8 +1,12 @@
 package com.eddev.android.gamesight.model;
 
+import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.StringDef;
+
+import com.eddev.android.gamesight.data.ClassificationByGameColumns;
+import com.eddev.android.gamesight.data.GameColumns;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -93,6 +97,37 @@ public class Game implements Parcelable {
 
     public Date getReleaseDate() {
         return originalReleaseDate == null ? expectedReleaseDate : originalReleaseDate;
+    }
+
+    public ContentValues toContentValues(){
+        ContentValues cv = new ContentValues();
+        cv.put(GameColumns.GAME_ID, id);
+        cv.put(GameColumns.DESCRIPTION, description);
+        if(expectedReleaseDate != null) {
+            cv.put(GameColumns.EXPECTED_RELEASE_DATE, expectedReleaseDate.getTime());
+        }
+        cv.put(GameColumns.IMAGE_URL, imageUrl);
+        cv.put(GameColumns.THUMBNAIL_URL, thumbnailUrl);
+        cv.put(GameColumns.NAME, name);
+        cv.put(GameColumns.NUMBER_OF_USER_REVIEWS, numberOfUserReviews);
+        if(originalReleaseDate != null) {
+            cv.put(GameColumns.ORIGINAL_RELEASE_DATE, originalReleaseDate.getTime());
+        }
+        cv.put(GameColumns.COMPLETION, completion);
+        cv.put(GameColumns.COLLECTION, collection);
+        return cv;
+    }
+
+    public ContentValues[] getClassificationByGameContentValues() {
+        ContentValues[] cv = new ContentValues[this.classificationAttributes.size()];
+        int cAttrIndex = 0;
+        for (ClassificationAttribute current: classificationAttributes) {
+            cv[cAttrIndex] = new ContentValues();
+            cv[cAttrIndex].put(ClassificationByGameColumns.CLASSIFICATION_ID, current.getId());
+            cv[cAttrIndex].put(ClassificationByGameColumns.GAME_ID, id);
+            cAttrIndex++;
+        }
+        return cv;
     }
 
     public int getId() {

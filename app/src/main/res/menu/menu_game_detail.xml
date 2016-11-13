@@ -12,6 +12,5 @@
         android:orderInCategory="101"
         android:title="Favorite"
         android:icon="@drawable/ic_favorite_border_white"
-        app:showAsAction="ifRoom"
-        android:checkable="false" />
+        app:showAsAction="ifRoom" />
 </menu>

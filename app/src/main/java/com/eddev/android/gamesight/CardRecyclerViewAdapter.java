@@ -75,8 +75,8 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
         public void bind(final Game game, final OnItemClickListener listener) {
             Picasso.with(itemView.getContext())
                     .load(game.getThumbnailUrl())
-                    .placeholder(R.mipmap.ic_launcher)
-                    .error(R.mipmap.ic_launcher)
+                    .placeholder(R.color.mainBackground)
+                    .error(R.color.mainBackground)
                     .into(mGameCoverImageView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {

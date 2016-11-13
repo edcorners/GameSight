@@ -1,7 +1,10 @@
 package com.eddev.android.gamesight.model;
 
+import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.eddev.android.gamesight.data.ReviewColumns;
 
 import java.util.Date;
 
@@ -31,6 +34,17 @@ public class Review implements Parcelable {
         date = tmpDate != -1 ? new Date(tmpDate) : null;
         score = in.readDouble();
         reviewer = in.readString();
+    }
+
+    public ContentValues toContentValues(int gameId) {
+        ContentValues cv = new ContentValues();
+        cv.put(ReviewColumns.REVIEW_ID, id);
+        cv.put(ReviewColumns.GAME_ID, gameId);
+        cv.put(ReviewColumns.DESCRIPTION, description);
+        cv.put(ReviewColumns.DATE, date.getTime());
+        cv.put(ReviewColumns.SCORE, score);
+        cv.put(ReviewColumns.REVIEWER, reviewer);
+        return cv;
     }
 
     public int getId() {
@@ -99,4 +113,5 @@ public class Review implements Parcelable {
             return new Review[size];
         }
     };
+
 }

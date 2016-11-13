@@ -1,8 +1,11 @@
 package com.eddev.android.gamesight.model;
 
+import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.StringDef;
+
+import com.eddev.android.gamesight.data.ClassificationAttributeColumns;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -28,6 +31,14 @@ public class ClassificationAttribute implements Parcelable {
         this.id = id;
         this.type = type;
         this.value = value;
+    }
+
+    public ContentValues toContentValues(int classificationId) {
+        ContentValues cv = new ContentValues();
+        cv.put(ClassificationAttributeColumns.CLASSIFICATION_ID, id);
+        cv.put(ClassificationAttributeColumns.TYPE, type);
+        cv.put(ClassificationAttributeColumns.VALUE, value);
+        return cv;
     }
 
     protected ClassificationAttribute(Parcel in) {

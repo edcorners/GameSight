@@ -24,7 +24,7 @@ public interface GameColumns {
     @DataType(DataType.Type.TEXT)
     String DESCRIPTION = "description";
 
-    @DataType(DataType.Type.TEXT)
+    @DataType(DataType.Type.INTEGER)
     String EXPECTED_RELEASE_DATE = "expectedReleaseDate";
 
     @DataType(DataType.Type.TEXT)
@@ -41,7 +41,7 @@ public interface GameColumns {
     @DataType(DataType.Type.INTEGER)
     String NUMBER_OF_USER_REVIEWS = "numberOfUserReviews";
 
-    @DataType(DataType.Type.TEXT)
+    @DataType(DataType.Type.INTEGER)
     String ORIGINAL_RELEASE_DATE = "originalReleaseDate";
 
     //private List<ReviewColumns> reviews = new ArrayList<ReviewColumns>();

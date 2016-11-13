@@ -26,12 +26,15 @@ import com.eddev.android.gamesight.model.Game;
 import com.eddev.android.gamesight.service.GiantBombSearchService;
 import com.eddev.android.gamesight.service.IGameSearchService;
 import com.eddev.android.gamesight.service.callback.IGamesLoadedCallback;
+import com.facebook.stetho.Stetho;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, IGamesLoadedCallback{
 
@@ -86,10 +89,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             mIGameSearchService.fetchUpcomingGamesPreview(this);
         }
 
-        /*Stetho.initializeWithDefaults(this);
+        Stetho.initializeWithDefaults(this);
         new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())
-                .build();*/
+                .build();
     }
 
     @Override

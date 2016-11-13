@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.widget.ImageView;
 
 import com.eddev.android.gamesight.model.Game;
@@ -50,7 +49,7 @@ public class GameDetailActivity extends AppCompatActivity {
             detailFragment.setArguments(arguments);
 
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.game_detail_container, detailFragment)
+                    .add(R.id.game_detail_container, detailFragment)
                     .commit();
         }else {
             mGame = savedInstanceState.getParcelable("currentGame");
@@ -90,9 +89,4 @@ public class GameDetailActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_game_detail, menu);
-        return true;
-    }
 }
