@@ -33,6 +33,7 @@ public class GameSightDatabaseService {
     }
 
     public void insertFavorite(Game game){
+        game.calculateCollection();
         upsertGame(game);
         ArrayList<ContentProviderOperation> batchUpserts = upsertVideos(game.getVideos(), game.getId());
         batchUpserts.addAll(upsertReviews(game.getReviews(), game.getId()));

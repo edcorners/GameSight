@@ -89,7 +89,6 @@ public class Game implements Parcelable {
         this.videos = videos;
         this.completion = completion;
         this.collection = collection;
-        calculateCollection();
     }
 
     public Game(Cursor cursor){
@@ -118,7 +117,6 @@ public class Game implements Parcelable {
                 this.collection = OWNED;
                 break;
         }
-        calculateCollection();
     }
 
     public void copyBasicFields(Game game) {
@@ -127,7 +125,6 @@ public class Game implements Parcelable {
         this.numberOfUserReviews = game.numberOfUserReviews;
         this.originalReleaseDate = game.originalReleaseDate;
         this.videos = game.videos;
-        calculateCollection();
     }
 
     public List<String> getClassificationAttributeValues(@ClassificationAttribute.GameAttribType String classificationAttribute) {
