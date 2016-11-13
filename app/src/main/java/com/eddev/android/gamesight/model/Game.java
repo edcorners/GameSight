@@ -36,6 +36,8 @@ public class Game implements Parcelable {
     private List<Video> videos = new ArrayList<Video>();
     private double completion = 0;
     private @CollectionName String collection;
+    // Transient attributes
+    private boolean favorite;
 
     public Game(int id, String thumbUrl, String name, String description, Date expectedReleaseDate, Date originalReleaseDate) {
         this.id = id;
@@ -234,6 +236,14 @@ public class Game implements Parcelable {
         this.collection = collection;
     }
 
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+
     protected Game(Parcel in) {
         id = in.readInt();
         description = in.readString();
@@ -275,6 +285,7 @@ public class Game implements Parcelable {
                     break;
             }
         }
+        favorite = Boolean.parseBoolean(in.readString());
     }
 
     @Override
@@ -312,6 +323,7 @@ public class Game implements Parcelable {
         }
         dest.writeDouble(completion);
         dest.writeString(collection);
+        dest.writeString(String.valueOf(favorite));
     }
 
     @SuppressWarnings("unused")

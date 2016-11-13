@@ -84,6 +84,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     private boolean mReviewsLoaded = false;
 
     private GameSightDatabaseService mGameSightDatabaseService;
+    private MenuItem mFavMenuItem;
 
     public GameDetailFragment() {
     }
@@ -120,10 +121,12 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
                 mGame = arguments.getParcelable(getString(R.string.parcelable_game_key));
                 mIGameSearchService.findGameById(mGame.getId(), this);
                 mIGameSearchService.findReviewsByGameId(mGame.getId(), this);
+                mGame.setFavorite(mGameSightDatabaseService.isFavorite(mGame));
             }else{
                 //TODO show error
             }
         }
+
         return rootView;
     }
 
@@ -141,11 +144,9 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.menu_game_detail, menu);
-        /*if(mGameLoaded && mReviewsLoaded) {
-            for (int i = 0; i < menu.size(); i++) {
-                menu.getItem(i).setVisible(true);
-            }
-        }*/
+        if(mGame.isFavorite()) {
+            menu.getItem(1).setIcon(R.drawable.ic_favorite_white);
+        }
     }
 
     @Override
@@ -153,8 +154,10 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
         int id = item.getItemId();
 
         if (id == R.id.action_favorite && mGameLoaded) {
-            mGameSightDatabaseService.insertFavorite(mGame);
-            item.setIcon(R.drawable.ic_favorite_white);
+            if(!mGame.isFavorite()) {
+                mGameSightDatabaseService.insertFavorite(mGame);
+                item.setIcon(R.drawable.ic_favorite_white);
+            }
             return true;
         }
 
