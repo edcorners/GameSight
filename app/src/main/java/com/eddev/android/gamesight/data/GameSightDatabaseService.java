@@ -157,18 +157,4 @@ public class GameSightDatabaseService {
         }
     }
 
-    public boolean isFavorite(Game game) {
-        String selection = GameColumns.GAME_ID+ " =? ";
-        String[] selectionArgs = {String.valueOf(game.getId())};
-        Cursor cursor = mContext.getContentResolver().query(GameSightProvider.Games.CONTENT_URI,
-                null,
-                selection,
-                selectionArgs,
-                null);
-        cursor.moveToNext();
-        boolean recordExists = cursor.getCount() > 0;
-        cursor.close();
-        return recordExists;
-    }
-
 }

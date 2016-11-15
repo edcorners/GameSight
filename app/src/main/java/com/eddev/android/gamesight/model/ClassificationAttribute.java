@@ -1,11 +1,13 @@
 package com.eddev.android.gamesight.model;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.StringDef;
 
 import com.eddev.android.gamesight.data.ClassificationAttributeColumns;
+import com.eddev.android.gamesight.data.GameSightDatabase;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -14,6 +16,15 @@ import java.lang.annotation.RetentionPolicy;
  * Created by Edison on 9/24/2016.
  */
 public class ClassificationAttribute implements Parcelable {
+
+    public static final String[] CLASSIFICATION_ATTR_PROJECTION =
+            {GameSightDatabase.CLASSIFICATION_ATTRIBUTES+"."+ ClassificationAttributeColumns.CLASSIFICATION_ID,
+             GameSightDatabase.CLASSIFICATION_ATTRIBUTES+"."+ClassificationAttributeColumns.TYPE,
+             GameSightDatabase.CLASSIFICATION_ATTRIBUTES+"."+ClassificationAttributeColumns.VALUE};
+
+    private static final int INDEX_CLASSIFICATION_ID = 0;
+    private static final int INDEX_TYPE = 1;
+    private static final int INDEX_VALUE = 2;
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({GENRE, PLATFORM, PUBLISHER})
@@ -32,6 +43,26 @@ public class ClassificationAttribute implements Parcelable {
         this.type = type;
         this.value = value;
     }
+
+    public ClassificationAttribute(Cursor cursor) {
+        this.id = cursor.getInt(INDEX_CLASSIFICATION_ID);
+        if(cursor.getString(INDEX_TYPE) != null) {
+            switch (cursor.getString(INDEX_TYPE)) {
+                case GENRE:
+                    type = GENRE;
+                    break;
+                case PLATFORM:
+                    type = PLATFORM;
+                    break;
+                case PUBLISHER:
+                    type = PUBLISHER;
+                    break;
+            }
+        }
+        this.value = cursor.getString(INDEX_VALUE);
+    }
+
+
 
     public ContentValues toContentValues(int classificationId) {
         ContentValues cv = new ContentValues();

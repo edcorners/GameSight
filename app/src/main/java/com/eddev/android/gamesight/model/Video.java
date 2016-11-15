@@ -1,15 +1,25 @@
 package com.eddev.android.gamesight.model;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.eddev.android.gamesight.data.GameSightDatabase;
 import com.eddev.android.gamesight.data.VideoColumns;
 
 /**
  * Created by Edison on 9/24/2016.
  */
 public class Video implements Parcelable {
+    public static final String[] VIDEO_PROJECTION = {GameSightDatabase.VIDEOS+"."+ VideoColumns.VIDEO_ID,
+            GameSightDatabase.VIDEOS+"."+VideoColumns.NAME,
+            GameSightDatabase.VIDEOS+"."+VideoColumns.URL};
+
+    private static final int INDEX_VIDEO_ID = 0;
+    private static final int INDEX_NAME = 1;
+    private static final int INDEX_URL = 2;
+
     private int id;
     private String name;
     private String url;
@@ -18,6 +28,12 @@ public class Video implements Parcelable {
         this.id = id;
         this.name = name;
         this.url = url;
+    }
+
+    public Video(Cursor cursor) {
+        this.id = cursor.getInt(INDEX_VIDEO_ID);
+        this.name = cursor.getString(INDEX_NAME);
+        this.url = cursor.getString(INDEX_URL);
     }
 
     public ContentValues toContentValues(int gameId) {

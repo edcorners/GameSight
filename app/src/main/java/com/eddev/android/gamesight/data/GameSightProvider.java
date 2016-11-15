@@ -96,6 +96,24 @@ public class GameSightProvider {
         public static Uri withClassificationAttributeId(long id){
             return buildUri(Path.CLASSIFICATION_ATTRIBUTES, String.valueOf(id));
         }
+
+        @InexactContentUri(
+                name = "CLASSIFICATION_ATTRIBUTES_BY_GAME",
+                path = Path.GAMES +"/"+ Path.CLASSIFICATION_ATTRIBUTES + "/*",
+                type = "vnd.android.cursor.dir/classification_attribute",
+                whereColumn = GameSightDatabase.CLASSIFICATION_BY_GAME+"."+ClassificationByGameColumns.GAME_ID,
+                pathSegment = 2,
+                join = "INNER JOIN "+GameSightDatabase.CLASSIFICATION_BY_GAME+" ON "+
+                        GameSightDatabase.CLASSIFICATION_BY_GAME+"."+ClassificationByGameColumns.CLASSIFICATION_ID + " = " +
+                        GameSightDatabase.CLASSIFICATION_ATTRIBUTES+"."+ClassificationAttributeColumns.CLASSIFICATION_ID +
+                        " INNER JOIN "+GameSightDatabase.GAMES+" ON "+
+                        GameSightDatabase.GAMES+"."+GameColumns.GAME_ID + " = " +
+                        GameSightDatabase.CLASSIFICATION_BY_GAME+"."+ClassificationByGameColumns.GAME_ID,
+                defaultSort = GameSightDatabase.CLASSIFICATION_ATTRIBUTES+"."+ ClassificationAttributeColumns.TYPE + " ASC"
+        )
+        public static Uri withGameId(String gameId){
+            return buildUri(Path.GAMES, Path.CLASSIFICATION_ATTRIBUTES, gameId);
+        }
     }
 
     @TableEndpoint(table = GameSightDatabase.CLASSIFICATION_BY_GAME) public static class ClassificationByGame {

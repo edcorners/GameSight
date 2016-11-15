@@ -109,17 +109,19 @@ public class Game implements Parcelable {
         }
         this.completion = cursor.getDouble(INDEX_COMPLETION);
 
-        switch (cursor.getString(INDEX_COLLECTION)) {
-            case TRACKING:
-                this.collection = TRACKING;
-                break;
-            case OWNED:
-                this.collection = OWNED;
-                break;
+        if(!TextUtils.isEmpty(cursor.getString(INDEX_COLLECTION))) {
+            switch (cursor.getString(INDEX_COLLECTION)) {
+                case TRACKING:
+                    this.collection = TRACKING;
+                    break;
+                case OWNED:
+                    this.collection = OWNED;
+                    break;
+            }
         }
     }
 
-    public void copyBasicFields(Game game) {
+    public void copyGBFetchedFields(Game game) {
         this.expectedReleaseDate = game.expectedReleaseDate;
         this.classificationAttributes = game.classificationAttributes;
         this.numberOfUserReviews = game.numberOfUserReviews;
@@ -188,6 +190,36 @@ public class Game implements Parcelable {
             cAttrIndex++;
         }
         return cv;
+    }
+
+    public void clearReviews() {
+        this.reviews.clear();
+    }
+
+    public void clearVideos(){
+        this.videos.clear();
+    }
+
+    public void clearClassificationAttributes(){
+        this.classificationAttributes.clear();
+    }
+
+    public void addReview(Review review) {
+        if(review != null) {
+            this.reviews.add(review);
+        }
+    }
+
+    public void addVideo(Video video) {
+        if(video != null) {
+            this.videos.add(video);
+        }
+    }
+
+    public void addClassificationAttribute(ClassificationAttribute classificationAttribute) {
+        if(classificationAttribute != null) {
+            this.classificationAttributes.add(classificationAttribute);
+        }
     }
 
     public int getId() {

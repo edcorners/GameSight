@@ -29,7 +29,7 @@ public interface ReviewColumns {
     @DataType(DataType.Type.TEXT)
     String DESCRIPTION = "description";
 
-    @DataType(DataType.Type.TEXT)
+    @DataType(DataType.Type.INTEGER)
     String DATE = "date";
 
     @DataType(DataType.Type.REAL)
