@@ -21,7 +21,7 @@
             app:srcCompat="@color/mainBackground"
             android:id="@+id/search_result_game_thumb"
             android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:layout_margin="2dp"
             android:padding="1dp" />
     </FrameLayout>
