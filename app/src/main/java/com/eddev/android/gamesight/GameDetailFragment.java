@@ -15,6 +15,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.widget.AppCompatSeekBar;
+import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -24,8 +26,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,7 +56,8 @@ import io.techery.properratingbar.ProperRatingBar;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class GameDetailFragment extends Fragment implements IGameLoadedCallback, IGameReviewsLoadedCallback, LoaderManager.LoaderCallbacks<Cursor>{
+public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
+        IGameReviewsLoadedCallback, LoaderManager.LoaderCallbacks<Cursor>,SeekBar.OnSeekBarChangeListener{
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -99,15 +104,21 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     @BindView(R.id.detail_content_progress_bar)
     ProgressBar mContentProgressBar;
 
+    @BindView(R.id.detail_seek_bar)
+    AppCompatSeekBar mCompletionSeekBar;
+    @BindView(R.id.detail_progress_card)
+    CardView mProgressCard;
+    @BindView(R.id.detail_collection_icon)
+    ImageView mCollectonIcon;
+
+
     private boolean mGameLoaded = false;
     private boolean mReviewsLoaded = false;
     private boolean mVideosLoaded = false;
 
     private GameSightDatabaseService mGameSightDatabaseService;
 
-
-    public GameDetailFragment() {
-    }
+    public GameDetailFragment() {   }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -217,11 +228,35 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
             if(!mGame.isFavorite()) {
                 mGameSightDatabaseService.insertFavorite(mGame);
                 item.setIcon(R.drawable.ic_favorite_white);
+                updateProgressCard();
+            }else{
+                mGameSightDatabaseService.removeFavorite(mGame);
+                item.setIcon(R.drawable.ic_favorite_border_white);
+                mProgressCard.setVisibility(View.GONE);
             }
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateProgressCard() {
+        if(mGame.isInCollecion(Game.TRACKING)){
+            mCollectonIcon.setImageResource(R.drawable.ic_location_searching_white);
+            mProgressCard.setCardBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getActivity(), R.color.tracking_card_toolbar )));
+            mCompletionSeekBar.setVisibility(View.GONE);
+            Date expectedReleaseDate = mGame.getExpectedReleaseDate();
+            String completionText = expectedReleaseDate != null ? " Coming out "+Utility.shortDateFormat.format(expectedReleaseDate):
+                    "Release date unknown";
+            mCompletionTextView.setText(completionText);
+        }else{
+            mCollectonIcon.setImageResource(R.drawable.ic_videogame_asset_white);
+            mProgressCard.setCardBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getActivity(), R.color.owned_card_toolbar )));
+            mCompletionSeekBar.setVisibility(View.VISIBLE);
+            mCompletionSeekBar.setProgress((int)mGame.getCompletion());
+            mCompletionTextView.setText((int)mGame.getCompletion() + "% complete");
+        }
+        mProgressCard.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -252,16 +287,27 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
 
     private void updateGameView() {
         if(mGame != null) {
-            mCompletionTextView.setText(mGame.getCompletion() + "%");
             mDescriptionTextView.setText(mGame.getDescription());
             String publishers = TextUtils.join(", ", mGame.getClassificationAttributeValues(ClassificationAttribute.PUBLISHER));
             mPublisherTextView.setText(TextUtils.isEmpty(publishers) ? "Not available" : publishers);
             Date releaseDate = mGame.getReleaseDate();
-            mReleaseDateTextView.setText(releaseDate != null ? Utility.dateFormat.format(releaseDate) : "Unknown");
+            mReleaseDateTextView.setText(releaseDate != null ? Utility.shortDateFormat.format(releaseDate) : "Unknown");
             String genres = TextUtils.join(", ", mGame.getClassificationAttributeValues(ClassificationAttribute.GENRE));
             mGenreTextView.setText(TextUtils.isEmpty(genres) ? "Not available" : genres);
             String platforms = TextUtils.join(", ", mGame.getClassificationAttributeValues(ClassificationAttribute.PLATFORM));
             mPlatformsTextView.setText(TextUtils.isEmpty(platforms) ? "Not available" : platforms);
+
+            mCompletionSeekBar.setOnSeekBarChangeListener(this);
+            if (mGame.isFavorite()){
+                updateProgressCard();
+            }
+
+            /*mPlatformsLinearLayout.removeAllViews();
+            for(int platform: mGame.getClassificationAttributeIds(ClassificationAttribute.PLATFORM)) {
+                ImageView platformIcon = new ImageView(getActivity());
+                platformIcon.setImageResource(Utility.getIconResourceForConsole(platform));
+                mPlatformsLinearLayout.addView(platformIcon);
+            }*/
 
             mContentLinearLayout.setVisibility(View.VISIBLE);
             mContentProgressBar.setVisibility(View.GONE);
@@ -434,4 +480,24 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {  }
+
+    /**
+     * Seek bar listener
+     * */
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        mGame.setCompletion(progress);
+        mCompletionTextView.setText(progress+"% complete");
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        mGameSightDatabaseService.updateProgress(mGame);
+    }
 }

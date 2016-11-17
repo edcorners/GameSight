@@ -45,4 +45,5 @@
         <item name="android:layout_marginTop">@dimen/card_recycler_view_vertical_padding</item>
         <item name="android:layout_marginBottom">@dimen/card_recycler_view_vertical_padding</item>
     </style>
+
 </resources>

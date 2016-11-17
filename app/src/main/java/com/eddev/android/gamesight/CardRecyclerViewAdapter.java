@@ -1,6 +1,10 @@
 package com.eddev.android.gamesight;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.eddev.android.gamesight.model.Game;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -77,12 +82,28 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
                     .load(game.getThumbnailUrl())
                     .placeholder(R.color.mainBackground)
                     .error(R.color.mainBackground)
-                    .into(mGameCoverImageView);
+                    .into(mGameCoverImageView,new Callback() {
+                        @Override public void onSuccess() {
+                            Bitmap bitmap = ((BitmapDrawable) mGameCoverImageView.getDrawable()).getBitmap();
+                            Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+                                public void onGenerated(Palette palette) {
+                                    applyPalette(palette);
+                                }
+                            });
+                        }
+
+                        @Override public void onError() { }
+                    });
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     listener.onItemClick(game);
                 }
             });
+        }
+
+        private void applyPalette(Palette palette) {
+            int primary = ContextCompat.getColor(itemView.getContext(), R.color.colorPrimary);
+            mGameCoverImageView.setBackgroundColor(palette.getDominantColor(primary));
         }
     }
 

@@ -95,15 +95,15 @@ public class Game implements Parcelable {
         this.id = cursor.getInt(INDEX_GAME_ID);
         this.description = cursor.getString(INDEX_DESCRIPTION);
 
-        int expectedDateInt = cursor.getInt(INDEX_EXPECTED_RELEASE_DATE);
-        if(expectedDateInt > 0) {
-            this.expectedReleaseDate = new Date(expectedDateInt);
+        long expectedDateLong = cursor.getLong(INDEX_EXPECTED_RELEASE_DATE);
+        if(expectedDateLong > 0) {
+            this.expectedReleaseDate = new Date(expectedDateLong);
         }
         this.imageUrl = cursor.getString(INDEX_IMAGE_URL);
         this.thumbnailUrl = cursor.getString(INDEX_THUMBNAIL_URL);
         this.name = cursor.getString(INDEX_NAME);
         this.numberOfUserReviews = cursor.getInt(INDEX_NUMBER_OF_USER_REVIEWS);
-        int origDateLong = cursor.getInt(INDEX_ORIGINAL_RELEASE_DATE);
+        long origDateLong = cursor.getLong(INDEX_ORIGINAL_RELEASE_DATE);
         if(origDateLong > 0) {
             this.originalReleaseDate = new Date(origDateLong);
         }
@@ -190,6 +190,14 @@ public class Game implements Parcelable {
             cAttrIndex++;
         }
         return cv;
+    }
+
+    public boolean isInCollecion(@CollectionName String collection) {
+        boolean inCollection = false;
+        if(collection != null && this.collection.equals(collection)) {
+            inCollection = true;
+        }
+        return inCollection;
     }
 
     public void clearReviews() {

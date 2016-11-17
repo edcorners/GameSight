@@ -157,4 +157,15 @@ public class GameSightDatabaseService {
         }
     }
 
+    public void removeFavorite(Game mGame) {
+        mContext.getContentResolver().delete(GameSightProvider.Games.CONTENT_URI, GameColumns.GAME_ID +" = "+ mGame.getId(), null);
+    }
+
+    public void updateProgress(Game mGame) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(GameColumns.COMPLETION, mGame.getCompletion());
+        mContext.getContentResolver().update(GameSightProvider.Games.CONTENT_URI,
+                    contentValues,
+                    GameColumns.GAME_ID +" = "+ mGame.getId(), null);
+    }
 }

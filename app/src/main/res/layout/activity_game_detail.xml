@@ -20,7 +20,6 @@
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginStart="24dp"
             app:expandedTitleMarginEnd="24dp"
-
             android:fitsSystemWindows="true">
 
             <RelativeLayout

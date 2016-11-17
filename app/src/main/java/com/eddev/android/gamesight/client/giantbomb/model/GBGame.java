@@ -291,7 +291,7 @@ public class GBGame {
     }
 
     public String getThumb() {
-        return hasThumb() ? this.image.getThumbUrl() : null;
+        return hasThumb() ? this.image.getSmallUrl() : null;
     }
 
     public boolean hasCover() {

@@ -55,9 +55,9 @@ public class Review implements Parcelable {
     public Review(Cursor data){
         this.id = data.getInt(INDEX_REVIEW_ID);
         this.description = data.getString(INDEX_DESCRIPTION);
-        int dateInt = data.getInt(INDEX_DATE);
-        if(dateInt>0) {
-            this.date = new Date(dateInt);
+        long dateLong = data.getLong(INDEX_DATE);
+        if(dateLong>0) {
+            this.date = new Date(dateLong);
         }
         this.score = data.getDouble(INDEX_SCORE);
         this.reviewer = data.getString(INDEX_REVIEWER);

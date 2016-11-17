@@ -4,6 +4,10 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#fc5621</color>
     <color name="mainBackground">#464646</color>
-    <color name="cardBgcolor">#e5e8f3</color>
+    <color name="card_background">#e5e8f3</color>
     <color name="emptyViewMessage">#b4b4b4</color>
+    <color name="owned_card_toolbar">#fc5621</color>
+    <color name="tracking_card_toolbar">#ff669900</color>
+    <color name="discover_card_toolbar">#3F51B5</color>
+    <color name="white">#ffffff</color>
 </resources>
