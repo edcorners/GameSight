@@ -33,13 +33,14 @@ public class GameFactoryFromGB {
     }
 
     public Game createGamePreview(GBGame gBGame){
+        List<ClassificationAttribute> classificationAttributes = getClassificationAttributes(gBGame);
         Game newGame = new Game(gBGame.getId(),
                 gBGame.getDeck(),
                 Utility.getDate(gBGame.getExpectedReleaseDate()),
                 gBGame.getCover(),
                 gBGame.getThumb(),
                 gBGame.getName(),
-                null,
+                classificationAttributes,
                 gBGame.getNumberOfUserReviews(),
                 Utility.getDateTime(gBGame.getOriginalReleaseDate()),
                 null,
@@ -126,9 +127,11 @@ public class GameFactoryFromGB {
 
     public List<Review> createGameReviews(List<GBReview> gbReviews) {
         List<Review> reviews = new ArrayList<>();
-        for(GBReview current: gbReviews){
-            Review newReview = new Review(0, current.getDeck(), Utility.getDateTime(current.getPublishDate()), current.getScore(), current.getReviewer());
-            reviews.add(newReview);
+        if(gbReviews != null) {
+            for (GBReview current : gbReviews) {
+                Review newReview = new Review(0, current.getDeck(), Utility.getDateTime(current.getPublishDate()), current.getScore(), current.getReviewer());
+                reviews.add(newReview);
+            }
         }
         return reviews;
     }

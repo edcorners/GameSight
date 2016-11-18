@@ -35,7 +35,7 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/discover_card_recycler_view"
-                style="@style/card_gallery_recycler_view"
+                style="@style/cardGalleryRecyclerView"
                 android:visibility="gone"/>
 
             <android.support.v7.widget.Toolbar
@@ -90,7 +90,7 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/tracking_card_recycler_view"
-                style="@style/card_gallery_recycler_view"
+                style="@style/cardGalleryRecyclerView"
                 android:visibility="gone"/>
 
             <android.support.v7.widget.Toolbar
@@ -146,7 +146,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/owned_card_recycler_view"
                 android:visibility="gone"
-                style="@style/card_gallery_recycler_view" />
+                style="@style/cardGalleryRecyclerView" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/o_card_toolbar"

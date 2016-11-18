@@ -64,9 +64,9 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     }
 
     private final String LOG_TAG = GameDetailFragment.class.getSimpleName();
-    private static final int REVIEWS_LOADER = 0;
-    private static final int VIDEOS_LOADER = 1;
-    private static final int CATTRIBUTES_LOADER = 2;
+    private static final int REVIEWS_LOADER = 1; //0 is taken by activity
+    private static final int VIDEOS_LOADER = 2;
+    private static final int CATTRIBUTES_LOADER = 3;
 
     public static final String GAME_LOADED_KEY = "gameLoaded";
     public static final String CURRENT_GAME_KEY = "currentGame";
@@ -88,8 +88,6 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     TextView mGenreTextView;
     @BindView(R.id.detail_platforms_text_view)
     TextView mPlatformsTextView;
-    @BindView(R.id.detail_platforms_linear_layout)
-    LinearLayout mPlatformsLinearLayout;
     @BindView(R.id.detail_content_game)
     LinearLayout mContentLinearLayout;
     @BindView(R.id.detail_reviews_layout)
@@ -301,13 +299,6 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
             if (mGame.isFavorite()){
                 updateProgressCard();
             }
-
-            /*mPlatformsLinearLayout.removeAllViews();
-            for(int platform: mGame.getClassificationAttributeIds(ClassificationAttribute.PLATFORM)) {
-                ImageView platformIcon = new ImageView(getActivity());
-                platformIcon.setImageResource(Utility.getIconResourceForConsole(platform));
-                mPlatformsLinearLayout.addView(platformIcon);
-            }*/
 
             mContentLinearLayout.setVisibility(View.VISIBLE);
             mContentProgressBar.setVisibility(View.GONE);

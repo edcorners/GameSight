@@ -19,8 +19,9 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginStart="24dp"
-            app:expandedTitleMarginEnd="24dp"
-            android:fitsSystemWindows="true">
+            app:expandedTitleMarginEnd="42dp"
+            android:fitsSystemWindows="true"
+            app:expandedTitleTextAppearance="@style/collapsibleToolbarStyle">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -45,6 +46,23 @@
                     android:background="@drawable/scrim_upwards_gradient"
                     android:elevation="6dp"
                     android:layout_alignBottom="@+id/detail_backdrop" />
+
+                <LinearLayout
+                    android:id="@+id/detail_platforms_linear_layout"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_alignBottom="@id/detail_backdrop"
+                    android:layout_alignEnd="@id/detail_backdrop"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:elevation="0dp">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@mipmap/ic_launcher" />
+                </LinearLayout>
 
             </RelativeLayout>
 

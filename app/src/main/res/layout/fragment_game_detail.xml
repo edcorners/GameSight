@@ -76,15 +76,6 @@
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
-        <LinearLayout
-            android:id="@+id/detail_platforms_linear_layout"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="right|end"
-            />
-
         <TextView
             android:text="Description"
             android:layout_width="match_parent"
@@ -212,7 +203,7 @@
 
         <View
             android:id="@+id/detail_separating_line2"
-            style="@style/horizontal_line" />
+            style="@style/horizontalLine" />
 
         <ProgressBar
             style="?android:attr/progressBarStyleSmall"
@@ -234,7 +225,7 @@
 
         <View
             android:id="@+id/detail_separating_line3"
-            style="@style/horizontal_line" />
+            style="@style/horizontalLine" />
 
         <ProgressBar
             style="?android:attr/progressBarStyleSmall"

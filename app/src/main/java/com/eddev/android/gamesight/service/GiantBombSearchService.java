@@ -40,7 +40,7 @@ public class GiantBombSearchService implements IGameSearchService {
         mParameters.put(FindGBGamesAsyncTask.SORT, "original_release_date:asc");
         mParameters.put(FindGBGamesAsyncTask.LIMIT, "5");
         mParameters.put(FindGBGamesAsyncTask.FORMAT, "json");
-        mParameters.put(FindGBGamesAsyncTask.FIELD_LIST, "id,name,image,deck,expected_release_day,expected_release_month,expected_release_year,original_release_date");
+        mParameters.put(FindGBGamesAsyncTask.FIELD_LIST, "id,name,image,deck,expected_release_day,expected_release_month,expected_release_year,original_release_date,platforms");
 
         FindGBGamesAsyncTask findGBGamesAsyncTask = new FindGBGamesAsyncTask(mContext, callback);
         findGBGamesAsyncTask.execute(mParameters);
@@ -52,7 +52,7 @@ public class GiantBombSearchService implements IGameSearchService {
         mParameters.put(FindGBGamesAsyncTask.SORT, "number_of_user_reviews:desc");
         mParameters.put(FindGBGamesAsyncTask.LIMIT, "20");
         mParameters.put(FindGBGamesAsyncTask.FORMAT, "json");
-        mParameters.put(FindGBGamesAsyncTask.FIELD_LIST, "id,name,image,deck,expected_release_day,expected_release_month,expected_release_year,original_release_date");
+        mParameters.put(FindGBGamesAsyncTask.FIELD_LIST, "id,name,image,deck,expected_release_day,expected_release_month,expected_release_year,original_release_date,platforms");
 
         FindGBGamesAsyncTask findGBGamesAsyncTask = new FindGBGamesAsyncTask(mContext, callback);
         findGBGamesAsyncTask.execute(mParameters);

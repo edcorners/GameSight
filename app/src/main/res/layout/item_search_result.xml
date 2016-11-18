@@ -56,7 +56,7 @@
 
     <View
         android:id="@+id/result_separating_line"
-        style="@style/horizontal_line"
+        style="@style/horizontalLine"
         android:layout_alignBottom="@id/game_cover_frame"/>
 
 </RelativeLayout>
