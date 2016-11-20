@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:id="@+id/activity_search"
-    tools:context="com.eddev.android.gamesight.SearchableActivity">
+    tools:context="com.eddev.android.gamesight.presenter.SearchableActivity">
 
     <RelativeLayout
         android:id="@+id/content_search"

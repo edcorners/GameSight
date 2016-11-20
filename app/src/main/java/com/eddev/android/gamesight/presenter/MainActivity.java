@@ -1,4 +1,4 @@
-package com.eddev.android.gamesight;
+package com.eddev.android.gamesight.presenter;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -24,9 +24,11 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.data.GameColumns;
 import com.eddev.android.gamesight.data.GameSightProvider;
 import com.eddev.android.gamesight.model.Game;
+import com.eddev.android.gamesight.presenter.adapter.CardRecyclerViewAdapter;
 import com.eddev.android.gamesight.service.GiantBombSearchService;
 import com.eddev.android.gamesight.service.IGameSearchService;
 import com.eddev.android.gamesight.service.callback.IGamesLoadedCallback;
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public static final String TRACKING_GAMES_LOADED_KEY = "trackingGamesLoaded";
     public static final String OWNED_GAMES_KEY = "ownedGames";
     public static final String OWNED_GAMES_LOADED_KEY = "ownedGamesLoaded";
+    public static final int DISCOVER_RESULTS_LIMIT = 5;
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -100,17 +103,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setLogo(ContextCompat.getDrawable(this,R.drawable.ic_gamepad_white));
+        initToolbar();
         ButterKnife.bind(this);
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
 
-        Log.v(LOG_TAG, "Initializing loaders");
-        initializeRecyclerViews();
-        loadData(savedInstanceState);
+        initDiscoverCard();
+        initTrackingCard();
+        initOwnedCard();
+        loadDiscoverData(savedInstanceState);
+        loadTrackingData(savedInstanceState);
+        loadOwnedData(savedInstanceState);
 
         Stetho.initializeWithDefaults(this);
         new OkHttpClient.Builder()
@@ -118,24 +119,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 .build();
     }
 
-    private void loadData(Bundle savedInstanceState) {
-        if(savedInstanceState != null && savedInstanceState.getBoolean(DISCOVER_GAMES_LOADED_KEY)){
-            mDiscoverGamesLoaded = true;
-            mDiscoverGames = savedInstanceState.getParcelableArrayList(DISCOVER_GAMES_KEY);
-            initDiscoverCardRecyclerView();
-        }else{
-            mIGameSearchService = new GiantBombSearchService(this);
-            mIGameSearchService.fetchUpcomingGamesPreview(this);
-        }
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setLogo(ContextCompat.getDrawable(this,R.drawable.ic_gamepad_white));
+    }
 
-        if(savedInstanceState != null && savedInstanceState.getBoolean(TRACKING_GAMES_LOADED_KEY)){
-            mTrackingGamesLoaded = true;
-            mTrackingGames = savedInstanceState.getParcelableArrayList(TRACKING_GAMES_KEY);
-            initTrackingCardRecyclerView();
-        }else{
-            getSupportLoaderManager().initLoader(TRACKING_LOADER, null, this);
-        }
-
+    private void loadOwnedData(Bundle savedInstanceState) {
         if(savedInstanceState != null && savedInstanceState.getBoolean(OWNED_GAMES_LOADED_KEY)){
             mOwnedGamesLoaded = true;
             mOwnedGames = savedInstanceState.getParcelableArrayList(OWNED_GAMES_KEY);
@@ -145,33 +136,103 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
-    private void initializeRecyclerViews() {
-        mDiscoverCardRecyclerView.setHasFixedSize(true);
-        mDiscoverCardLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mDiscoverCardRecyclerView.setLayoutManager(mDiscoverCardLayoutManager);
-        mDCardToolbar.setLogo(ContextCompat.getDrawable(this, R.drawable.ic_find_in_page_white));
+    private void loadTrackingData(Bundle savedInstanceState) {
+        if(savedInstanceState != null && savedInstanceState.getBoolean(TRACKING_GAMES_LOADED_KEY)){
+            mTrackingGamesLoaded = true;
+            mTrackingGames = savedInstanceState.getParcelableArrayList(TRACKING_GAMES_KEY);
+            initTrackingCardRecyclerView();
+        }else{
+            getSupportLoaderManager().initLoader(TRACKING_LOADER, null, this);
+        }
+    }
 
-        mTrackingCardRecyclerView.setHasFixedSize(true);
-        mTrackingCardLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mTrackingCardRecyclerView.setLayoutManager(mTrackingCardLayoutManager);
-        mTCardToolbar.setLogo(ContextCompat.getDrawable(this, R.drawable.ic_location_searching_white));
+    private void loadDiscoverData(Bundle savedInstanceState) {
+        if(savedInstanceState != null && savedInstanceState.getBoolean(DISCOVER_GAMES_LOADED_KEY)){
+            mDiscoverGamesLoaded = true;
+            mDiscoverGames = savedInstanceState.getParcelableArrayList(DISCOVER_GAMES_KEY);
+            initDiscoverCardRecyclerView();
+        }else{
+            mIGameSearchService = new GiantBombSearchService(this);
+            mIGameSearchService.fetchUpcomingGamesPreview(this, DISCOVER_RESULTS_LIMIT);
+        }
+    }
 
+    private void initOwnedCard() {
         mOwnedCardRecyclerView.setHasFixedSize(true);
         mOwnedCardLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mOwnedCardRecyclerView.setLayoutManager(mOwnedCardLayoutManager);
         mOCardToolbar.setLogo(ContextCompat.getDrawable(this, R.drawable.ic_videogame_asset_white));
+        mOCardToolbar.inflateMenu(R.menu.menu_owned_card);
+        mOCardToolbar.setTitle("Grid View");
+        mOCardToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+
+                if (id == R.id.action_o_grid_view) {
+                    Intent gridIntent = new Intent(getApplicationContext(), GameGridActivity.class);
+                    gridIntent.putExtra(getString(R.string.collection_key), Game.OWNED);
+                    startActivity(gridIntent);
+                }
+
+                return true;
+            }
+        });
+    }
+
+    private void initTrackingCard() {
+        mTrackingCardRecyclerView.setHasFixedSize(true);
+        mTrackingCardLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mTrackingCardRecyclerView.setLayoutManager(mTrackingCardLayoutManager);
+        mTCardToolbar.setLogo(ContextCompat.getDrawable(this, R.drawable.ic_location_searching_white));
+        mTCardToolbar.inflateMenu(R.menu.menu_tracking_card);
+        mTCardToolbar.setTitle("Grid View");
+        mTCardToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+
+                if (id == R.id.action_t_grid_view) {
+                    Intent gridIntent = new Intent(getApplicationContext(), GameGridActivity.class);
+                    gridIntent.putExtra(getString(R.string.collection_key), Game.TRACKING);
+                    startActivity(gridIntent);
+                }
+
+                return true;
+            }
+        });
+    }
+
+    private void initDiscoverCard() {
+        mDiscoverCardRecyclerView.setHasFixedSize(true);
+        mDiscoverCardLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mDiscoverCardRecyclerView.setLayoutManager(mDiscoverCardLayoutManager);
+        mDCardToolbar.setLogo(ContextCompat.getDrawable(this, R.drawable.ic_find_in_page_white));
+        mDCardToolbar.inflateMenu(R.menu.menu_discover_card);
+        mDCardToolbar.setTitle("Grid View");
+        mDCardToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+
+                if (id == R.id.action_d_grid_view) {
+                    Intent gridIntent = new Intent(getApplicationContext(), GameGridActivity.class);
+                    gridIntent.putExtra(getString(R.string.collection_key), Game.DISCOVER);
+                    startActivity(gridIntent);
+                }
+
+                return true;
+            }
+        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        // Retrieve the share menu item
         MenuItem menuItem = menu.findItem(R.id.action_search);
-        // Get the SearchView and set the searchable configuration
+
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        // Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
         return true;

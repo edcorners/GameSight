@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.eddev.android.gamesight.presenter.MainActivity">
+    <item
+        android:id="@+id/action_o_grid_view"
+        android:orderInCategory="1"
+        android:title="Grid view"
+        android:icon="@drawable/ic_view_module_white"
+        app:showAsAction="always" />
+</menu>

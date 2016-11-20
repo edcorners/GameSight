@@ -1,4 +1,4 @@
-package com.eddev.android.gamesight;
+package com.eddev.android.gamesight.presenter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -33,6 +33,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eddev.android.gamesight.R;
+import com.eddev.android.gamesight.Utility;
 import com.eddev.android.gamesight.data.GameSightDatabaseService;
 import com.eddev.android.gamesight.data.GameSightProvider;
 import com.eddev.android.gamesight.data.ReviewColumns;
@@ -244,7 +246,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
             mProgressCard.setCardBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getActivity(), R.color.tracking_card_toolbar )));
             mCompletionSeekBar.setVisibility(View.GONE);
             Date expectedReleaseDate = mGame.getExpectedReleaseDate();
-            String completionText = expectedReleaseDate != null ? " Coming out "+Utility.shortDateFormat.format(expectedReleaseDate):
+            String completionText = expectedReleaseDate != null ? " Coming out "+ Utility.shortDateFormat.format(expectedReleaseDate):
                     "Release date unknown";
             mCompletionTextView.setText(completionText);
         }else{

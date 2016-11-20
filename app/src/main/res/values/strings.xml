@@ -5,4 +5,5 @@
     <string name="title_activity_game_detail">GameDetailActivity</string>
     <string name="giant_bomb_api_base_url">https://api.giantbomb.com/</string>
     <string name="parcelable_game_key">game</string>
+    <string name="collection_key">collection</string>
 </resources>

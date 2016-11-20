@@ -1,4 +1,4 @@
-package com.eddev.android.gamesight;
+package com.eddev.android.gamesight.presenter.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,8 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
+import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.model.Game;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -21,7 +23,7 @@ import java.util.List;
  * Created by Edison on 10/10/2016.
  */
 
-public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerViewAdapter.ViewHolder>{
+public class GridRecyclerViewAdapter extends RecyclerView.Adapter<GridRecyclerViewAdapter.ViewHolder>{
     private List<Game> mDataset;
     private Context mContext;
 
@@ -31,19 +33,17 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
 
     private final OnItemClickListener mListener;
 
-    // Provide a suitable constructor (depends on the kind of dataset)
-    public CardRecyclerViewAdapter(List<Game> gameList, Context context, OnItemClickListener listener) {
+    public GridRecyclerViewAdapter(List<Game> gameList, Context context, OnItemClickListener listener) {
         mDataset = gameList;
         mContext = context;
         mListener = listener;
     }
 
-    // Create new views (invoked by the layout manager)
     @Override
-    public CardRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public GridRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_game_cover_thumbnail, parent, false);
+                .inflate(R.layout.item_grid_image, parent, false);
         // set the view's size, margins, paddings and layout parameters
 
         ViewHolder vh = new ViewHolder(v);
@@ -53,11 +53,7 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        //holder.mTextView.setText(mDataset.get(position));
         holder.bind(mDataset.get(position), mListener);
-
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -74,7 +70,7 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
         public ImageView mGameCoverImageView;
         public ViewHolder(View v) {
             super(v);
-            mGameCoverImageView = (ImageView) v.findViewById(R.id.game_cover_thumb);
+            mGameCoverImageView = (ImageView) v.findViewById(R.id.grid_item_image);
         }
 
         public void bind(final Game game, final OnItemClickListener listener) {
@@ -90,10 +86,13 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
                                     applyPalette(palette);
                                 }
                             });
+                            mGameCoverImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                         }
 
                         @Override public void onError() { }
                     });
+            ViewTreeObserver vto = mGameCoverImageView.getViewTreeObserver();
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     listener.onItemClick(game);

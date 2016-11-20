@@ -1,4 +1,4 @@
-package com.eddev.android.gamesight;
+package com.eddev.android.gamesight.presenter;
 
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -19,6 +19,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.eddev.android.gamesight.R;
+import com.eddev.android.gamesight.Utility;
 import com.eddev.android.gamesight.data.GameSightProvider;
 import com.eddev.android.gamesight.model.ClassificationAttribute;
 import com.eddev.android.gamesight.model.Game;
@@ -61,13 +63,12 @@ public class GameDetailActivity extends AppCompatActivity implements LoaderManag
         //toolbar.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
 
         ButterKnife.bind(this);
-        String gameKey = getString(R.string.parcelable_game_key);
-        mGame = getIntent().getParcelableExtra(gameKey);
+        mGame = getIntent().getParcelableExtra(getString(R.string.parcelable_game_key));
 
         if(mGame !=null) {
             if (savedInstanceState == null) {
                 Bundle arguments = new Bundle();
-                arguments.putParcelable(gameKey, mGame);
+                arguments.putParcelable(getString(R.string.parcelable_game_key), mGame);
                 GameDetailFragment detailFragment = new GameDetailFragment();
                 detailFragment.setArguments(arguments);
 

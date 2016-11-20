@@ -308,7 +308,7 @@ public class GBGame {
             expectedReleaseDate.append("");
         }else{
             expectedReleaseDate.append(expectedReleaseYear+"-");
-            expectedReleaseDate.append(!TextUtils.isEmpty(expectedReleaseMonth) ? expectedReleaseMonth+"-" : "01");
+            expectedReleaseDate.append(!TextUtils.isEmpty(expectedReleaseMonth) ? expectedReleaseMonth+"-" : "01-");
             expectedReleaseDate.append(!TextUtils.isEmpty(expectedReleaseDay) ? expectedReleaseDay : "01");
         }
         return expectedReleaseDate.toString();

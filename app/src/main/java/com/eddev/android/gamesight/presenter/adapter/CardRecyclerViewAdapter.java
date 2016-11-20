@@ -1,4 +1,4 @@
-package com.eddev.android.gamesight;
+package com.eddev.android.gamesight.presenter.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
+import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.model.Game;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -22,7 +22,7 @@ import java.util.List;
  * Created by Edison on 10/10/2016.
  */
 
-public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecyclerViewAdapter.ViewHolder>{
+public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerViewAdapter.ViewHolder>{
     private List<Game> mDataset;
     private Context mContext;
 
@@ -33,7 +33,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
     private final OnItemClickListener mListener;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public SearchRecyclerViewAdapter(List<Game> gameList, Context context, OnItemClickListener listener) {
+    public CardRecyclerViewAdapter(List<Game> gameList, Context context, OnItemClickListener listener) {
         mDataset = gameList;
         mContext = context;
         mListener = listener;
@@ -41,10 +41,10 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
 
     // Create new views (invoked by the layout manager)
     @Override
-    public SearchRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CardRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_search_result, parent, false);
+                .inflate(R.layout.item_card_thumbnail, parent, false);
         // set the view's size, margins, paddings and layout parameters
 
         ViewHolder vh = new ViewHolder(v);
@@ -73,19 +73,12 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
     public static class ViewHolder extends RecyclerView.ViewHolder{
         // each data item is just a string in this case
         public ImageView mGameCoverImageView;
-        public TextView mTitleTextView;
-        public TextView mDescriptionTextView;
-
         public ViewHolder(View v) {
             super(v);
-            mGameCoverImageView = (ImageView) v.findViewById(R.id.search_result_game_thumb);
-            mTitleTextView = (TextView)v.findViewById(R.id.search_result_game_title);
-            mDescriptionTextView = (TextView)v.findViewById(R.id.search_result_game_description);
+            mGameCoverImageView = (ImageView) v.findViewById(R.id.card_item_thumb);
         }
 
         public void bind(final Game game, final OnItemClickListener listener) {
-            mTitleTextView.setText(game.getName());
-            mDescriptionTextView.setText(game.getDescription());
             Picasso.with(itemView.getContext())
                     .load(game.getThumbnailUrl())
                     .placeholder(R.color.mainBackground)

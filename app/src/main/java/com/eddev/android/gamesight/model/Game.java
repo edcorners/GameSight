@@ -21,10 +21,11 @@ import java.util.List;
 public class Game implements Parcelable {
 
     @Retention(RetentionPolicy.SOURCE)
-    @StringDef({OWNED, TRACKING})
+    @StringDef({OWNED, TRACKING, DISCOVER})
     public @interface CollectionName {}
     public static final String OWNED = "OWNED";
     public static final String TRACKING = "TRACKING";
+    public static final String DISCOVER = "DISCOVER";
 
     public static String[] GAME_PROJECTION = {GameSightDatabase.GAMES+"."+GameColumns.GAME_ID,
             GameSightDatabase.GAMES+"."+GameColumns.DESCRIPTION,
@@ -116,6 +117,9 @@ public class Game implements Parcelable {
                     break;
                 case OWNED:
                     this.collection = OWNED;
+                    break;
+                case DISCOVER:
+                    this.collection = DISCOVER;
                     break;
             }
         }
@@ -380,6 +384,9 @@ public class Game implements Parcelable {
                     break;
                 case OWNED:
                     collection = OWNED;
+                    break;
+                case DISCOVER:
+                    collection = DISCOVER;
                     break;
             }
         }

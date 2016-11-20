@@ -1,4 +1,4 @@
-package com.eddev.android.gamesight;
+package com.eddev.android.gamesight.presenter;
 
 import android.app.SearchManager;
 import android.content.Intent;
@@ -14,7 +14,9 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.model.Game;
+import com.eddev.android.gamesight.presenter.adapter.SearchRecyclerViewAdapter;
 import com.eddev.android.gamesight.service.GiantBombSearchService;
 import com.eddev.android.gamesight.service.IGameSearchService;
 import com.eddev.android.gamesight.service.callback.IGamesLoadedCallback;
