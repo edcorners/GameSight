@@ -122,10 +122,12 @@ public class GameDetailActivity extends AppCompatActivity implements LoaderManag
             platformsSet.add(Utility.getIconResourceForConsole(platform));
         }
         for(int platform: platformsSet) {
-            FrameLayout platformFrame = (FrameLayout) LayoutInflater.from(this).inflate(R.layout.item_platform, null, false);
-            ImageView platformIcon = (ImageView) platformFrame.findViewById(R.id.platform_icon_image_view);
-            platformIcon.setImageResource(platform);
-            mPlatformsLinearLayout.addView(platformFrame);
+            if(platform != -1) {
+                FrameLayout platformFrame = (FrameLayout) LayoutInflater.from(this).inflate(R.layout.item_platform, null, false);
+                ImageView platformIcon = (ImageView) platformFrame.findViewById(R.id.platform_icon_image_view);
+                platformIcon.setImageResource(platform);
+                mPlatformsLinearLayout.addView(platformFrame);
+            }
         }
     }
 
