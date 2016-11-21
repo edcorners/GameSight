@@ -1,6 +1,10 @@
 package com.eddev.android.gamesight;
 
+import android.support.annotation.DrawableRes;
+import android.support.annotation.StringRes;
 import android.text.TextUtils;
+
+import com.eddev.android.gamesight.model.Game;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -40,7 +44,7 @@ public class Utility {
         return originalReleaseDate;
     }
 
-    public static int getIconResourceForConsole(int platformId){
+    public static @DrawableRes int getIconResourceForConsole(int platformId){
         int resource = -1;
         if(platformId == 3 ||
                 platformId == 4 ||
@@ -74,6 +78,22 @@ public class Utility {
             resource = R.mipmap.ic_xbox;
         }else if(platformId == 94){
             resource = R.mipmap.ic_pc ;
+        }
+        return resource;
+    }
+
+    public static @StringRes int getTitle(String collection){
+        int resource = -1;
+        switch (collection){
+            case Game.DISCOVER:
+                resource = R.string.discover_title;
+                break;
+            case Game.TRACKING:
+                resource = R.string.tracking_title;
+                break;
+            case Game.OWNED:
+                resource = R.string.owned_title;
+                break;
         }
         return resource;
     }

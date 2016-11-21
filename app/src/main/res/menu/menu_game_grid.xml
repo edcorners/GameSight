@@ -6,5 +6,23 @@
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/action_show_date"
+        android:orderInCategory="101"
+        android:title="Show release date"
+        android:icon="@drawable/ic_date_range_white"
+        app:showAsAction="always"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/action_show_progress"
+        android:orderInCategory="102"
+        android:title="Show progress"
+        android:icon="@drawable/ic_timelapse_white"
+        app:showAsAction="always"
+        android:visible="false"/>
+
 </menu>

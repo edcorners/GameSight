@@ -359,7 +359,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
+        Log.d(LOG_TAG,"onLoaderReset");
     }
 
     /**
@@ -391,4 +391,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mDiscoverCardRecyclerView.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    protected void onResume() {
+        getSupportLoaderManager().restartLoader(OWNED_LOADER, null, this);
+        getSupportLoaderManager().restartLoader(TRACKING_LOADER, null, this);
+        super.onResume();
+    }
 }

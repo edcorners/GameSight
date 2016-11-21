@@ -1,12 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ImageView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:srcCompat="@mipmap/ic_launcher"
-    android:id="@+id/grid_item_image"
-    android:adjustViewBounds="true"
-    android:scaleType="fitXY"
-    android:background="@android:color/background_dark"/>
+    android:id="@+id/grid_item_frame">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/ic_launcher"
+        android:id="@+id/grid_item_image"
+        android:adjustViewBounds="true"
+        android:layout_margin="2dp"
+        android:background="@android:color/background_dark" />
+
+    <TextView
+        android:id="@+id/grid_item_scrim_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/scrim_upwards_gradient"
+        android:elevation="3dp"
+        android:layout_alignBottom="@+id/detail_backdrop"
+        android:text="Apr 12, 2016"
+        android:gravity="bottom|right"
+        tools:text="Apr 12, 2016"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:textStyle="normal|bold"
+        android:textAllCaps="false"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
+        android:visibility="invisible" />
+
+</FrameLayout>

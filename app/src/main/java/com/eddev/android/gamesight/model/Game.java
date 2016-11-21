@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import android.support.annotation.StringDef;
 import android.text.TextUtils;
 
+import com.eddev.android.gamesight.Utility;
 import com.eddev.android.gamesight.data.ClassificationByGameColumns;
 import com.eddev.android.gamesight.data.GameColumns;
 import com.eddev.android.gamesight.data.GameSightDatabase;
@@ -66,6 +67,7 @@ public class Game implements Parcelable {
     private @CollectionName String collection;
     // Transient attributes
     private boolean favorite;
+    private boolean scrimVisible = false;
 
     public Game(int id, String thumbUrl, String name, String description, Date expectedReleaseDate, Date originalReleaseDate) {
         this.id = id;
@@ -202,6 +204,17 @@ public class Game implements Parcelable {
             inCollection = true;
         }
         return inCollection;
+    }
+
+    public String getScrimText() {
+        String text = "";
+        if(this.isInCollecion(OWNED)){
+            text = (int)this.completion + "%";
+        }else{
+            Date releaseDate = getReleaseDate();
+            text = releaseDate != null ? Utility.shortDateFormat.format(releaseDate) : "";
+        }
+        return text;
     }
 
     public void clearReviews() {
@@ -344,6 +357,14 @@ public class Game implements Parcelable {
 
     public void setFavorite(boolean favorite) {
         this.favorite = favorite;
+    }
+
+    public boolean isScrimVisible() {
+        return this.scrimVisible;
+    }
+
+    public void setScrimVisible(boolean scrimVisible) {
+        this.scrimVisible = scrimVisible;
     }
 
     protected Game(Parcel in) {

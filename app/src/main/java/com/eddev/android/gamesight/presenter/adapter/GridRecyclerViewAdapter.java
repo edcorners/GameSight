@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.model.Game;
@@ -24,7 +25,7 @@ import java.util.List;
  */
 
 public class GridRecyclerViewAdapter extends RecyclerView.Adapter<GridRecyclerViewAdapter.ViewHolder>{
-    private List<Game> mDataset;
+    private List<Game> dataset;
     private Context mContext;
 
     public interface OnItemClickListener {
@@ -34,9 +35,13 @@ public class GridRecyclerViewAdapter extends RecyclerView.Adapter<GridRecyclerVi
     private final OnItemClickListener mListener;
 
     public GridRecyclerViewAdapter(List<Game> gameList, Context context, OnItemClickListener listener) {
-        mDataset = gameList;
+        dataset = gameList;
         mContext = context;
         mListener = listener;
+    }
+
+    public void setDataset(List<Game> dataset) {
+        this.dataset = dataset;
     }
 
     @Override
@@ -53,13 +58,13 @@ public class GridRecyclerViewAdapter extends RecyclerView.Adapter<GridRecyclerVi
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.bind(mDataset.get(position), mListener);
+        holder.bind(dataset.get(position), mListener);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset != null ? mDataset.size() : 0;
+        return dataset != null ? dataset.size() : 0;
     }
 
     // Provide a reference to the views for each data item
@@ -68,9 +73,11 @@ public class GridRecyclerViewAdapter extends RecyclerView.Adapter<GridRecyclerVi
     public static class ViewHolder extends RecyclerView.ViewHolder{
         // each data item is just a string in this case
         public ImageView mGameCoverImageView;
+        public TextView mTextScrim;
         public ViewHolder(View v) {
             super(v);
             mGameCoverImageView = (ImageView) v.findViewById(R.id.grid_item_image);
+            mTextScrim = (TextView) v.findViewById(R.id.grid_item_scrim_text);
         }
 
         public void bind(final Game game, final OnItemClickListener listener) {
@@ -98,6 +105,13 @@ public class GridRecyclerViewAdapter extends RecyclerView.Adapter<GridRecyclerVi
                     listener.onItemClick(game);
                 }
             });
+
+            if(game.isScrimVisible()) {
+                mTextScrim.setText(game.getScrimText());
+                mTextScrim.setVisibility(View.VISIBLE);
+            }else{
+                mTextScrim.setVisibility(View.GONE);
+            }
         }
 
         private void applyPalette(Palette palette) {

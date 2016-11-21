@@ -6,4 +6,8 @@
     <string name="giant_bomb_api_base_url">https://api.giantbomb.com/</string>
     <string name="parcelable_game_key">game</string>
     <string name="collection_key">collection</string>
+
+    <string name="discover_title">Discover</string>
+    <string name="tracking_title">In my sight</string>
+    <string name="owned_title">In my shelf</string>
 </resources>
