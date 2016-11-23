@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.eddev.android.gamesight.R;
+import com.eddev.android.gamesight.GiantBombUtility;
 import com.eddev.android.gamesight.data.GameColumns;
 import com.eddev.android.gamesight.data.GameSightProvider;
 import com.eddev.android.gamesight.model.Game;
@@ -32,6 +33,7 @@ import com.eddev.android.gamesight.service.IGameSearchService;
 import com.eddev.android.gamesight.service.callback.IGamesLoadedCallback;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -40,8 +42,11 @@ import butterknife.ButterKnife;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class GameGridActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, IGamesLoadedCallback {
+public class GameGridActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
+        IGamesLoadedCallback, FilterByConsoleDialog.FilterByConsoleDialogListener {
 
+    private static final String FILTER_BY_CONSOLE_DIALOG = "FBCD";
+    public static final String FILTER_SELECTED_ITEMS = "filterSelectedItems";
     private final String LOG_TAG = GameGridActivityFragment.class.getSimpleName();
 
     public static final int DISCOVER_RESULTS_LIMIT = 16;
@@ -60,6 +65,7 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
 
     private List<Game> mGames = new ArrayList<>();
     private boolean mScrimEnabled = false;
+    private ArrayList<String> mConsoleFilterSelectedItems;
 
 
     public GameGridActivityFragment() {
@@ -83,6 +89,8 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
             mCollection = arguments.getString(getString(R.string.collection_key));
             if(savedInstanceState != null) {
                 mGames = savedInstanceState.getParcelableArrayList(LOADED_GAMES_KEY);
+                mConsoleFilterSelectedItems = new ArrayList<>(Arrays.asList(GiantBombUtility.getConsolesArrayResourceAsStringArray(getContext())));
+                //mConsoleFilterSelectedItems = savedInstanceState.getStringArrayList(FILTER_SELECTED_ITEMS);
                 initRecyclerView();
             }else{
                 if (mCollection.equals(Game.DISCOVER)) {
@@ -94,6 +102,7 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
                 else if(mCollection.equals(Game.OWNED)){
                     getActivity().getSupportLoaderManager().initLoader(OWNED_GRID_LOADER, null, this);
                 }
+                mConsoleFilterSelectedItems = new ArrayList<>(Arrays.asList(GiantBombUtility.getConsolesArrayResourceAsStringArray(getContext())));
             }
         }
 
@@ -104,6 +113,7 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(getString(R.string.collection_key), mCollection);
         outState.putParcelableArrayList(LOADED_GAMES_KEY, (ArrayList<? extends Parcelable>) mGames);
+        outState.putStringArrayList(FILTER_SELECTED_ITEMS, mConsoleFilterSelectedItems);
         super.onSaveInstanceState(outState);
     }
 
@@ -129,6 +139,11 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
                 updateScrimVisibility(false);
             }
             return true;
+        }else if(id == R.id.action_filter){
+            FilterByConsoleDialog dialog = new FilterByConsoleDialog();
+            dialog.setListener(this);
+            dialog.setSelectedItems(mConsoleFilterSelectedItems);
+            dialog.show(getActivity().getSupportFragmentManager(), FILTER_BY_CONSOLE_DIALOG);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -226,5 +241,24 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+    }
+
+
+    @Override
+    public void onFilterByConsoleClick(ArrayList<String> selectedItems) {
+        mConsoleFilterSelectedItems = selectedItems;
+        List<Game> filteredGames = new ArrayList<>();
+        for(Game current: mGames){
+            if(current.isForAnyOfConsoles(getContext(), mConsoleFilterSelectedItems)){
+                filteredGames.add(current);
+            }
+        }
+        mRecyclerViewAdapter.setDataset(filteredGames);
+        mRecyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onCancelFilterClick() {
+
     }
 }

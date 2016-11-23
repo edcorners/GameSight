@@ -3,7 +3,7 @@ package com.eddev.android.gamesight.service;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.eddev.android.gamesight.Utility;
+import com.eddev.android.gamesight.GiantBombUtility;
 import com.eddev.android.gamesight.client.giantbomb.FindGBGameAsyncTask;
 import com.eddev.android.gamesight.client.giantbomb.FindGBReviewsAsyncTask;
 import com.eddev.android.gamesight.client.giantbomb.FindGBGamesAsyncTask;
@@ -37,7 +37,7 @@ public class GiantBombSearchService implements IGameSearchService {
         cal.add(Calendar.MONTH, MONTHS_SPAN);
         Date inThreeMonths = cal.getTime();
 
-        mParameters.put(FindGBGamesAsyncTask.FILTER, "original_release_date:"+ Utility.dateTimeFormat.format(now)+"|"+Utility.dateTimeFormat.format(inThreeMonths));
+        mParameters.put(FindGBGamesAsyncTask.FILTER, "original_release_date:"+ GiantBombUtility.dateTimeFormat.format(now)+"|"+ GiantBombUtility.dateTimeFormat.format(inThreeMonths));
         mParameters.put(FindGBGamesAsyncTask.SORT, "original_release_date:asc");
         mParameters.put(FindGBGamesAsyncTask.LIMIT, String.valueOf(limit));
         mParameters.put(FindGBGamesAsyncTask.FORMAT, "json");

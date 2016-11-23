@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="console_names">
+        <item>@string/platform_nintendo</item>
+        <item>@string/platform_playstation</item>
+        <item>@string/platform_xbox</item>
+        <item>@string/platform_pc</item>
+        <item>@string/platform_other</item>
+    </string-array>
+</resources>

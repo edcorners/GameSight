@@ -34,7 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eddev.android.gamesight.R;
-import com.eddev.android.gamesight.Utility;
+import com.eddev.android.gamesight.GiantBombUtility;
 import com.eddev.android.gamesight.data.GameSightDatabaseService;
 import com.eddev.android.gamesight.data.GameSightProvider;
 import com.eddev.android.gamesight.data.ReviewColumns;
@@ -246,7 +246,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
             mProgressCard.setCardBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getActivity(), R.color.tracking_card_toolbar )));
             mCompletionSeekBar.setVisibility(View.GONE);
             Date expectedReleaseDate = mGame.getExpectedReleaseDate();
-            String completionText = expectedReleaseDate != null ? " Coming out "+ Utility.shortDateFormat.format(expectedReleaseDate):
+            String completionText = expectedReleaseDate != null ? " Coming out "+ GiantBombUtility.shortDateFormat.format(expectedReleaseDate):
                     "Release date unknown";
             mCompletionTextView.setText(completionText);
         }else{
@@ -291,7 +291,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
             String publishers = TextUtils.join(", ", mGame.getClassificationAttributeValues(ClassificationAttribute.PUBLISHER));
             mPublisherTextView.setText(TextUtils.isEmpty(publishers) ? "Not available" : publishers);
             Date releaseDate = mGame.getReleaseDate();
-            mReleaseDateTextView.setText(releaseDate != null ? Utility.shortDateFormat.format(releaseDate) : "Unknown");
+            mReleaseDateTextView.setText(releaseDate != null ? GiantBombUtility.shortDateFormat.format(releaseDate) : "Unknown");
             String genres = TextUtils.join(", ", mGame.getClassificationAttributeValues(ClassificationAttribute.GENRE));
             mGenreTextView.setText(TextUtils.isEmpty(genres) ? "Not available" : genres);
             String platforms = TextUtils.join(", ", mGame.getClassificationAttributeValues(ClassificationAttribute.PLATFORM));
@@ -370,7 +370,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
         TextView reviewContent = (TextView) reviewItemLinearLayout.findViewById(R.id.review_content_text_view);
         reviewContent.setText(current.getDescription());
         TextView reviewDate = (TextView) reviewItemLinearLayout.findViewById(R.id.review_date_text_view);
-        reviewDate.setText(Utility.dateTimeFormat.format(current.getDate()));
+        reviewDate.setText(GiantBombUtility.dateTimeFormat.format(current.getDate()));
         TextView reviewAuthor = (TextView) reviewItemLinearLayout.findViewById(R.id.review_author_text_view);
         reviewAuthor.setText(current.getReviewer());
         mReviewsLinearLayout.addView(reviewItemLinearLayout);

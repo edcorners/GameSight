@@ -25,4 +25,11 @@
         app:showAsAction="always"
         android:visible="false"/>
 
+    <item
+        android:id="@+id/action_filter"
+        android:orderInCategory="103"
+        android:title="Filter by console"
+        app:showAsAction="collapseActionView"
+        android:visible="true"/>
+
 </menu>

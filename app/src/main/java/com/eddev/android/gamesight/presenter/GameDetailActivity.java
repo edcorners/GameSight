@@ -20,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.eddev.android.gamesight.R;
-import com.eddev.android.gamesight.Utility;
+import com.eddev.android.gamesight.GiantBombUtility;
 import com.eddev.android.gamesight.data.GameSightProvider;
 import com.eddev.android.gamesight.model.ClassificationAttribute;
 import com.eddev.android.gamesight.model.Game;
@@ -120,7 +120,7 @@ public class GameDetailActivity extends AppCompatActivity implements LoaderManag
 
         LinkedHashSet<Integer> platformsSet = new LinkedHashSet<>();
         for(int platform: mGame.getClassificationAttributeIds(ClassificationAttribute.PLATFORM)) {
-            platformsSet.add(Utility.getIconResourceForConsole(platform));
+            platformsSet.add(GiantBombUtility.getIconResourceForConsole(platform));
         }
         for(int platform: platformsSet) {
             if(platform != -1) {

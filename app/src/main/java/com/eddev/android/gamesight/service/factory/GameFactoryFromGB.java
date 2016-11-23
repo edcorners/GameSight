@@ -2,7 +2,7 @@ package com.eddev.android.gamesight.service.factory;
 
 import android.support.annotation.NonNull;
 
-import com.eddev.android.gamesight.Utility;
+import com.eddev.android.gamesight.GiantBombUtility;
 import com.eddev.android.gamesight.client.giantbomb.model.GBGame;
 import com.eddev.android.gamesight.client.giantbomb.model.GBGenre;
 import com.eddev.android.gamesight.client.giantbomb.model.GBPlatform;
@@ -36,13 +36,13 @@ public class GameFactoryFromGB {
         List<ClassificationAttribute> classificationAttributes = getClassificationAttributes(gBGame);
         Game newGame = new Game(gBGame.getId(),
                 gBGame.getDeck(),
-                Utility.getDate(gBGame.getExpectedReleaseDate()),
+                GiantBombUtility.getDate(gBGame.getExpectedReleaseDate()),
                 gBGame.getCover(),
                 gBGame.getThumb(),
                 gBGame.getName(),
                 classificationAttributes,
                 gBGame.getNumberOfUserReviews(),
-                Utility.getDateTime(gBGame.getOriginalReleaseDate()),
+                GiantBombUtility.getDateTime(gBGame.getOriginalReleaseDate()),
                 null,
                 null,
                 0D,
@@ -67,13 +67,13 @@ public class GameFactoryFromGB {
 
         Game newGame = new Game(gBGame.getId(),
                 gBGame.getDeck(),
-                Utility.getDate(gBGame.getExpectedReleaseDate()),
+                GiantBombUtility.getDate(gBGame.getExpectedReleaseDate()),
                 gBGame.getCover(),
                 gBGame.getThumb(),
                 gBGame.getName(),
                 classificationAttributes,
                 gBGame.getNumberOfUserReviews(),
-                Utility.getDateTime(gBGame.getOriginalReleaseDate()),
+                GiantBombUtility.getDateTime(gBGame.getOriginalReleaseDate()),
                 null,
                 videos,
                 0D,
@@ -129,7 +129,7 @@ public class GameFactoryFromGB {
         List<Review> reviews = new ArrayList<>();
         if(gbReviews != null) {
             for (GBReview current : gbReviews) {
-                Review newReview = new Review(0, current.getDeck(), Utility.getDateTime(current.getPublishDate()), current.getScore(), current.getReviewer());
+                Review newReview = new Review(0, current.getDeck(), GiantBombUtility.getDateTime(current.getPublishDate()), current.getScore(), current.getReviewer());
                 reviews.add(newReview);
             }
         }

@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 
 import com.eddev.android.gamesight.R;
-import com.eddev.android.gamesight.Utility;
+import com.eddev.android.gamesight.GiantBombUtility;
 
 public class GameGridActivity extends AppCompatActivity {
+
+    public static final String GAME_GRID_FRAGMENT_TAG = "GGFT";
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -27,16 +29,16 @@ public class GameGridActivity extends AppCompatActivity {
             mCollection = getIntent().getStringExtra(getString(R.string.collection_key));
             Bundle arguments = new Bundle();
             arguments.putString(getString(R.string.collection_key), mCollection);
-            getSupportActionBar().setTitle(Utility.getTitle(mCollection));
+            getSupportActionBar().setTitle(GiantBombUtility.getTitle(mCollection));
             GameGridActivityFragment gridFragment = new GameGridActivityFragment();
             gridFragment.setArguments(arguments);
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.game_grid_container, gridFragment)
+                    .add(R.id.game_grid_container, gridFragment, GAME_GRID_FRAGMENT_TAG)
                     .commit();
         }else{
             mCollection = savedInstanceState.getString(getString(R.string.collection_key));
-            getSupportActionBar().setTitle(Utility.getTitle(mCollection));
+            getSupportActionBar().setTitle(GiantBombUtility.getTitle(mCollection));
         }
 
     }

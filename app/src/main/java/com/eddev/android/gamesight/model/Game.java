@@ -1,13 +1,14 @@
 package com.eddev.android.gamesight.model;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.StringDef;
 import android.text.TextUtils;
 
-import com.eddev.android.gamesight.Utility;
+import com.eddev.android.gamesight.GiantBombUtility;
 import com.eddev.android.gamesight.data.ClassificationByGameColumns;
 import com.eddev.android.gamesight.data.GameColumns;
 import com.eddev.android.gamesight.data.GameSightDatabase;
@@ -68,6 +69,7 @@ public class Game implements Parcelable {
     // Transient attributes
     private boolean favorite;
     private boolean scrimVisible = false;
+    private boolean visible = true;
 
     public Game(int id, String thumbUrl, String name, String description, Date expectedReleaseDate, Date originalReleaseDate) {
         this.id = id;
@@ -212,9 +214,22 @@ public class Game implements Parcelable {
             text = (int)this.completion + "%";
         }else{
             Date releaseDate = getReleaseDate();
-            text = releaseDate != null ? Utility.shortDateFormat.format(releaseDate) : "";
+            text = releaseDate != null ? GiantBombUtility.shortDateFormat.format(releaseDate) : "";
         }
         return text;
+    }
+
+    public boolean isForAnyOfConsoles(Context context, ArrayList<String> consoleNames) {
+        boolean result = false;
+        List<Integer> platformIds = this.getClassificationAttributeIds(ClassificationAttribute.PLATFORM);
+        for(Integer platformId: platformIds){
+            String console = GiantBombUtility.getConsoleByPlatformId(context, platformId);
+            result = consoleNames.contains(console);
+            if(result){
+                break;
+            }
+        }
+        return result;
     }
 
     public void clearReviews() {
@@ -367,6 +382,14 @@ public class Game implements Parcelable {
         this.scrimVisible = scrimVisible;
     }
 
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
     protected Game(Parcel in) {
         id = in.readInt();
         description = in.readString();
@@ -412,6 +435,8 @@ public class Game implements Parcelable {
             }
         }
         favorite = Boolean.parseBoolean(in.readString());
+        scrimVisible = Boolean.parseBoolean(in.readString());
+        visible = Boolean.parseBoolean(in.readString());
     }
 
     @Override
@@ -450,6 +475,8 @@ public class Game implements Parcelable {
         dest.writeDouble(completion);
         dest.writeString(collection);
         dest.writeString(String.valueOf(favorite));
+        dest.writeString(String.valueOf(scrimVisible));
+        dest.writeString(String.valueOf(visible));
     }
 
     @SuppressWarnings("unused")
