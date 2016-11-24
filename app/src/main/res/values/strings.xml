@@ -19,4 +19,11 @@
     <string name="filter_by_console_dialog_ok_option">OK</string>
     <string name="filter_by_console_dialog_cancel_option">CANCEL</string>
     <string name="filter_by_console_dialog_title">Choose platforms...</string>
+    <string name="reviews_empty">No reviews available</string>
+    <string name="videos_empty">No videos available</string>
+    <string name="no_data_available">Not available</string>
+    <string name="completion_units_legend">% complete</string>
+    <string name="coming_out">" Coming out"</string>
+    <string name="release_date_unknown">Release date unknown</string>
+    <string name="rating_bar_tick">★</string>
 </resources>

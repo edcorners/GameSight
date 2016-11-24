@@ -157,15 +157,32 @@ public class GameSightDatabaseService {
         }
     }
 
-    public void removeFavorite(Game mGame) {
-        mContext.getContentResolver().delete(GameSightProvider.Games.CONTENT_URI, GameColumns.GAME_ID +" = "+ mGame.getId(), null);
+    public void removeFavorite(Game game) {
+        mContext.getContentResolver().delete(GameSightProvider.Games.CONTENT_URI, GameColumns.GAME_ID +" = "+ game.getId(), null);
     }
 
-    public void updateProgress(Game mGame) {
+    public void updateProgress(Game game) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(GameColumns.COMPLETION, mGame.getCompletion());
+        contentValues.put(GameColumns.COMPLETION, game.getCompletion());
         mContext.getContentResolver().update(GameSightProvider.Games.CONTENT_URI,
                     contentValues,
-                    GameColumns.GAME_ID +" = "+ mGame.getId(), null);
+                    GameColumns.GAME_ID +" = "+ game.getId(), null);
+    }
+
+    public boolean canRetrieveFromLocalCollection(Game game){
+        String selection = GameColumns.GAME_ID+ " =? ";
+        String[] selectionArgs = {String.valueOf(game.getId())};
+        Cursor cursor = mContext.getContentResolver().query(GameSightProvider.Games.CONTENT_URI,
+                new String[]{GameColumns.COLLECTION},
+                selection,
+                selectionArgs,
+                null);
+        cursor.moveToNext();
+        boolean recordExists = cursor.getCount() > 0;
+        if(recordExists){
+            game.setCollection(cursor.getString(0));
+        }
+        cursor.close();
+        return recordExists;
     }
 }

@@ -12,13 +12,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/review_rating_date_layout">
 
+        <!-- cant externalize textSize for some reason -->
         <io.techery.properratingbar.ProperRatingBar
             android:id="@+id/review_rating_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="22sp"
             android:textStyle="bold"
-            app:prb_symbolicTick="★"
+            app:prb_symbolicTick="@string/rating_bar_tick"
             app:prb_defaultRating="4"
             app:prb_symbolicTickNormalColor="@android:color/darker_gray"
             app:prb_symbolicTickSelectedColor="@android:color/holo_orange_light"
@@ -41,6 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/review_content_text_view"
+        android:textSize="@dimen/detail_content_text_size"
         android:paddingTop="4dp"
         android:paddingBottom="4dp" />
 
@@ -50,7 +52,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/review_author_text_view"
         android:gravity="right"
-        android:fontFamily="sans-serif"
+        android:textSize="@dimen/detail_content_text_size"
         tools:textStyle="italic"
         android:padding="4dp" />
 

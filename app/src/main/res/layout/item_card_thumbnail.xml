@@ -10,6 +10,6 @@
     android:adjustViewBounds="true"
     android:scaleType="centerCrop"
     android:layout_margin="@dimen/card_thumb_margin"
-    android:padding="1dp"
+    android:padding="@dimen/card_thumb_padding"
     android:elevation="@dimen/card_thumb_elevation"
     android:background="@android:color/background_dark"/>

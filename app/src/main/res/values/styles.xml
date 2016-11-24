@@ -47,7 +47,7 @@
     </style>
 
     <style name="collapsibleToolbarStyle">
-        <item name="android:textSize">26sp</item>
+        <item name="android:textSize">@dimen/collapsing_bar_text_size</item>
         <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 
@@ -75,6 +75,20 @@
         <item name="android:textStyle">normal|bold</item>
         <item name="android:padding">@dimen/card_toolbar_title_padding</item>
         <item name="android:textSize">@dimen/card_toolbar_title_text_size</item>
+    </style>
+
+    <style name="detailsContentLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginStart">@dimen/detail_layout_horizontal_margin</item>
+        <item name="android:layout_marginEnd">@dimen/detail_layout_horizontal_margin</item>
+        <item name="android:paddingStart">@dimen/detail_layout_horizontal_padding</item>
+        <item name="android:paddingEnd">@dimen/detail_layout_horizontal_padding</item>
+        <item name="android:paddingTop">@dimen/detail_layout_vertical_padding</item>
+        <item name="android:paddingBottom">@dimen/detail_layout_vertical_padding</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:background">@color/white</item>
     </style>
 
 </resources>

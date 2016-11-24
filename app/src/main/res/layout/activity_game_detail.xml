@@ -9,7 +9,7 @@
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="256dp"
+        android:layout_height="@dimen/details_app_bar_height"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -18,8 +18,8 @@
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleMarginStart="24dp"
-            app:expandedTitleMarginEnd="42dp"
+            app:expandedTitleMarginStart="@dimen/collapsing_bar_expanded_margin_start"
+            app:expandedTitleMarginEnd="@dimen/collapsing_bar_expanded_margin_end"
             android:fitsSystemWindows="true"
             app:expandedTitleTextAppearance="@style/collapsibleToolbarStyle">
 
@@ -32,19 +32,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:id="@+id/detail_backdrop"
-                    />
+                    android:id="@+id/detail_backdrop"/>
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="112dp"
+                    android:layout_height="@dimen/scrim_height"
                     android:background="@drawable/scrim_downwards_gradient"
-                    android:elevation="6dp" />
+                    android:elevation="@dimen/scrim_elevation"
+                    android:layout_alignTop="@id/detail_backdrop"/>
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="112dp"
+                    android:layout_height="@dimen/scrim_height"
                     android:background="@drawable/scrim_upwards_gradient"
-                    android:elevation="6dp"
+                    android:elevation="@dimen/scrim_elevation"
                     android:layout_alignBottom="@+id/detail_backdrop" />
 
                 <LinearLayout
@@ -55,13 +55,14 @@
                     android:layout_weight="1"
                     android:layout_alignBottom="@id/detail_backdrop"
                     android:layout_alignEnd="@id/detail_backdrop"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="16dp"
-                    android:elevation="0dp">
+                    android:layout_marginEnd="@dimen/details_platform_layout_margin_end"
+                    android:layout_marginBottom="@dimen/details_platform_layout_margin_bottom">
+
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         app:srcCompat="@color/mainBackground" />
+
                 </LinearLayout>
 
             </RelativeLayout>

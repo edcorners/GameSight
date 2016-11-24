@@ -46,7 +46,7 @@ public class GameFactoryFromGB {
                 null,
                 null,
                 0D,
-                null
+                Game.DISCOVER
         );
         return newGame;
     }
@@ -77,7 +77,7 @@ public class GameFactoryFromGB {
                 null,
                 videos,
                 0D,
-                null
+                Game.DISCOVER
         );
         return newGame;
     }

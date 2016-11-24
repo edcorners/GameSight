@@ -22,7 +22,7 @@
                 android:id="@+id/main_activity_app_bar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:elevation="2dp"
+                app:elevation="@dimen/card_toolbar_elevation"
                 android:theme="@style/AppTheme.AppBarOverlay">
 
                 <android.support.v7.widget.Toolbar

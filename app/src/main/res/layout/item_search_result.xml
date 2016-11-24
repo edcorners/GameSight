@@ -7,23 +7,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/background_light"
-    android:padding="1dp">
+    android:padding="@dimen/search_result_layout_padding">
 
     <FrameLayout
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="@dimen/search_result_image_size"
+        android:layout_height="@dimen/search_result_image_size"
         android:id="@+id/game_cover_frame"
-        android:background="@android:color/background_dark"
-        >
+        android:background="@android:color/background_dark">
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:srcCompat="@color/mainBackground"
             android:id="@+id/search_result_game_thumb"
             android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:layout_margin="2dp"
-            android:padding="1dp" />
+            android:scaleType="centerCrop"
+            android:layout_margin="@dimen/search_result_image_margin"
+            android:padding="@dimen/search_result_image_padding" />
     </FrameLayout>
 
     <TextView
@@ -31,13 +30,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/search_result_game_title"
-        android:textSize="12sp"
+        android:textSize="@dimen/search_result_title_size"
         android:fontFamily="sans-serif"
         android:maxLines="1"
         android:ellipsize="end"
         tools:textStyle="bold"
-        android:paddingStart="6dp"
-        android:paddingEnd="6dp"
+        android:paddingStart="@dimen/search_result_regular_margin"
+        android:paddingEnd="@dimen/search_result_regular_margin"
         android:layout_toEndOf="@id/game_cover_frame"/>
 
     <TextView
@@ -45,9 +44,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/search_result_game_description"
-        android:paddingStart="6dp"
-        android:paddingEnd="6dp"
-        android:textSize="10sp"
+        android:paddingStart="@dimen/search_result_regular_margin"
+        android:paddingEnd="@dimen/search_result_regular_margin"
+        android:textSize="@dimen/search_result_description_size"
         android:maxLines="4"
         android:ellipsize="end"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"

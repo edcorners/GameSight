@@ -233,11 +233,19 @@ public class Game implements Parcelable {
     }
 
     public void clearReviews() {
-        this.reviews.clear();
+        if(this.reviews != null) {
+            this.reviews.clear();
+        }else{
+            this.reviews = new ArrayList<>();
+        }
     }
 
     public void clearVideos(){
-        this.videos.clear();
+        if(this.videos != null) {
+            this.videos.clear();
+        }else{
+            this.videos = new ArrayList<>();
+        }
     }
 
     public void clearClassificationAttributes(){
@@ -367,7 +375,7 @@ public class Game implements Parcelable {
     }
 
     public boolean isFavorite() {
-        return !TextUtils.isEmpty(collection);
+        return !TextUtils.isEmpty(collection) && !collection.equals(Game.DISCOVER);
     }
 
     public void setFavorite(boolean favorite) {

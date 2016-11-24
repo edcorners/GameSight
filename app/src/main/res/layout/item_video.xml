@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content"
     android:layout_width="fill_parent"
-    android:textAppearance="?android:attr/textAppearanceSmall"
-    android:text="Video title"
-    android:id="@+id/video_title_text_view"
-    android:drawableLeft="@mipmap/ic_launcher"
-    android:foregroundGravity="center_vertical"
-    android:gravity="center_vertical"
-    android:drawableTint="@color/colorAccent"
-    android:drawablePadding="6dp" />
+    android:id="@+id/item_video_layout"
+    android:padding="@dimen/detail_content_regular_margin">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_play_circle_filled_black"
+        android:id="@+id/item_video_icon"/>
+
+    <TextView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Video title"
+        android:id="@+id/video_title_text_view"
+        android:foregroundGravity="center_vertical"
+        android:textSize="@dimen/detail_content_text_size"
+        android:gravity="center_vertical"
+        android:layout_centerVertical="true"
+        android:paddingStart="@dimen/detail_content_regular_margin"
+        android:layout_toRightOf="@id/item_video_icon"/>
+
+</RelativeLayout>
