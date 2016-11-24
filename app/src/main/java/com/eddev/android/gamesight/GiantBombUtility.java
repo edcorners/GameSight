@@ -10,8 +10,11 @@ import com.eddev.android.gamesight.model.Game;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+
+import static java.util.Arrays.asList;
 
 /**
  * Created by ed on 10/31/16.
@@ -26,6 +29,7 @@ public class GiantBombUtility {
     private final static Integer[] playstationPlatformIds = new Integer[]{18,19,22,35,88,129,143,146};
     private final static Integer[] xboxPlatformIds = new Integer[]{20,32,86,145};
     private final static Integer[] pcPlatformIds = new Integer[]{94};
+    public static final int PLATFORM_COUNT = 150;
 
     public static Date getDateTime(String date) {
         Date originalReleaseDate = null;
@@ -54,13 +58,13 @@ public class GiantBombUtility {
     public static @DrawableRes int getIconResourceForConsole(int platformId){
         int resource = -1;
 
-        if(Arrays.asList(nintendoPlatformIds).contains(platformId)){
+        if(asList(nintendoPlatformIds).contains(platformId)){
             resource = R.mipmap.ic_nintendo;
-        }else if(Arrays.asList(playstationPlatformIds).contains(platformId)){
+        }else if(asList(playstationPlatformIds).contains(platformId)){
             resource = R.mipmap.ic_playstation;
-        }else if(Arrays.asList(xboxPlatformIds).contains(platformId)){
+        }else if(asList(xboxPlatformIds).contains(platformId)){
             resource = R.mipmap.ic_xbox;
-        }else if(Arrays.asList(pcPlatformIds).contains(platformId)){
+        }else if(asList(pcPlatformIds).contains(platformId)){
             resource = R.mipmap.ic_pc ;
         }
         return resource;
@@ -102,5 +106,45 @@ public class GiantBombUtility {
             console = context.getResources().getString(R.string.platform_other);
         }
         return console;
+    }
+
+    public static String getPlatformIdsByConsoles(Context context,ArrayList<String> selectedItems) {
+        String result = "";
+        for(String current: selectedItems){
+            if (current.equals(context.getResources().getString(R.string.platform_nintendo))){
+                String ids = Arrays.toString(nintendoPlatformIds).replace("[", "").replace("]", "");
+                result += TextUtils.isEmpty(result) ? ids : ","+ids;
+            }
+            if (current.equals(context.getResources().getString(R.string.platform_playstation))){
+                String ids = Arrays.toString(playstationPlatformIds).replace("[", "").replace("]", "");
+                result += TextUtils.isEmpty(result) ? ids : ","+ids;
+            }
+            if (current.equals(context.getResources().getString(R.string.platform_xbox))){
+                String ids = Arrays.toString(xboxPlatformIds).replace("[", "").replace("]", "");
+                result += TextUtils.isEmpty(result) ? ids : ","+ids;
+            }
+            if (current.equals(context.getResources().getString(R.string.platform_pc))){
+                String ids = Arrays.toString(pcPlatformIds).replace("[", "").replace("]", "");
+                result += TextUtils.isEmpty(result) ? ids : ","+ids;
+            }
+            if (current.equals(context.getResources().getString(R.string.platform_other))){
+                String ids = getOtherPlatformIds().toString().replace("[", "").replace("]", "");
+                result += TextUtils.isEmpty(result) ? ids : ","+ids;
+            }
+        }
+        return result;
+    }
+
+    private static ArrayList<Integer> getOtherPlatformIds(){
+        Integer[] other = new Integer[PLATFORM_COUNT];
+        for(int i=0;i<PLATFORM_COUNT;i++){
+            other[i] = i;
+        }
+        ArrayList<Integer> range = new ArrayList<Integer>(Arrays.asList(other));
+        range.removeAll(Arrays.asList(nintendoPlatformIds));
+        range.removeAll(Arrays.asList(playstationPlatformIds));
+        range.removeAll(Arrays.asList(xboxPlatformIds));
+        range.removeAll(Arrays.asList(pcPlatformIds));
+        return range;
     }
 }

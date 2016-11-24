@@ -33,12 +33,31 @@ public class GameSightProvider {
         @InexactContentUri(
                 name = "GAME_ID",
                 path = Path.GAMES + "/#",
-                type = "vnd.android.cursor.item/movie",
+                type = "vnd.android.cursor.item/game",
                 whereColumn = GameColumns.GAME_ID,
                 pathSegment = 1
         )
         public static Uri withGameId(long id){
             return buildUri(Path.GAMES, String.valueOf(id));
+        }
+
+        @InexactContentUri(
+                name = "GAME_BY_CLASSIFICATION_TYPE",
+                path = Path.GAMES +"/"+ Path.CLASSIFICATION_BY_GAME + "/*",
+                type = "vnd.android.cursor.dir/game",
+                whereColumn = GameSightDatabase.CLASSIFICATION_ATTRIBUTES+"."+ClassificationAttributeColumns.TYPE,
+                pathSegment = 2,
+                join = "INNER JOIN "+GameSightDatabase.CLASSIFICATION_BY_GAME +" ON "+
+                        GameSightDatabase.GAMES+"."+GameColumns.GAME_ID + " = " +
+                        GameSightDatabase.CLASSIFICATION_BY_GAME+"."+ClassificationByGameColumns.GAME_ID+
+                        " INNER JOIN "+GameSightDatabase.CLASSIFICATION_ATTRIBUTES+" ON "+
+                        GameSightDatabase.CLASSIFICATION_BY_GAME+"."+ClassificationByGameColumns.CLASSIFICATION_ID + " = " +
+                        GameSightDatabase.CLASSIFICATION_ATTRIBUTES+"."+ClassificationAttributeColumns.CLASSIFICATION_ID,
+                defaultSort = GameSightDatabase.GAMES+"."+ GameColumns.EXPECTED_RELEASE_DATE + " ASC",
+                groupBy = GameSightDatabase.GAMES+"."+GameColumns.GAME_ID
+        )
+        public static Uri withClassification(String type){
+            return buildUri(Path.GAMES, Path.CLASSIFICATION_BY_GAME, type);
         }
     }
     @TableEndpoint(table = GameSightDatabase.REVIEWS) public static class Reviews {

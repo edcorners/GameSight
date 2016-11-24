@@ -44,6 +44,10 @@ public class GridRecyclerViewAdapter extends RecyclerView.Adapter<GridRecyclerVi
         this.dataset = dataset;
     }
 
+    public List<Game> getDataset() {
+        return dataset;
+    }
+
     @Override
     public GridRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view

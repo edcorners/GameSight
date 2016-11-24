@@ -22,10 +22,13 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.GiantBombUtility;
+import com.eddev.android.gamesight.R;
+import com.eddev.android.gamesight.data.ClassificationAttributeColumns;
 import com.eddev.android.gamesight.data.GameColumns;
+import com.eddev.android.gamesight.data.GameSightDatabase;
 import com.eddev.android.gamesight.data.GameSightProvider;
+import com.eddev.android.gamesight.model.ClassificationAttribute;
 import com.eddev.android.gamesight.model.Game;
 import com.eddev.android.gamesight.presenter.adapter.GridRecyclerViewAdapter;
 import com.eddev.android.gamesight.service.GiantBombSearchService;
@@ -47,12 +50,14 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
 
     private static final String FILTER_BY_CONSOLE_DIALOG = "FBCD";
     public static final String FILTER_SELECTED_ITEMS = "filterSelectedItems";
+    public static final String LOADED_GAMES_KEY = "loadedGames";
+
     private final String LOG_TAG = GameGridActivityFragment.class.getSimpleName();
 
     public static final int DISCOVER_RESULTS_LIMIT = 16;
-    public static final String LOADED_GAMES_KEY = "loadedGames";
     private static final int TRACKING_GRID_LOADER = 10;
     private static final int OWNED_GRID_LOADER = 11;
+    private static final int GAME_BY_CONSOLE_LOADER = 12;
 
     @BindView(R.id.grid_recycler_view)
     RecyclerView mRecyclerView;
@@ -66,6 +71,7 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
     private List<Game> mGames = new ArrayList<>();
     private boolean mScrimEnabled = false;
     private ArrayList<String> mConsoleFilterSelectedItems;
+    private String mFilterPlatformIds = null;
 
 
     public GameGridActivityFragment() {
@@ -149,10 +155,11 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
     }
 
     private void updateScrimVisibility(boolean visible) {
-        for (Game game : mGames) {
+        List<Game> games = mRecyclerViewAdapter.getDataset();
+        for (Game game : games) {
             game.setScrimVisible(visible);
         }
-        mRecyclerViewAdapter.setDataset(mGames);
+        mRecyclerViewAdapter.setDataset(games);
         mRecyclerViewAdapter.notifyDataSetChanged();
         mScrimEnabled = visible;
     }
@@ -208,13 +215,23 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
                         new String[]{Game.OWNED},
                         null);
                 break;
+            case GAME_BY_CONSOLE_LOADER:
+                Log.d(LOG_TAG, "onCreateLoader GAME_BY_CONSOLE_LOADER");
+                cursorLoader = new CursorLoader(getContext(),
+                        GameSightProvider.Games.withClassification(ClassificationAttribute.PLATFORM) ,
+                        Game.GAME_PROJECTION,
+                        GameSightDatabase.GAMES +"."+ GameColumns.COLLECTION +" =? and "+
+                        GameSightDatabase.CLASSIFICATION_ATTRIBUTES +"."+ ClassificationAttributeColumns.CLASSIFICATION_ID + " IN ("+mFilterPlatformIds+")",
+                        new String[]{mCollection},
+                        null);
+                break;
         }
         return cursorLoader;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (data != null ) {
+        if (data != null) {
             switch (loader.getId()) {
                 case TRACKING_GRID_LOADER:
                     Log.d(LOG_TAG, "LoadFinished TRACKING_GRID_LOADER ");
@@ -223,6 +240,18 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
                 case OWNED_GRID_LOADER:
                     Log.d(LOG_TAG, "LoadFinished OWNED_GRID_LOADER ");
                     onGamesLoaderFinished(data);
+                    break;
+                case GAME_BY_CONSOLE_LOADER:
+                    Log.d(LOG_TAG, "LoadFinished GAME_BY_CONSOLE_LOADER ");
+                    List<Game> filteredGames = new ArrayList<>();
+                    data.moveToPosition(-1); //Rewind cursor
+                    while (data.moveToNext()){
+                        Game current = new Game(data);
+                        current.setScrimVisible(mScrimEnabled);
+                        filteredGames.add(current);
+                    }
+                    mRecyclerViewAdapter.setDataset(filteredGames);
+                    mRecyclerViewAdapter.notifyDataSetChanged();
                     break;
             }
             setMenuVisibility(true);
@@ -246,10 +275,19 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
 
     @Override
     public void onFilterByConsoleClick(ArrayList<String> selectedItems) {
+        if(mCollection.equals(mCollection.equals(Game.DISCOVER))) {
+            applyFilter(selectedItems);
+        }else{
+            mFilterPlatformIds = GiantBombUtility.getPlatformIdsByConsoles(getContext(), selectedItems);
+            getActivity().getSupportLoaderManager().restartLoader(GAME_BY_CONSOLE_LOADER, null, this);
+        }
+    }
+
+    private void applyFilter(ArrayList<String> selectedItems) {
         mConsoleFilterSelectedItems = selectedItems;
         List<Game> filteredGames = new ArrayList<>();
-        for(Game current: mGames){
-            if(current.isForAnyOfConsoles(getContext(), mConsoleFilterSelectedItems)){
+        for (Game current : mGames) {
+            if (current.isForAnyOfConsoles(getContext(), mConsoleFilterSelectedItems)) {
                 filteredGames.add(current);
             }
         }
