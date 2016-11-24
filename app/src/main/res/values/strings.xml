@@ -16,6 +16,7 @@
     <string name="platform_xbox">Xbox</string>
     <string name="platform_pc">PC</string>
     <string name="platform_other">Other</string>
-    <string name="dialog_ok_option">OK</string>
-    <string name="dialog_cancel_option">CANCEL</string>
+    <string name="filter_by_console_dialog_ok_option">OK</string>
+    <string name="filter_by_console_dialog_cancel_option">CANCEL</string>
+    <string name="filter_by_console_dialog_title">Choose platforms...</string>
 </resources>

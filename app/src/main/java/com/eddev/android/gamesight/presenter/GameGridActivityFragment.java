@@ -54,7 +54,7 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
 
     private final String LOG_TAG = GameGridActivityFragment.class.getSimpleName();
 
-    public static final int DISCOVER_RESULTS_LIMIT = 16;
+    public static final int DISCOVER_RESULTS_LIMIT = 20;
     private static final int TRACKING_GRID_LOADER = 10;
     private static final int OWNED_GRID_LOADER = 11;
     private static final int GAME_BY_CONSOLE_LOADER = 12;
@@ -275,7 +275,7 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
 
     @Override
     public void onFilterByConsoleClick(ArrayList<String> selectedItems) {
-        if(mCollection.equals(mCollection.equals(Game.DISCOVER))) {
+        if(mCollection.equals(Game.DISCOVER)) {
             applyFilter(selectedItems);
         }else{
             mFilterPlatformIds = GiantBombUtility.getPlatformIdsByConsoles(getContext(), selectedItems);

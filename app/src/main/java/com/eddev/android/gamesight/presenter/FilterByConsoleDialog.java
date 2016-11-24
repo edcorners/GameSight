@@ -41,7 +41,7 @@ public class FilterByConsoleDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final String[] consoleNameResource = GiantBombUtility.getConsolesArrayResourceAsStringArray(getContext());
         boolean[] booleanArray  = getBooleanSelectedItems(selectedItems,consoleNameResource);
-        builder.setTitle("Choose consoles")
+        builder.setTitle(R.string.filter_by_console_dialog_title)
                 .setMultiChoiceItems(consoleNameResource, booleanArray,
                         new DialogInterface.OnMultiChoiceClickListener() {
                             @Override
@@ -54,13 +54,13 @@ public class FilterByConsoleDialog extends DialogFragment {
                                 }
                             }
                         })
-                .setPositiveButton(R.string.dialog_ok_option, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.filter_by_console_dialog_ok_option, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         listener.onFilterByConsoleClick(selectedItems);
                     }
                 })
-                .setNegativeButton(R.string.dialog_cancel_option, new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.filter_by_console_dialog_cancel_option, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         listener.onCancelFilterClick();

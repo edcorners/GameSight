@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public static final String TRACKING_GAMES_LOADED_KEY = "trackingGamesLoaded";
     public static final String OWNED_GAMES_KEY = "ownedGames";
     public static final String OWNED_GAMES_LOADED_KEY = "ownedGamesLoaded";
-    public static final int DISCOVER_RESULTS_LIMIT = 5;
+    public static final int DISCOVER_RESULTS_LIMIT = 8;
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);

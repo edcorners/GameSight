@@ -51,4 +51,30 @@
         <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 
+    <style name="cardToolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">@dimen/card_toolbar_height</item>
+    </style>
+
+    <style name="appTitle">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:textStyle">normal|bold</item>
+    </style>
+
+    <style name="cardToolbarTitleText">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textStyle">normal|bold</item>
+        <item name="android:padding">@dimen/card_toolbar_title_padding</item>
+        <item name="android:textSize">@dimen/card_toolbar_title_text_size</item>
+    </style>
+
 </resources>
