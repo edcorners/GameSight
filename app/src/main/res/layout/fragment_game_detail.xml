@@ -17,6 +17,11 @@
         android:progressDrawable="@android:drawable/progress_horizontal"
         android:layout_centerInParent="true"/>
 
+    <TextView android:id="@+id/details_empty_text_view"
+        android:text="@string/connect_to_retrieve_details_text"
+        style="@style/emptyViewTextStyle"
+        />
+
     <LinearLayout
         android:id="@+id/detail_content_game"
         style="@style/detailsContentLayout">

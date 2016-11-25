@@ -79,7 +79,7 @@ public class FindGBReviewsAsyncTask extends AsyncTask<HashMap<String,String>, Vo
             GBResponse = response.body();
             gbReviews = GBResponse.getResults();
         } catch (IOException e) {
-            mError = "Failed to retrieve reviews. Giant bomb service unavailable.";
+            mError = mContext.getString(R.string.failed_to_retrieve_reviews_text);
             Log.e(LOG_TAG, "Error ", e);
         }
         return gbReviews;

@@ -91,4 +91,16 @@
         <item name="android:background">@color/white</item>
     </style>
 
+    <style name="emptyViewTextStyle">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:paddingTop">@dimen/card_recycler_view_vertical_padding</item>
+        <item name="android:paddingBottom">@dimen/card_recycler_view_vertical_padding</item>
+        <item name="android:paddingStart">@dimen/card_recycler_view_horizontal_padding</item>
+        <item name="android:paddingEnd">@dimen/card_recycler_view_horizontal_padding</item>
+        <item name="android:textColor">@color/emptyViewMessage</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
 </resources>

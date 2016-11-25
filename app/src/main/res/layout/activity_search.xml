@@ -24,6 +24,17 @@
             android:progressDrawable="@android:drawable/progress_indeterminate_horizontal"
             android:layout_centerInParent="true"  />
 
+        <TextView android:id="@+id/search_empty_text_view"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:text="@string/connect_to_retrieve_search_results_text"
+            android:textAlignment="center"
+            android:paddingTop="@dimen/empty_view_text_vertical_padding"
+            android:paddingBottom="@dimen/empty_view_text_vertical_padding"
+            android:textColor="@color/emptyViewMessage"
+            android:visibility="gone"
+            />
+
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"

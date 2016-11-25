@@ -33,6 +33,10 @@
                 android:progressDrawable="@android:drawable/progress_indeterminate_horizontal"
                 android:layout_gravity="center_horizontal|center_vertical" />
 
+            <TextView android:id="@+id/d_card_empty_text_view"
+                android:text="@string/discover_games_no_connection_text"
+                style="@style/emptyViewTextStyle"/>
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/discover_card_recycler_view"
                 style="@style/cardGalleryRecyclerView"
@@ -78,6 +82,10 @@
                 android:progressDrawable="@android:drawable/progress_indeterminate_horizontal"
                 android:layout_gravity="center_horizontal|center_vertical" />
 
+            <TextView android:id="@+id/t_card_empty_text_view"
+                android:text="@string/add_games_to_tracking_text"
+                style="@style/emptyViewTextStyle"/>
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/tracking_card_recycler_view"
                 style="@style/cardGalleryRecyclerView"
@@ -122,6 +130,10 @@
                 android:id="@+id/o_card_progress_bar"
                 android:progressDrawable="@android:drawable/progress_indeterminate_horizontal"
                 android:layout_gravity="center_horizontal|center_vertical" />
+
+            <TextView android:id="@+id/o_card_empty_text_view"
+                android:text="@string/add_games_to_owned_text"
+                style="@style/emptyViewTextStyle" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/owned_card_recycler_view"

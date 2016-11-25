@@ -16,6 +16,10 @@
         android:progressDrawable="@android:drawable/progress_indeterminate_horizontal"
         android:layout_centerInParent="true" />
 
+    <TextView android:id="@+id/grid_empty_text_view"
+        android:text="@string/discover_games_no_connection_text"
+        style="@style/emptyViewTextStyle"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/grid_recycler_view"
         android:layout_width="match_parent"

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eddev.android.gamesight.R;
@@ -36,6 +37,8 @@ public class SearchableActivity extends AppCompatActivity implements IGamesLoade
     RecyclerView mSearchResultsRecyclerView;
     @BindView(R.id.search_progress_bar)
     ProgressBar mSearchProgressBar;
+    @BindView(R.id.search_empty_text_view)
+    TextView mEmptyTextView;
 
     private RecyclerView.Adapter mSearchRecyclerViewAdapter;
     private RecyclerView.LayoutManager mSearchRecyclerViewLayoutManager;
@@ -114,17 +117,24 @@ public class SearchableActivity extends AppCompatActivity implements IGamesLoade
         mResults = games;
         mResultsLoaded = true;
         if(TextUtils.isEmpty(error)) {
-            mSearchRecyclerViewAdapter = new SearchRecyclerViewAdapter(mResults, this, new SearchRecyclerViewAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(Game game) {
-                    Intent detailsIntent = new Intent(getApplicationContext(), GameDetailActivity.class);
-                    detailsIntent.putExtra(getString(R.string.parcelable_game_key), game);
-                    startActivity(detailsIntent);
-                }
-            });
-            mSearchResultsRecyclerView.setAdapter(mSearchRecyclerViewAdapter);
+            if(!games.isEmpty()){
+                mEmptyTextView.setVisibility(View.GONE);
+                mSearchRecyclerViewAdapter = new SearchRecyclerViewAdapter(mResults, this, new SearchRecyclerViewAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(Game game) {
+                        Intent detailsIntent = new Intent(getApplicationContext(), GameDetailActivity.class);
+                        detailsIntent.putExtra(getString(R.string.parcelable_game_key), game);
+                        startActivity(detailsIntent);
+                    }
+                });
+                mSearchResultsRecyclerView.setAdapter(mSearchRecyclerViewAdapter);
+            }else{
+                mEmptyTextView.setText(R.string.no_search_results);
+                mEmptyTextView.setVisibility(View.VISIBLE);
+            }
         }else{
             Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+            mEmptyTextView.setVisibility(View.VISIBLE);
         }
         mSearchProgressBar.setVisibility(View.GONE);
     }

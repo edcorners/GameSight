@@ -3,10 +3,14 @@ package com.eddev.android.gamesight.presenter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.eddev.android.gamesight.GiantBombUtility;
 import com.eddev.android.gamesight.R;
@@ -27,6 +31,7 @@ public class GameGridActivity extends AppCompatActivity implements GameGridActiv
     @Nullable
     @BindView(R.id.game_detail_pane)
     FrameLayout detailContainerFrameLayout;
+
     boolean mTwoPane;
     private String mCollection = null;
 
@@ -59,10 +64,8 @@ public class GameGridActivity extends AppCompatActivity implements GameGridActiv
         if (detailContainerFrameLayout != null) {
             mTwoPane = true;
             if (savedInstanceState == null) {
-                getSupportFragmentManager().
-                        beginTransaction().
-                        replace(R.id.game_detail_pane, new GameDetailFragment(), GAME_DETAIL_FRAGMENT_TAG).
-                        commit();
+                TextView emptyViewMessage = (TextView) findViewById(R.id.details_empty_view);
+                emptyViewMessage.setVisibility(View.VISIBLE);
             }
         } else {
             mTwoPane = false;
@@ -79,6 +82,11 @@ public class GameGridActivity extends AppCompatActivity implements GameGridActiv
     @Override
     public void onItemSelected(Game game) {
         if (mTwoPane) {
+            ScrollView detailScrollView = (ScrollView) findViewById(R.id.grid_detail_scroll_view);
+            detailScrollView.setBackgroundColor(ContextCompat.getColor(this,R.color.white));
+            TextView emptyViewMessage = (TextView) findViewById(R.id.details_empty_view);
+            emptyViewMessage.setVisibility(View.GONE);
+
             Bundle arguments = new Bundle();
             arguments.putParcelable(getString(R.string.parcelable_game_key), game);
             arguments.putBoolean(getString(R.string.two_pane_key), mTwoPane);

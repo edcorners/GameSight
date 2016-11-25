@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eddev.android.gamesight.GiantBombUtility;
@@ -63,6 +64,8 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
     private GridRecyclerViewAdapter mRecyclerViewAdapter;
     @BindView(R.id.grid_progress_bar)
     ProgressBar mProgressBar;
+    @BindView(R.id.grid_empty_text_view)
+    TextView mEmptyTextView;
 
     private IGameSearchService mIGameSearchService;
     private String mCollection = null;
@@ -106,7 +109,6 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
             if(savedInstanceState != null) {
                 mGames = savedInstanceState.getParcelableArrayList(LOADED_GAMES_KEY);
                 mConsoleFilterSelectedItems = new ArrayList<>(Arrays.asList(GiantBombUtility.getConsolesArrayResourceAsStringArray(getContext())));
-                //mConsoleFilterSelectedItems = savedInstanceState.getStringArrayList(FILTER_SELECTED_ITEMS);
                 initRecyclerView();
             }else{
                 if (mCollection.equals(Game.DISCOVER)) {
@@ -178,6 +180,8 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
     public void onGamesLoaded(List<Game> games, String error) {
         if(!TextUtils.isEmpty(error)){
             Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+            mProgressBar.setVisibility(View.GONE);
+            mEmptyTextView.setVisibility(View.VISIBLE);
         }else {
             mGames = games;
             initRecyclerView();
@@ -186,19 +190,30 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
     }
 
     private void initRecyclerView() {
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerViewAdapter = new GridRecyclerViewAdapter(mGames, getContext(), new GridRecyclerViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Game game) {
-                ((Callback) getActivity()).onItemSelected(game);
+        if(!mGames.isEmpty()){
+            mEmptyTextView.setVisibility(View.GONE);
+            StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+            layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+            mRecyclerView.setLayoutManager(layoutManager);
+            mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+            mRecyclerViewAdapter = new GridRecyclerViewAdapter(mGames, getContext(), new GridRecyclerViewAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Game game) {
+                    ((Callback) getActivity()).onItemSelected(game);
+                }
+            });
+            mRecyclerView.setAdapter(mRecyclerViewAdapter);
+            mProgressBar.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+        }else{
+            if(mCollection.equals(Game.OWNED)) {
+                mEmptyTextView.setText(R.string.add_games_to_owned_text);
+            }else if(mCollection.equals(Game.TRACKING)) {
+                mEmptyTextView.setText(R.string.add_games_to_tracking_text);
             }
-        });
-        mRecyclerView.setAdapter(mRecyclerViewAdapter);
-        mProgressBar.setVisibility(View.GONE);
-        mRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyTextView.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -229,7 +244,7 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
                         GameSightProvider.Games.withClassification(ClassificationAttribute.PLATFORM) ,
                         Game.GAME_PROJECTION,
                         GameSightDatabase.GAMES +"."+ GameColumns.COLLECTION +" =? and "+
-                        GameSightDatabase.CLASSIFICATION_ATTRIBUTES +"."+ ClassificationAttributeColumns.CLASSIFICATION_ID + " IN ("+mFilterPlatformIds+")",
+                                GameSightDatabase.CLASSIFICATION_ATTRIBUTES +"."+ ClassificationAttributeColumns.CLASSIFICATION_ID + " IN ("+mFilterPlatformIds+")",
                         new String[]{mCollection},
                         null);
                 break;

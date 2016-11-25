@@ -3,10 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.eddev.android.gamesight.presenter.MainActivity">
+
+    <item
+        android:id="@+id/action_refresh_d_card"
+        android:orderInCategory="1"
+        android:title="@string/refresh_menu_tem_title"
+        android:icon="@drawable/ic_autorenew_white"
+        app:showAsAction="always" />
+
     <item
         android:id="@+id/action_d_grid_view"
-        android:orderInCategory="1"
-        android:title="Grid view"
+        android:orderInCategory="2"
+        android:title="@string/grid_view_menu_title"
         android:icon="@drawable/ic_view_module_white"
         app:showAsAction="always" />
+
 </menu>

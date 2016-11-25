@@ -64,30 +64,34 @@ public class GameFactoryFromGB {
     public Game createGame(GBGame gBGame) {
         List<ClassificationAttribute> classificationAttributes = getClassificationAttributes(gBGame);
         List<Video> videos = getVideos(gBGame);
-
-        Game newGame = new Game(gBGame.getId(),
-                gBGame.getDeck(),
-                GiantBombUtility.getDate(gBGame.getExpectedReleaseDate()),
-                gBGame.getCover(),
-                gBGame.getThumb(),
-                gBGame.getName(),
-                classificationAttributes,
-                gBGame.getNumberOfUserReviews(),
-                GiantBombUtility.getDateTime(gBGame.getOriginalReleaseDate()),
-                null,
-                videos,
-                0D,
-                Game.DISCOVER
-        );
+        Game newGame = null;
+        if(gBGame != null) {
+            newGame = new Game(gBGame.getId(),
+                    gBGame.getDeck(),
+                    GiantBombUtility.getDate(gBGame.getExpectedReleaseDate()),
+                    gBGame.getCover(),
+                    gBGame.getThumb(),
+                    gBGame.getName(),
+                    classificationAttributes,
+                    gBGame.getNumberOfUserReviews(),
+                    GiantBombUtility.getDateTime(gBGame.getOriginalReleaseDate()),
+                    null,
+                    videos,
+                    0D,
+                    Game.DISCOVER
+            );
+        }
         return newGame;
     }
 
     @NonNull
     private List<Video> getVideos(GBGame gBGame) {
         List<Video> videos = new ArrayList<>();
-        for(GBVideo current : gBGame.getVideos()){
-            Video newVideo = new Video(current.getId(), current.getName(), current.getSiteDetailUrl());
-            videos.add(newVideo);
+        if (gBGame != null) {
+            for (GBVideo current : gBGame.getVideos()) {
+                Video newVideo = new Video(current.getId(), current.getName(), current.getSiteDetailUrl());
+                videos.add(newVideo);
+            }
         }
         return videos;
     }
@@ -96,7 +100,7 @@ public class GameFactoryFromGB {
     private List<ClassificationAttribute> getClassificationAttributes(GBGame gBGame) {
         List<ClassificationAttribute> classificationAttributes = new ArrayList<>();
 
-        if(gBGame.getPlatforms() != null) {
+        if(gBGame != null && gBGame.getPlatforms() != null) {
             for (GBPlatform current : gBGame.getPlatforms()) {
                 ClassificationAttribute classificationAttribute = new ClassificationAttribute(current.getId(),
                         ClassificationAttribute.PLATFORM,
@@ -105,7 +109,7 @@ public class GameFactoryFromGB {
             }
         }
 
-        if(gBGame.getGenres() != null) {
+        if(gBGame != null && gBGame.getGenres() != null) {
             for (GBGenre current : gBGame.getGenres()) {
                 ClassificationAttribute classificationAttribute = new ClassificationAttribute(current.getId(),
                         ClassificationAttribute.GENRE,
@@ -114,7 +118,7 @@ public class GameFactoryFromGB {
             }
         }
 
-        if(gBGame.getPublishers() != null) {
+        if(gBGame != null && gBGame.getPublishers() != null) {
             for (GBPublisher current : gBGame.getPublishers()) {
                 ClassificationAttribute classificationAttribute = new ClassificationAttribute(current.getId(),
                         ClassificationAttribute.PUBLISHER,

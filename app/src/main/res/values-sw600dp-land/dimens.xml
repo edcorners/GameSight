@@ -7,4 +7,6 @@
     <dimen name="details_platform_layout_margin_horizontal">8dp</dimen>
     <dimen name="details_platform_layout_margin_vertical">16dp</dimen>
 
+    <dimen name="empty_view_text_vertical_padding">40dp</dimen>
+
 </resources>

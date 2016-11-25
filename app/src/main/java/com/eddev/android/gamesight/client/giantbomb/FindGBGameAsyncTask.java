@@ -78,7 +78,7 @@ public class FindGBGameAsyncTask extends AsyncTask<HashMap<String,String>, Void,
             gbGamesResponse = response.body();
             gBGame = gbGamesResponse.getResults();
         } catch (IOException e) {
-            mError = "Failed to connect to giant bomb service";
+            mError = mContext.getString(R.string.failed_to_connect_text);
             Log.e(LOG_TAG, "Error ", e);
         }
         return gBGame;

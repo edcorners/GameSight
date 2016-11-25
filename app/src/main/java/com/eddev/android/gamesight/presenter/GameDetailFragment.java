@@ -114,6 +114,9 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     @BindView(R.id.detail_collection_icon)
     ImageView mCollectonIcon;
 
+    @BindView(R.id.details_empty_text_view)
+    TextView mEmptyTextView;
+
     private boolean mGameLoaded = false;
     private boolean mReviewsLoaded = false;
     private boolean mVideosLoaded = false;
@@ -126,6 +129,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     ImageView backdrop;
     @BindView(R.id.detail_platforms_linear_layout)
     LinearLayout mPlatformsLinearLayout;
+
     private boolean mTwoPane = false;
 
     public GameDetailFragment() {   }
@@ -160,6 +164,8 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
                 loadGameFromService(savedInstanceState);
             }
             initTwoPaneView(rootView, arguments);
+        }else{
+            mContentProgressBar.setVisibility(View.GONE);
         }
 
         return rootView;
@@ -247,6 +253,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
             }else{
                 mGameSightDatabaseService.removeFavorite(mGame);
                 item.setIcon(R.drawable.ic_favorite_border_white);
+                mGame.setCollection(Game.DISCOVER);
                 mProgressCard.setVisibility(View.GONE);
             }
             return true;
@@ -284,6 +291,8 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
             updateVideosView();
         }else{
             Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+            mEmptyTextView.setVisibility(View.VISIBLE);
+            mContentProgressBar.setVisibility(View.GONE);
         }
     }
 

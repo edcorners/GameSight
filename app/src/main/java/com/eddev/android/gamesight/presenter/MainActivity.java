@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eddev.android.gamesight.R;
@@ -68,6 +69,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     Toolbar mDCardToolbar;
     @BindView(R.id.d_card_progress_bar)
     ProgressBar mDCardProgressBar;
+    @BindView(R.id.d_card_empty_text_view)
+    TextView mDCardEmptyTextView;
+
     private List<Game> mDiscoverGames = new ArrayList<>();
     private boolean mDiscoverGamesLoaded = false;
 
@@ -79,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     Toolbar mTCardToolbar;
     @BindView(R.id.t_card_progress_bar)
     ProgressBar mTCardProgressBar;
+    @BindView(R.id.t_card_empty_text_view)
+    TextView mTCardEmptyTextView;
     private List<Game> mTrackingGames = new ArrayList<>();
     private boolean mTrackingGamesLoaded = false;
 
@@ -90,6 +96,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     Toolbar mOCardToolbar;
     @BindView(R.id.o_card_progress_bar)
     ProgressBar mOCardProgressBar;
+    @BindView(R.id.o_card_empty_text_view)
+    TextView mOCardEmptyTextView;
     private List<Game> mOwnedGames = new ArrayList<>();
     private boolean mOwnedGamesLoaded = false;
 
@@ -220,7 +228,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     gridIntent.putExtra(getString(R.string.collection_key), Game.DISCOVER);
                     startActivity(gridIntent);
                 }
-
+                if (id == R.id.action_refresh_d_card) {
+                    mDCardEmptyTextView.setVisibility(View.GONE);
+                    mDCardProgressBar.setVisibility(View.VISIBLE);
+                    mDiscoverCardRecyclerView.setVisibility(View.GONE);
+                    loadDiscoverData(null);
+                }
                 return true;
             }
         });
@@ -267,8 +280,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     /**
-    * Loader
-    */
+     * Loader
+     */
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -330,31 +343,46 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private void initOwnedCardRecyclerView() {
-        mOwnedCardAdapter = new CardRecyclerViewAdapter(mOwnedGames, this, new CardRecyclerViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Game game) {
-                Intent detailsIntent = new Intent(getApplicationContext(), GameDetailActivity.class);
-                detailsIntent.putExtra(getString(R.string.parcelable_game_key), game);
-                startActivity(detailsIntent);
-            }
-        });
-        mOwnedCardRecyclerView.setAdapter(mOwnedCardAdapter);
-        mOCardProgressBar.setVisibility(View.GONE);
-        mOwnedCardRecyclerView.setVisibility(View.VISIBLE);
+        if (!mOwnedGames.isEmpty()) {
+            mOCardEmptyTextView.setVisibility(View.GONE);
+            mOwnedCardAdapter = new CardRecyclerViewAdapter(mOwnedGames, this, new CardRecyclerViewAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Game game) {
+                    Intent detailsIntent = new Intent(getApplicationContext(), GameDetailActivity.class);
+                    detailsIntent.putExtra(getString(R.string.parcelable_game_key), game);
+                    startActivity(detailsIntent);
+                }
+            });
+
+            mOwnedCardRecyclerView.setAdapter(mOwnedCardAdapter);
+            mOCardProgressBar.setVisibility(View.GONE);
+            mOwnedCardRecyclerView.setVisibility(View.VISIBLE);
+        }else {
+            mOCardProgressBar.setVisibility(View.GONE);
+            mOwnedCardRecyclerView.setVisibility(View.GONE);
+            mOCardEmptyTextView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void initTrackingCardRecyclerView() {
-        mTrackingCardAdapter = new CardRecyclerViewAdapter(mTrackingGames, this, new CardRecyclerViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Game game) {
-                Intent detailsIntent = new Intent(getApplicationContext(), GameDetailActivity.class);
-                detailsIntent.putExtra(getString(R.string.parcelable_game_key), game);
-                startActivity(detailsIntent);
-            }
-        });
-        mTrackingCardRecyclerView.setAdapter(mTrackingCardAdapter);
-        mTCardProgressBar.setVisibility(View.GONE);
-        mTrackingCardRecyclerView.setVisibility(View.VISIBLE);
+        if(!mTrackingGames.isEmpty()){
+            mTCardEmptyTextView.setVisibility(View.GONE);
+            mTrackingCardAdapter = new CardRecyclerViewAdapter(mTrackingGames, this, new CardRecyclerViewAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Game game) {
+                    Intent detailsIntent = new Intent(getApplicationContext(), GameDetailActivity.class);
+                    detailsIntent.putExtra(getString(R.string.parcelable_game_key), game);
+                    startActivity(detailsIntent);
+                }
+            });
+            mTrackingCardRecyclerView.setAdapter(mTrackingCardAdapter);
+            mTCardProgressBar.setVisibility(View.GONE);
+            mTrackingCardRecyclerView.setVisibility(View.VISIBLE);
+        }else{
+            mTCardProgressBar.setVisibility(View.GONE);
+            mTrackingCardRecyclerView.setVisibility(View.GONE);
+            mTCardEmptyTextView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -370,6 +398,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onGamesLoaded(List<Game> games, String error) {
         if(!TextUtils.isEmpty(error)){
             Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+            mDCardProgressBar.setVisibility(View.GONE);
+            mDCardEmptyTextView.setVisibility(View.VISIBLE);
         }else {
             mDiscoverGames = games;
             mDiscoverGamesLoaded = true;

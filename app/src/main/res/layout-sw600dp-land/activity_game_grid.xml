@@ -44,14 +44,29 @@
                 android:layout_weight="1"/>
 
             <ScrollView
+                android:id="@+id/grid_detail_scroll_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="@color/mainBackground">
 
                 <FrameLayout
                     android:id="@+id/game_detail_pane"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent">
+
+                    <TextView android:id="@+id/details_empty_view"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:text="@string/two_pane_game_details_empty"
+                        android:textAlignment="center"
+                        android:paddingTop="@dimen/empty_view_text_vertical_padding"
+                        android:paddingBottom="@dimen/empty_view_text_vertical_padding"
+                        android:textColor="@color/emptyViewMessage"
+                        />
+
+                </FrameLayout>
+
 
             </ScrollView>
 

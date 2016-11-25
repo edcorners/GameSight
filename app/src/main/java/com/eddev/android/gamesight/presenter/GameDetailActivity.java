@@ -19,8 +19,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.GiantBombUtility;
+import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.data.GameSightProvider;
 import com.eddev.android.gamesight.model.ClassificationAttribute;
 import com.eddev.android.gamesight.model.Game;
