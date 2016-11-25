@@ -1,0 +1,10 @@
+<resources>
+    <!-- Detail view dimensions. -->
+    <dimen name="details_app_bar_height">260dp</dimen>
+    <dimen name="collapsing_bar_text_size">30sp</dimen>
+    <dimen name="scrim_elevation">0dp</dimen>
+    <dimen name="scrim_height">112dp</dimen>
+    <dimen name="details_platform_layout_margin_horizontal">8dp</dimen>
+    <dimen name="details_platform_layout_margin_vertical">16dp</dimen>
+
+</resources>

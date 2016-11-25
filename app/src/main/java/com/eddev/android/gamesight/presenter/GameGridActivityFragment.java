@@ -1,6 +1,5 @@
 package com.eddev.android.gamesight.presenter;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -73,6 +72,17 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
     private ArrayList<String> mConsoleFilterSelectedItems;
     private String mFilterPlatformIds = null;
 
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callback {
+        /**
+         * DetailFragmentCallback for when a game has been selected.
+         */
+        public void onItemSelected(Game game);
+    }
 
     public GameGridActivityFragment() {
     }
@@ -183,9 +193,7 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
         mRecyclerViewAdapter = new GridRecyclerViewAdapter(mGames, getContext(), new GridRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Game game) {
-                Intent detailsIntent = new Intent(getContext(), GameDetailActivity.class);
-                detailsIntent.putExtra(getString(R.string.parcelable_game_key), game);
-                startActivity(detailsIntent);
+                ((Callback) getActivity()).onItemSelected(game);
             }
         });
         mRecyclerView.setAdapter(mRecyclerViewAdapter);

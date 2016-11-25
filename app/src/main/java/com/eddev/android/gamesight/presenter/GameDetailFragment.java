@@ -25,6 +25,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -47,8 +48,10 @@ import com.eddev.android.gamesight.service.GiantBombSearchService;
 import com.eddev.android.gamesight.service.IGameSearchService;
 import com.eddev.android.gamesight.service.callback.IGameLoadedCallback;
 import com.eddev.android.gamesight.service.callback.IGameReviewsLoadedCallback;
+import com.squareup.picasso.Picasso;
 
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import butterknife.BindView;
@@ -111,12 +114,19 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     @BindView(R.id.detail_collection_icon)
     ImageView mCollectonIcon;
 
-
     private boolean mGameLoaded = false;
     private boolean mReviewsLoaded = false;
     private boolean mVideosLoaded = false;
 
     private GameSightDatabaseService mGameSightDatabaseService;
+
+    @BindView(R.id.toolbar_game_title_text_view)
+    TextView mGameTitleTextView;
+    @BindView(R.id.detail_backdrop)
+    ImageView backdrop;
+    @BindView(R.id.detail_platforms_linear_layout)
+    LinearLayout mPlatformsLinearLayout;
+    private boolean mTwoPane = false;
 
     public GameDetailFragment() {   }
 
@@ -144,11 +154,12 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
         Bundle arguments = getArguments();
         if (arguments != null) {
             mGame = arguments.getParcelable(getString(R.string.parcelable_game_key));
-            if(mGameSightDatabaseService.canRetrieveFromLocalCollection(mGame)) {
+            if(mGame != null && mGameSightDatabaseService.canRetrieveFromLocalCollection(mGame)) {
                 loadFavoriteGame(savedInstanceState);
-            }else {
+            }else if(mGame != null ){
                 loadGameFromService(savedInstanceState);
             }
+            initTwoPaneView(rootView, arguments);
         }
 
         return rootView;
@@ -176,21 +187,21 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
             mGame = savedInstanceState.getParcelable(CURRENT_GAME_KEY);
             updateGameView();
         }else {
-            getActivity().getSupportLoaderManager().initLoader(CATTRIBUTES_LOADER, null, this);
+            getActivity().getSupportLoaderManager().restartLoader(CATTRIBUTES_LOADER, null, this);
         }
 
         if (savedInstanceState != null && savedInstanceState.getBoolean(REVIEWS_LOADED_KEY)) {
             mGame = savedInstanceState.getParcelable(CURRENT_GAME_KEY);
             updateReviewsView();
         }else {
-            getActivity().getSupportLoaderManager().initLoader(REVIEWS_LOADER, null, this);
+            getActivity().getSupportLoaderManager().restartLoader(REVIEWS_LOADER, null, this);
         }
 
         if (savedInstanceState != null && savedInstanceState.getBoolean(VIDEOS_LOADED_KEY)) {
             mGame = savedInstanceState.getParcelable(CURRENT_GAME_KEY);
             updateVideosView();
         }else {
-            getActivity().getSupportLoaderManager().initLoader(VIDEOS_LOADER, null, this);
+            getActivity().getSupportLoaderManager().restartLoader(VIDEOS_LOADER, null, this);
         }
     }
 
@@ -216,7 +227,11 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.menu_game_detail, menu);
         if(mGame.isFavorite()) {
-            menu.getItem(1).setIcon(R.drawable.ic_favorite_white);
+            for(int i=0;i<menu.size();i++) {
+                if(menu.getItem(i).getItemId() == R.id.action_favorite) {
+                    menu.getItem(i).setIcon(R.drawable.ic_favorite_white);
+                }
+            }
         }
     }
 
@@ -249,14 +264,16 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
             String completionText = expectedReleaseDate != null ? getString(R.string.coming_out)+ " " + GiantBombUtility.shortDateFormat.format(expectedReleaseDate):
                     getString(R.string.release_date_unknown);
             mCompletionTextView.setText(completionText);
-        }else{
+            mProgressCard.setVisibility(View.VISIBLE);
+        }else if (mGame.isInCollecion(Game.OWNED)){
             mCollectonIcon.setImageResource(R.drawable.ic_videogame_asset_white);
             mProgressCard.setCardBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getActivity(), R.color.ownedCardToolbarColor)));
             mCompletionSeekBar.setVisibility(View.VISIBLE);
             mCompletionSeekBar.setProgress((int)mGame.getCompletion());
             mCompletionTextView.setText((int)mGame.getCompletion() + getString(R.string.completion_units_legend));
+            mProgressCard.setVisibility(View.VISIBLE);
         }
-        mProgressCard.setVisibility(View.VISIBLE);
+
     }
 
     @Override
@@ -284,9 +301,44 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     /**
      * UI Init
      */
+    private void initTwoPaneView(View rootView, Bundle arguments) {
+        mTwoPane = arguments.getBoolean(getString(R.string.two_pane_key));
+        if(mTwoPane) {
+            rootView.findViewById(R.id.detail_include_toolbar_image).setVisibility(mTwoPane ? View.VISIBLE : View.GONE);
+            mGameTitleTextView.setText(mGame.getName());
+            mGameTitleTextView.setVisibility(View.VISIBLE);
+            Picasso.with(getContext())
+                    .load(mGame.getImageUrl())
+                    .placeholder(R.color.mainBackground)
+                    .error(R.color.mainBackground)
+                    .into(backdrop);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMargins(0, 0, 0, 0);
+            mContentLinearLayout.setLayoutParams(layoutParams);
+            mContentLinearLayout.setPadding(0, 0, 0, 0);
+        }
+    }
+
+    private void createPlatformsView() {
+        mPlatformsLinearLayout.removeAllViews();
+
+        LinkedHashSet<Integer> platformsSet = new LinkedHashSet<>();
+        for(int platform: mGame.getClassificationAttributeIds(ClassificationAttribute.PLATFORM)) {
+            platformsSet.add(GiantBombUtility.getIconResourceForConsole(platform));
+        }
+        for(int platform: platformsSet) {
+            if(platform != -1) {
+                FrameLayout platformFrame = (FrameLayout) LayoutInflater.from(getContext()).inflate(R.layout.item_platform, null, false);
+                ImageView platformIcon = (ImageView) platformFrame.findViewById(R.id.platform_icon_image_view);
+                platformIcon.setImageResource(platform);
+                mPlatformsLinearLayout.addView(platformFrame);
+            }
+        }
+    }
 
     private void updateGameView() {
-        if(mGame != null) {
+        if(mGame != null && isAdded()) {// isAdded avoids Fragment not attached to Activity exception
             mDescriptionTextView.setText(mGame.getDescription());
             String publishers = TextUtils.join(", ", mGame.getClassificationAttributeValues(ClassificationAttribute.PUBLISHER));
             mPublisherTextView.setText(TextUtils.isEmpty(publishers) ? getString(R.string.no_data_available) : publishers);
@@ -311,18 +363,20 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
 
     private void updateVideosView() {
         List<Video> videos = mGame.getVideos();
-        if(videos.size()>0) {
+        if(isAdded()) {// isAdded avoids Fragment not attached to Activity exception
             mVideosLinearLayout.removeAllViews();
-            for (final Video current : videos) {
-                createVideoView(current);
+            if (videos.size() > 0) {
+                for (final Video current : videos) {
+                    createVideoView(current);
+                }
+            } else {
+                setEmptyLayoutMessage(mVideosLinearLayout, getString(R.string.videos_empty));
             }
-        }else{
-            setEmptyLayoutMessage(mVideosLinearLayout, getString(R.string.videos_empty));
+            mVideosProgressBar.setVisibility(View.GONE);
+            mVideosLinearLayout.setVisibility(View.VISIBLE);
+            mVideosLoaded = true;
+            setMenuVisibility(mReviewsLoaded && mReviewsLoaded && mVideosLoaded);
         }
-        mVideosProgressBar.setVisibility(View.GONE);
-        mVideosLinearLayout.setVisibility(View.VISIBLE);
-        mVideosLoaded = true;
-        setMenuVisibility(mReviewsLoaded && mReviewsLoaded && mVideosLoaded);
     }
 
     private void createVideoView(final Video current) {
@@ -353,13 +407,14 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     }
 
     private void updateReviewsView() {
-        if(mGame != null) {
+        mReviewsLinearLayout.removeAllViews();
+        if(mGame != null && isAdded()) { // isAdded avoids Fragment not attached to Activity exception
             List<Review> reviews = mGame.getReviews();
             if (reviews.size() > 0) {
                 for (Review current : reviews) {
                     createReviewView(current);
                 }
-            } else {
+            } else{
                 setEmptyLayoutMessage(mReviewsLinearLayout, getString(R.string.reviews_empty));
             }
         }
@@ -470,6 +525,9 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
                         mGame.addClassificationAttribute(new ClassificationAttribute(data));
                     }
                     updateGameView();
+                    if(mTwoPane){
+                        createPlatformsView();
+                    }
                     mGameLoaded = true;
                     break;
             }

@@ -24,8 +24,8 @@
     <dimen name="collapsing_bar_text_size">26sp</dimen>
     <dimen name="scrim_elevation">6dp</dimen>
     <dimen name="scrim_height">112dp</dimen>
-    <dimen name="details_platform_layout_margin_end">8dp</dimen>
-    <dimen name="details_platform_layout_margin_bottom">16dp</dimen>
+    <dimen name="details_platform_layout_margin_horizontal">8dp</dimen>
+    <dimen name="details_platform_layout_margin_vertical">16dp</dimen>
 
     <dimen name="detail_content_progress_bar_margin">8dp</dimen>
     <dimen name="detail_layout_horizontal_padding">16dp</dimen>

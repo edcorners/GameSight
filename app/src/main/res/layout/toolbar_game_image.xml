@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_collapseMode="parallax">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:id="@+id/detail_backdrop"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/scrim_height"
+        android:background="@drawable/scrim_downwards_gradient"
+        android:elevation="@dimen/scrim_elevation"
+        android:layout_alignTop="@id/detail_backdrop"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/scrim_height"
+        android:background="@drawable/scrim_upwards_gradient"
+        android:elevation="@dimen/scrim_elevation"
+        android:layout_alignBottom="@+id/detail_backdrop" />
+
+    <TextView
+        android:id="@+id/toolbar_game_title_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/detail_backdrop"
+        android:layout_alignStart="@id/detail_backdrop"
+        android:layout_marginStart="@dimen/details_platform_layout_margin_horizontal"
+        android:layout_marginBottom="@dimen/details_platform_layout_margin_vertical"
+        style="@style/collapsibleToolbarStyle"
+        android:text="Game Title"
+        android:visibility="gone"
+        android:textColor="?android:attr/textColorPrimaryInverse" />
+
+    <LinearLayout
+        android:id="@+id/detail_platforms_linear_layout"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_alignBottom="@id/detail_backdrop"
+        android:layout_alignEnd="@id/detail_backdrop"
+        android:layout_marginEnd="@dimen/details_platform_layout_margin_horizontal"
+        android:layout_marginBottom="@dimen/details_platform_layout_margin_vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srcCompat="@color/mainBackground" />
+
+    </LinearLayout>
+
+</RelativeLayout>

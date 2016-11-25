@@ -21,6 +21,14 @@
         android:id="@+id/detail_content_game"
         style="@style/detailsContentLayout">
 
+        <FrameLayout
+            android:id="@+id/detail_include_toolbar_image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/details_app_bar_height"
+            android:visibility="gone">
+            <include layout="@layout/toolbar_game_image"/>
+        </FrameLayout>
+
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

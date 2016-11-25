@@ -24,11 +24,11 @@
     <dimen name="collapsing_bar_text_size">30sp</dimen>
     <dimen name="scrim_elevation">0dp</dimen>
     <dimen name="scrim_height">112dp</dimen>
-    <dimen name="details_platform_layout_margin_end">8dp</dimen>
-    <dimen name="details_platform_layout_margin_bottom">16dp</dimen>
+    <dimen name="details_platform_layout_margin_horizontal">8dp</dimen>
+    <dimen name="details_platform_layout_margin_vertical">16dp</dimen>
 
     <dimen name="detail_content_progress_bar_margin">8dp</dimen>
-    <dimen name="detail_layout_horizontal_margin">50dp</dimen>
+    <dimen name="detail_layout_horizontal_margin">30dp</dimen>
     <dimen name="detail_layout_vertical_margin">8dp</dimen>
     <dimen name="detail_layout_horizontal_padding">16dp</dimen>
     <dimen name="detail_layout_vertical_padding">16dp</dimen>

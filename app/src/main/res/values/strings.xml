@@ -26,4 +26,5 @@
     <string name="coming_out">" Coming out"</string>
     <string name="release_date_unknown">Release date unknown</string>
     <string name="rating_bar_tick">★</string>
+    <string name="two_pane_key">twoPane</string>
 </resources>
