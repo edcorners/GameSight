@@ -60,4 +60,9 @@
 
     <dimen name="empty_view_text_vertical_padding">20dp</dimen>
 
+    <!-- Widget dimensions. -->
+    <dimen name="widget_thumb_size">120dp</dimen>
+    <dimen name="widget_scrim_height">60dp</dimen>
+    <dimen name="widget_scrim_text_size">12sp</dimen>
+
 </resources>

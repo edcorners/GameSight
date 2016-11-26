@@ -5,7 +5,8 @@
     android:layout_height="match_parent">
 
     <TextView android:id="@+id/widget_empty_text_view"
-        android:text="@string/discover_games_no_connection_text"
+        android:text="@string/add_games_to_tracking_text"
+        android:background="@color/mainBackground"
         style="@style/emptyViewTextStyle"/>
 
     <StackView android:id="@+id/widget_list"

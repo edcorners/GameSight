@@ -4,15 +4,20 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.widget.AdapterView;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.eddev.android.gamesight.GiantBombUtility;
 import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.data.GameColumns;
 import com.eddev.android.gamesight.data.GameSightProvider;
 import com.eddev.android.gamesight.model.Game;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
 
 /**
  * Created by ed on 11/25/16.
@@ -54,25 +59,24 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
                 mCursor == null || !mCursor.moveToPosition(position)) {
             return null;
         }
-        final int itemId = R.layout.widget_collection_item;
+        int itemId = R.layout.widget_collection_item;
         final RemoteViews rv = new RemoteViews(mContext.getPackageName(), itemId);
         final Game current = new Game(mCursor);
 
-        /*Handler uiHandler = new Handler(Looper.getMainLooper());
-        uiHandler.post(new Runnable(){
-            @Override
-            public void run() {*/
-                Picasso.with(mContext)
-                        .load(current.getThumbnailUrl())
-                        .into(rv, R.id.widget_item_thumb, new int[]{mAppWidgetId});
-            /*}
-        });*/
+        try {
+            Bitmap b = Picasso.with(mContext).load(current.getImageUrl()).get();
+            rv.setImageViewBitmap(R.id.widget_item_thumb, b);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        /*Intent detailsIntent = new Intent();
+        rv.setTextViewText(R.id.widget_scrim_text, GiantBombUtility.shortDateFormat.format(current.getReleaseDate()));
+
+        Intent detailsIntent = new Intent();
         Bundle extras = new Bundle();
         extras.putParcelable(mContext.getString(R.string.parcelable_game_key), current);
         detailsIntent.putExtras(extras);
-        rv.setOnClickFillInIntent(R.id.widget_item_thumb, detailsIntent);*/
+        rv.setOnClickFillInIntent(R.id.widget_item_layout, detailsIntent);
 
         return rv;
     }
@@ -81,7 +85,7 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         return null;
     }
     public int getViewTypeCount() {
-        return 1;
+        return 2;
     }
     public long getItemId(int position) {
         return position;
