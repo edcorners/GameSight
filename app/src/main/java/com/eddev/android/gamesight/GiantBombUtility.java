@@ -72,16 +72,18 @@ public class GiantBombUtility {
 
     public static @StringRes int getTitle(String collection){
         int resource = -1;
-        switch (collection){
-            case Game.DISCOVER:
-                resource = R.string.discover_title;
-                break;
-            case Game.TRACKING:
-                resource = R.string.tracking_title;
-                break;
-            case Game.OWNED:
-                resource = R.string.owned_title;
-                break;
+        if(!TextUtils.isEmpty(collection)) {
+            switch (collection) {
+                case Game.DISCOVER:
+                    resource = R.string.discover_title;
+                    break;
+                case Game.TRACKING:
+                    resource = R.string.tracking_title;
+                    break;
+                case Game.OWNED:
+                    resource = R.string.owned_title;
+                    break;
+            }
         }
         return resource;
     }
