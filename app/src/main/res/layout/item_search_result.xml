@@ -26,13 +26,13 @@
     </FrameLayout>
 
     <TextView
-        android:text="Game title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/search_result_game_title"
         android:textSize="@dimen/search_result_title_size"
         android:fontFamily="sans-serif"
         android:maxLines="1"
+        android:textAlignment="viewStart"
         android:ellipsize="end"
         tools:textStyle="bold"
         android:paddingStart="@dimen/search_result_regular_margin"
@@ -40,11 +40,11 @@
         android:layout_toEndOf="@id/game_cover_frame"/>
 
     <TextView
-        android:text="Game description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/search_result_game_description"
         android:paddingStart="@dimen/search_result_regular_margin"
+        android:textAlignment="viewStart"
         android:paddingEnd="@dimen/search_result_regular_margin"
         android:textSize="@dimen/search_result_description_size"
         android:maxLines="4"

@@ -10,7 +10,6 @@
     <ImageView
         android:layout_width="@dimen/widget_thumb_size"
         android:layout_height="@dimen/widget_thumb_size"
-        app:srcCompat="@mipmap/ic_launcher"
         android:id="@+id/widget_item_thumb"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"

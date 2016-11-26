@@ -6,34 +6,33 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_game_grid">Game Grid</string>
     <string name="title_activity_game_detail">Game Details</string>
+
     <string name="parcelable_game_key">game</string>
     <string name="collection_key">collection</string>
+    <string name="two_pane_key">twoPane</string>
 
     <string name="discover_title">Discover</string>
     <string name="tracking_title">In my sight</string>
     <string name="owned_title">In my shelf</string>
+
+    <string name="show_release_date_menu_item_title">Show release date</string>
+    <string name="show_progress_menu_item_title">Show progress</string>
+    <string name="filter_by_console_menu_item_title">Filter by console</string>
 
     <string name="platform_nintendo">Nintendo</string>
     <string name="platform_playstation">PlayStation</string>
     <string name="platform_xbox">Xbox</string>
     <string name="platform_pc">PC</string>
     <string name="platform_other">Other</string>
+
     <string name="filter_by_console_dialog_ok_option">OK</string>
     <string name="filter_by_console_dialog_cancel_option">CANCEL</string>
     <string name="filter_by_console_dialog_title">Choose platforms...</string>
+
     <string name="reviews_empty">No reviews available</string>
     <string name="videos_empty">No videos available</string>
     <string name="no_data_available">Not available</string>
-    <string name="completion_units_legend">%1$d%% complete</string>
-    <string name="coming_out">Coming out %1$s</string>
     <string name="release_date_unknown">Release date unknown</string>
-    <string name="rating_bar_tick">★</string>
-    <string name="two_pane_key">twoPane</string>
-    <string name="two_pane_game_details_empty">Select a game from the grid to load the details</string>
-    <string name="discover_grid_view_menu_title">Discover collection grid view</string>
-    <string name="tracking_grid_view_menu_title">In my sight collection grid view</string>
-    <string name="owned_grid_view_menu_title">In my shelf collection grid view</string>
-    <string name="refresh_menu_tem_title">Refresh discover collection</string>
     <string name="failed_to_connect_text">Failed to connect to games service</string>
     <string name="failed_to_retrieve_reviews_text">Failed to retrieve reviews. Service not available</string>
     <string name="discover_games_no_connection_text">Connect to the internet to retrieve upcoming games</string>
@@ -42,20 +41,32 @@
     <string name="no_search_results">No results found</string>
     <string name="add_games_to_tracking_text">Add games you want to track for release using the ♡ icon on the game details screen</string>
     <string name="add_games_to_owned_text">Add games you own to log completion using the ♡ icon on the game details screen</string>
+    <string name="two_pane_game_details_empty">Select a game from the grid to load the details</string>
+
+    <string name="completion_units_legend">%1$d%% complete</string>
+    <string name="coming_out">Coming out %1$s</string>
+    <string name="rating_bar_tick">★</string>
+
+    <string name="discover_grid_view_menu_title">Discover collection grid view</string>
+    <string name="tracking_grid_view_menu_title">In my sight collection grid view</string>
+    <string name="owned_grid_view_menu_title">In my shelf collection grid view</string>
+    <string name="refresh_menu_tem_title">Refresh discover collection</string>
     <string name="search_games_menu_title">Search games</string>
     <string name="track_game_menu_item_title">Track game</string>
+
+    <string name="publisher_title">Publisher</string>
+    <string name="release_date_title">Release date</string>
+    <string name="genre_title">Genres</string>
+    <string name="platforms_title">Platforms</string>
 
     <string name="app_title_content_description">Game sight. Video game tracking app</string>
     <string name="game_thumb_content_description">%1$s from %2$s collection</string>
     <string name="discover_collection_content_description">Discover collection</string>
     <string name="tracking_collection_content_description">In my sight collection</string>
     <string name="owned_collection_content_description">In my shelf collection</string>
-    <string name="publisher_title">Publisher</string>
-    <string name="release_date_title">Release date</string>
-    <string name="genre_title">Genres</string>
-    <string name="platforms_title">Platforms</string>
     <string name="video_content_description">Video %1$s. Double tap to open</string>
     <string name="review_content_description">Game review by %1$s. %2$d out of 5 stars. %3$s</string>
     <string name="widget_content_description">Game sight widget displaying in my sight collection</string>
+
 
 </resources>

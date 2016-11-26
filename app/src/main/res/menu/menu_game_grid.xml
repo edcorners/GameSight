@@ -12,23 +12,23 @@
     <item
         android:id="@+id/action_show_date"
         android:orderInCategory="101"
-        android:title="Show release date"
+        android:title="@string/show_release_date_menu_item_title"
         android:icon="@drawable/ic_date_range_white"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:visible="false"/>
 
     <item
         android:id="@+id/action_show_progress"
         android:orderInCategory="102"
-        android:title="Show progress"
+        android:title="@string/show_progress_menu_item_title"
         android:icon="@drawable/ic_timelapse_white"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:visible="false"/>
 
     <item
         android:id="@+id/action_filter"
         android:orderInCategory="103"
-        android:title="Filter by console"
+        android:title="@string/filter_by_console_menu_item_title"
         app:showAsAction="collapseActionView"
         android:visible="true"/>
 
