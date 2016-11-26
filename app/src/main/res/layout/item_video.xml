@@ -18,13 +18,13 @@
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Video title"
         android:id="@+id/video_title_text_view"
         android:foregroundGravity="center_vertical"
+        android:textAlignment="viewStart"
         android:textSize="@dimen/detail_content_text_size"
-        android:gravity="center_vertical"
+        android:gravity="center_vertical|start"
         android:layout_centerVertical="true"
         android:paddingStart="@dimen/detail_content_regular_margin"
-        android:layout_toRightOf="@id/item_video_icon"/>
+        android:layout_toEndOf="@id/item_video_icon"/>
 
 </RelativeLayout>

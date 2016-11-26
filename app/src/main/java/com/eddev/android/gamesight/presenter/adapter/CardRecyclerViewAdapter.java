@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.eddev.android.gamesight.GiantBombUtility;
 import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.model.Game;
 import com.squareup.picasso.Callback;
@@ -95,6 +96,9 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
 
                         @Override public void onError() { }
                     });
+            String contentDescription = itemView.getContext().getString(R.string.game_thumb_content_description);
+            String collectionName = itemView.getContext().getString(GiantBombUtility.getTitle(game.getCollection()));
+            mGameCoverImageView.setContentDescription(String.format(contentDescription, game.getName(), collectionName));
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     listener.onItemClick(game);

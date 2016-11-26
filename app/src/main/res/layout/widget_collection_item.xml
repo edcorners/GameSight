@@ -24,13 +24,14 @@
         android:layout_height="@dimen/widget_scrim_height"
         android:background="@drawable/scrim_upwards_gradient"
         android:elevation="@dimen/grid_scrim_text_elevation"
-        android:layout_alignBottom="@+id/detail_backdrop"
         android:text="Apr 12, 2016"
-        android:gravity="bottom|right"
+        android:gravity="bottom|end"
+        android:textAlignment="viewEnd"
         android:textSize="@dimen/widget_scrim_text_size"
         android:textColor="@color/white"
         android:textStyle="normal|bold"
         android:paddingEnd="@dimen/grid_scrim_text_padding"
         android:paddingBottom="@dimen/grid_scrim_text_padding"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"/>
 </RelativeLayout>

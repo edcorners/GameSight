@@ -18,6 +18,7 @@ import com.eddev.android.gamesight.model.Game;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by ed on 11/25/16.
@@ -66,11 +67,15 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         try {
             Bitmap b = Picasso.with(mContext).load(current.getImageUrl()).get();
             rv.setImageViewBitmap(R.id.widget_item_thumb, b);
+            String contentDescription = mContext.getString(R.string.game_thumb_content_description);
+            String collectionName = mContext.getString(GiantBombUtility.getTitle(current.getCollection()));
+            rv.setContentDescription(R.id.widget_item_thumb, String.format(contentDescription, current.getName(), collectionName));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         rv.setTextViewText(R.id.widget_scrim_text, GiantBombUtility.shortDateFormat.format(current.getReleaseDate()));
+        setScrimContentDescription(rv, current);
 
         Intent detailsIntent = new Intent();
         Bundle extras = new Bundle();
@@ -80,6 +85,14 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
         return rv;
     }
+    private void setScrimContentDescription(RemoteViews rv, Game game) {
+        Date expectedReleaseDate = game.getExpectedReleaseDate();
+        String completionText = game != null ? String.format(mContext.getString(R.string.coming_out)," " + GiantBombUtility.shortDateFormat.format(expectedReleaseDate)):
+                mContext.getString(R.string.release_date_unknown);
+        rv.setContentDescription(R.id.widget_scrim_text,completionText);
+    }
+
+
     public RemoteViews getLoadingView() {
         // We aren't going to return a default loading view in this sample
         return null;

@@ -119,6 +119,15 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     @BindView(R.id.details_empty_text_view)
     TextView mEmptyTextView;
 
+    @BindView(R.id.detail_publisher_layout)
+    LinearLayout mPublisherLayout;
+    @BindView(R.id.detail_rdate_layout)
+    LinearLayout mReleaseDateLayout;
+    @BindView(R.id.detail_genre_layout)
+    LinearLayout mGenreLayout;
+    @BindView(R.id.detail_platforms_text_layout)
+    LinearLayout mPlatformsTextLayout;
+
     private boolean mGameLoaded = false;
     private boolean mReviewsLoaded = false;
     private boolean mVideosLoaded = false;
@@ -285,17 +294,20 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
             mProgressCard.setCardBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getActivity(), R.color.trackingCardToolbarColor)));
             mCompletionSeekBar.setVisibility(View.GONE);
             Date expectedReleaseDate = mGame.getExpectedReleaseDate();
-            String completionText = expectedReleaseDate != null ? getString(R.string.coming_out)+ " " + GiantBombUtility.shortDateFormat.format(expectedReleaseDate):
+            String completionText = expectedReleaseDate != null ? String.format(getString(R.string.coming_out)," " + GiantBombUtility.shortDateFormat.format(expectedReleaseDate)):
                     getString(R.string.release_date_unknown);
             mCompletionTextView.setText(completionText);
             mProgressCard.setVisibility(View.VISIBLE);
+            mProgressCard.setContentDescription(completionText);
         }else if (mGame.isInCollecion(Game.OWNED)){
             mCollectonIcon.setImageResource(R.drawable.ic_videogame_asset_white);
             mProgressCard.setCardBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getActivity(), R.color.ownedCardToolbarColor)));
             mCompletionSeekBar.setVisibility(View.VISIBLE);
             mCompletionSeekBar.setProgress((int)mGame.getCompletion());
-            mCompletionTextView.setText((int)mGame.getCompletion() + getString(R.string.completion_units_legend));
+            String completionText = String.format(getString(R.string.completion_units_legend), (int)mGame.getCompletion());
+            mCompletionTextView.setText(completionText);
             mProgressCard.setVisibility(View.VISIBLE);
+            mProgressCard.setContentDescription(completionText);
         }
 
     }
@@ -332,6 +344,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
         if(mTwoPane) {
             rootView.findViewById(R.id.detail_include_toolbar_image).setVisibility(mTwoPane ? View.VISIBLE : View.GONE);
             mGameTitleTextView.setText(mGame.getName());
+            mGameTitleTextView.setContentDescription(mGame.getName());
             mGameTitleTextView.setVisibility(View.VISIBLE);
             Picasso.with(getContext())
                     .load(mGame.getImageUrl())
@@ -366,14 +379,28 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     private void updateGameView() {
         if(mGame != null && isAdded()) {// isAdded avoids Fragment not attached to Activity exception
             mDescriptionTextView.setText(mGame.getDescription());
-            String publishers = TextUtils.join(", ", mGame.getClassificationAttributeValues(ClassificationAttribute.PUBLISHER));
-            mPublisherTextView.setText(TextUtils.isEmpty(publishers) ? getString(R.string.no_data_available) : publishers);
+            mDescriptionTextView.setContentDescription(mGame.getDescription());
+
+            String publishersCsv = TextUtils.join(", ", mGame.getClassificationAttributeValues(ClassificationAttribute.PUBLISHER));
+            String publishersText = TextUtils.isEmpty(publishersCsv) ? getString(R.string.no_data_available) : publishersCsv;
+            mPublisherTextView.setText(publishersText);
+            mPublisherLayout.setContentDescription(getString(R.string.publisher_title)+". "+publishersText);
+
             Date releaseDate = mGame.getReleaseDate();
-            mReleaseDateTextView.setText(releaseDate != null ? GiantBombUtility.shortDateFormat.format(releaseDate) : "Unknown");
-            String genres = TextUtils.join(", ", mGame.getClassificationAttributeValues(ClassificationAttribute.GENRE));
-            mGenreTextView.setText(TextUtils.isEmpty(genres) ? getString(R.string.no_data_available) : genres);
-            String platforms = TextUtils.join(", ", mGame.getClassificationAttributeValues(ClassificationAttribute.PLATFORM));
-            mPlatformsTextView.setText(TextUtils.isEmpty(platforms) ? getString(R.string.no_data_available) : platforms);
+            String releaseDateText = releaseDate != null ? GiantBombUtility.shortDateFormat.format(releaseDate) : "Unknown";
+            mReleaseDateTextView.setText(releaseDateText);
+            mReleaseDateLayout.setContentDescription(getString(R.string.release_date_title)+". "+releaseDateText);
+
+            String genresCsv = TextUtils.join(", ", mGame.getClassificationAttributeValues(ClassificationAttribute.GENRE));
+            String genresText = TextUtils.isEmpty(genresCsv) ? getString(R.string.no_data_available) : genresCsv;
+            mGenreTextView.setText(genresText);
+            mGenreLayout.setContentDescription(getString(R.string.genre_title)+". "+genresText);
+
+            String platformsCsv = TextUtils.join(", ", mGame.getClassificationAttributeValues(ClassificationAttribute.PLATFORM));
+            String platformsText = TextUtils.isEmpty(platformsCsv) ? getString(R.string.no_data_available) : platformsCsv;
+            mPlatformsTextView.setText(platformsText);
+            mPlatformsTextLayout.setContentDescription(getString(R.string.platforms_title)+". "+platformsText);
+
 
             mCompletionSeekBar.setOnSeekBarChangeListener(this);
             if (mGame.isFavorite()){
@@ -428,6 +455,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
                     videoIcon.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(getActivity(), R.color.discoverCardToolbarColor)));
                 }
             }
+            videoTitleTextView.setContentDescription(String.format(getString(R.string.video_content_description), current.getName()));
             mVideosLinearLayout.addView(videoRelativeLayout);
         }
     }
@@ -460,6 +488,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
         reviewDate.setText(GiantBombUtility.shortDateFormat.format(current.getDate()));
         TextView reviewAuthor = (TextView) reviewItemLinearLayout.findViewById(R.id.review_author_text_view);
         reviewAuthor.setText(current.getReviewer());
+        reviewItemLinearLayout.setContentDescription(String.format(getString(R.string.review_content_description),current.getReviewer(), (int)current.getScore(), current.getDescription()));
         mReviewsLinearLayout.addView(reviewItemLinearLayout);
     }
 

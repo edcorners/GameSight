@@ -9,15 +9,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.eddev.android.gamesight.GiantBombUtility;
 import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.model.Game;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -102,7 +103,10 @@ public class GridRecyclerViewAdapter extends RecyclerView.Adapter<GridRecyclerVi
 
                         @Override public void onError() { }
                     });
-            ViewTreeObserver vto = mGameCoverImageView.getViewTreeObserver();
+
+            String contentDescription = itemView.getContext().getString(R.string.game_thumb_content_description);
+            String collectionName = itemView.getContext().getString(GiantBombUtility.getTitle(game.getCollection()));
+            mGameCoverImageView.setContentDescription(String.format(contentDescription, game.getName(), collectionName));
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
@@ -113,8 +117,21 @@ public class GridRecyclerViewAdapter extends RecyclerView.Adapter<GridRecyclerVi
             if(game.isScrimVisible()) {
                 mTextScrim.setText(game.getScrimText());
                 mTextScrim.setVisibility(View.VISIBLE);
+                setScrimContentDescription(game, contentDescription, collectionName);
             }else{
                 mTextScrim.setVisibility(View.GONE);
+            }
+        }
+
+        private void setScrimContentDescription(Game game, String contentDescription, String collectionName) {
+            if(game.isInCollecion(Game.TRACKING)){
+                Date expectedReleaseDate = game.getExpectedReleaseDate();
+                String completionText = game != null ? String.format(itemView.getContext().getString(R.string.coming_out)," " + GiantBombUtility.shortDateFormat.format(expectedReleaseDate)):
+                        itemView.getContext().getString(R.string.release_date_unknown);
+                mTextScrim.setContentDescription(completionText);
+            }else if (game.isInCollecion(Game.OWNED)){
+                String completionText = String.format(itemView.getContext().getString(R.string.completion_units_legend), (int)game.getCompletion());
+                mTextScrim.setContentDescription(completionText);
             }
         }
 

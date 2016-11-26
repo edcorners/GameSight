@@ -14,7 +14,7 @@
     <item
         android:id="@+id/action_d_grid_view"
         android:orderInCategory="2"
-        android:title="@string/grid_view_menu_title"
+        android:title="@string/discover_grid_view_menu_title"
         android:icon="@drawable/ic_view_module_white"
         app:showAsAction="always" />
 

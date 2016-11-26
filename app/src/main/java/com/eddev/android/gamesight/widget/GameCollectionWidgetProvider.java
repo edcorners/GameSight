@@ -39,9 +39,6 @@ class GameDataProviderObserver extends ContentObserver {
     }
     @Override
     public void onChange(boolean selfChange) {
-        // The data has changed, so notify the widget that the collection view needs to be updated.
-        // In response, the factory's onDataSetChanged() will be called which will requery the
-        // cursor for the new data.
         mAppWidgetManager.notifyAppWidgetViewDataChanged(
                 mAppWidgetManager.getAppWidgetIds(mComponentName), R.id.widget_list);
     }
@@ -50,15 +47,11 @@ class GameDataProviderObserver extends ContentObserver {
 public class GameCollectionWidgetProvider extends AppWidgetProvider {
     private String LOG_TAG = GameCollectionWidgetProvider.class.getSimpleName();
 
-    public static String CLICK_ACTION = "com.eddev.android.gamesight.CLICK";
-    public static String REFRESH_ACTION = "com.eddev.android.gamesight..REFRESH";
-
     private static HandlerThread sWorkerThread;
     private static Handler sWorkerQueue;
     private static GameDataProviderObserver sDataObserver;
 
     public GameCollectionWidgetProvider() {
-        // Start the worker thread
         sWorkerThread = new HandlerThread("GameWidgetProvider-worker");
         sWorkerThread.start();
         sWorkerQueue = new Handler(sWorkerThread.getLooper());
@@ -66,10 +59,6 @@ public class GameCollectionWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onEnabled(Context context) {
-        // Register for external updates to the data to trigger an update of the widget.  When using
-        // content providers, the data is often updated via a background service, or in response to
-        // user interaction in the main app.  To ensure that the widget always reflects the current
-        // state of the data, we must listen for changes and update ourselves accordingly.
         final ContentResolver r = context.getContentResolver();
         if (sDataObserver == null) {
             final AppWidgetManager mgr = AppWidgetManager.getInstance(context);

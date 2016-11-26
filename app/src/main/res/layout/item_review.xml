@@ -28,30 +28,33 @@
 
         <TextView
             android:text="TextView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textSize="10sp"
             android:id="@+id/review_date_text_view"
+            android:textAlignment="viewEnd"
             android:layout_weight="1"
-            android:gravity="right|center_vertical" />
+            android:gravity="end|center_vertical" />
 
     </LinearLayout>
 
     <TextView
-        android:text="TextView"
+        android:text="Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/review_content_text_view"
+        android:textAlignment="viewStart"
         android:textSize="@dimen/detail_content_text_size"
         android:paddingTop="4dp"
         android:paddingBottom="4dp" />
 
     <TextView
-        android:text="TextView"
+        android:text="Author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/review_author_text_view"
-        android:gravity="right"
+        android:gravity="end"
+        android:textAlignment="viewEnd"
         android:textSize="@dimen/detail_content_text_size"
         tools:textStyle="italic"
         android:padding="4dp" />

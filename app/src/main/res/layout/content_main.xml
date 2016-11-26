@@ -18,7 +18,8 @@
         app:cardElevation="@dimen/cardview_default_elevation"
         app:cardCornerRadius="@dimen/cardview_default_radius"
         app:cardBackgroundColor="@color/cardBackground"
-        app:cardUseCompatPadding="true">
+        app:cardUseCompatPadding="true"
+        android:contentDescription="@string/discover_collection_content_description">
 
         <LinearLayout
             android:orientation="vertical"
@@ -45,6 +46,7 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/d_card_toolbar"
                 android:background="@color/discoverCardToolbarColor"
+                android:title=""
                 style="@style/cardToolbar">
 
                 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -67,7 +69,8 @@
         app:cardElevation="@dimen/cardview_default_elevation"
         app:cardCornerRadius="@dimen/cardview_default_radius"
         app:cardBackgroundColor="@color/cardBackground"
-        app:cardUseCompatPadding="true">
+        app:cardUseCompatPadding="true"
+        android:contentDescription="@string/tracking_collection_content_description">
 
         <LinearLayout
             android:orientation="vertical"
@@ -116,7 +119,8 @@
         app:cardElevation="@dimen/cardview_default_elevation"
         app:cardCornerRadius="@dimen/cardview_default_radius"
         app:cardBackgroundColor="@color/cardBackground"
-        app:cardUseCompatPadding="true">
+        app:cardUseCompatPadding="true"
+        android:contentDescription="@string/owned_collection_content_description">
 
         <LinearLayout
             android:orientation="vertical"

@@ -171,7 +171,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mOwnedCardRecyclerView.setLayoutManager(mOwnedCardLayoutManager);
         mOCardToolbar.setLogo(ContextCompat.getDrawable(this, R.drawable.ic_videogame_asset_white));
         mOCardToolbar.inflateMenu(R.menu.menu_owned_card);
-        mOCardToolbar.setTitle("Grid View");
         mOCardToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -194,7 +193,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mTrackingCardRecyclerView.setLayoutManager(mTrackingCardLayoutManager);
         mTCardToolbar.setLogo(ContextCompat.getDrawable(this, R.drawable.ic_location_searching_white));
         mTCardToolbar.inflateMenu(R.menu.menu_tracking_card);
-        mTCardToolbar.setTitle("Grid View");
         mTCardToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -217,7 +215,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mDiscoverCardRecyclerView.setLayoutManager(mDiscoverCardLayoutManager);
         mDCardToolbar.setLogo(ContextCompat.getDrawable(this, R.drawable.ic_find_in_page_white));
         mDCardToolbar.inflateMenu(R.menu.menu_discover_card);
-        mDCardToolbar.setTitle("Grid View");
         mDCardToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

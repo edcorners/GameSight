@@ -60,7 +60,6 @@ public class GameDetailActivity extends AppCompatActivity implements LoaderManag
         Toolbar toolbar = (Toolbar) findViewById(R.id.details_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //toolbar.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
 
         ButterKnife.bind(this);
         mGame = getIntent().getParcelableExtra(getString(R.string.parcelable_game_key));
@@ -91,6 +90,7 @@ public class GameDetailActivity extends AppCompatActivity implements LoaderManag
             }
 
             collapsingToolbarLayout.setTitle(mGame.getName());
+            collapsingToolbarLayout.setContentDescription(mGame.getName());
             Picasso.with(this)
                     .load(mGame.getImageUrl())
                     .placeholder(R.color.mainBackground)
@@ -110,8 +110,6 @@ public class GameDetailActivity extends AppCompatActivity implements LoaderManag
                         public void onError() {
                         }
                     });
-        }else{
-            // error
         }
     }
 

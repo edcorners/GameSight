@@ -6,7 +6,7 @@
     <item
         android:id="@+id/action_o_grid_view"
         android:orderInCategory="1"
-        android:title="Grid view"
+        android:title="@string/owned_grid_view_menu_title"
         android:icon="@drawable/ic_view_module_white"
         app:showAsAction="always" />
 </menu>
