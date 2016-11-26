@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -91,6 +92,11 @@ public class GameDetailActivity extends AppCompatActivity implements LoaderManag
 
             collapsingToolbarLayout.setTitle(mGame.getName());
             collapsingToolbarLayout.setContentDescription(mGame.getName());
+            boolean isRightToLeft = getResources().getBoolean(R.bool.is_right_to_left);
+            if(isRightToLeft){
+                collapsingToolbarLayout.setExpandedTitleGravity(Gravity.RIGHT | Gravity.BOTTOM);
+                collapsingToolbarLayout.setCollapsedTitleGravity(Gravity.RIGHT);
+            }
             Picasso.with(this)
                     .load(mGame.getImageUrl())
                     .placeholder(R.color.mainBackground)
