@@ -21,6 +21,7 @@ import android.widget.RemoteViews;
 import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.data.GameSightProvider;
 import com.eddev.android.gamesight.presenter.GameDetailActivity;
+import com.eddev.android.gamesight.presenter.MainActivity;
 
 /**
  * Created by ed on 11/25/16.
@@ -89,7 +90,8 @@ public class GameCollectionWidgetProvider extends AppWidgetProvider {
 
         Intent clickIntent = new Intent(context, GameDetailActivity.class);
         PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
-                .addNextIntentWithParentStack(clickIntent)
+                .addNextIntent(clickIntent)
+                .addParentStack(MainActivity.class)
                 .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setPendingIntentTemplate(R.id.widget_list, clickPendingIntentTemplate);
 

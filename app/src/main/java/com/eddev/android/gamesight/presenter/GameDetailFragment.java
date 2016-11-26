@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -258,7 +260,22 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
             }
             return true;
         }
-
+        else if (id == android.R.id.home) {
+            Intent upIntent = NavUtils.getParentActivityIntent(getActivity());
+            if (NavUtils.shouldUpRecreateTask(getActivity(), upIntent)) {
+                // This activity is NOT part of this app's task, so create a new task
+                // when navigating up, with a synthesized back stack.
+                TaskStackBuilder.create(getActivity())
+                        // Add all of this activity's parents to the back stack
+                        .addNextIntentWithParentStack(upIntent)
+                        // Navigate up to the closest parent
+                        .startActivities();
+            } else {
+                // This activity is part of this app's task, so simply
+                // navigate up to the logical parent activity.
+                NavUtils.navigateUpTo(getActivity(), upIntent);
+            }
+        }
         return super.onOptionsItemSelected(item);
     }
 

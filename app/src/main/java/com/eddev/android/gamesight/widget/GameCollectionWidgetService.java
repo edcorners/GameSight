@@ -85,7 +85,7 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         return null;
     }
     public int getViewTypeCount() {
-        return 2;
+        return 1;
     }
     public long getItemId(int position) {
         return position;
