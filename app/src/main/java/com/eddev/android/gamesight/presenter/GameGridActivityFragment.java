@@ -141,6 +141,7 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
             transition.excludeTarget(android.R.id.statusBarBackground, true);
             getActivity().getWindow().setEnterTransition(transition);
             getActivity().getWindow().setReturnTransition(transition);
+            getActivity().getWindow().setExitTransition(transition);
         }
     }
 
