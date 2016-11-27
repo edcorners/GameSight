@@ -2,15 +2,18 @@ package com.eddev.android.gamesight.presenter;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +54,20 @@ public class SearchableActivity extends AppCompatActivity implements IGamesLoade
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        initActivityTransitions();
+
+        final View rootView = getLayoutInflater().inflate(R.layout.activity_search, null);
+        rootView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                rootView.getViewTreeObserver().removeOnPreDrawListener(this);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    AppCompatActivity activity = (AppCompatActivity) SearchableActivity.this;
+                    activity.supportStartPostponedEnterTransition();
+                }
+                return false;
+            }
+        });
         ButterKnife.bind(this);
         mIGameSearchService = new GiantBombSearchService(this);
         // Get the intent, verify the action and get the query
@@ -69,6 +86,16 @@ public class SearchableActivity extends AppCompatActivity implements IGamesLoade
         }else{
             handleIntent(getIntent());
         }
+    }
+
+    private void initActivityTransitions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Explode transition = new Explode();
+            transition.excludeTarget(android.R.id.statusBarBackground, true);
+            getWindow().setEnterTransition(transition);
+            getWindow().setReturnTransition(transition);
+        }
+        supportStartPostponedEnterTransition();
     }
 
     @Override
@@ -138,4 +165,5 @@ public class SearchableActivity extends AppCompatActivity implements IGamesLoade
         }
         mSearchProgressBar.setVisibility(View.GONE);
     }
+
 }

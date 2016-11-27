@@ -1,8 +1,10 @@
 package com.eddev.android.gamesight.presenter;
 
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -11,6 +13,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -97,6 +100,12 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        initActivityTransitions();
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -123,8 +132,16 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
                 mConsoleFilterSelectedItems = new ArrayList<>(Arrays.asList(GiantBombUtility.getConsolesArrayResourceAsStringArray(getContext())));
             }
         }
-
         return root;
+    }
+
+    private void initActivityTransitions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Explode transition = new Explode();
+            transition.excludeTarget(android.R.id.statusBarBackground, true);
+            getActivity().getWindow().setEnterTransition(transition);
+            getActivity().getWindow().setReturnTransition(transition);
+        }
     }
 
     @Override

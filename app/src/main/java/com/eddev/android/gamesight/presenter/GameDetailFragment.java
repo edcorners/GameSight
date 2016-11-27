@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.NavUtils;
@@ -19,6 +20,7 @@ import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
+import android.transition.Slide;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -153,6 +155,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        initActivityTransitions();
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -178,8 +181,17 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
         }else{
             mContentProgressBar.setVisibility(View.GONE);
         }
-
         return rootView;
+    }
+
+
+    private void initActivityTransitions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Slide transition = new Slide(Gravity.TOP);
+            transition.excludeTarget(android.R.id.statusBarBackground, true);
+            getActivity().getWindow().setEnterTransition(transition);
+            getActivity().getWindow().setReturnTransition(transition);
+        }
     }
 
     private void loadGameFromService(Bundle savedInstanceState) {
@@ -272,13 +284,12 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
         else if (id == android.R.id.home) {
             Intent upIntent = NavUtils.getParentActivityIntent(getActivity());
             if (NavUtils.shouldUpRecreateTask(getActivity(), upIntent)) {
-                // This activity is NOT part of this app's task, so create a new task
-                // when navigating up, with a synthesized back stack.
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity());
                 TaskStackBuilder.create(getActivity())
                         // Add all of this activity's parents to the back stack
                         .addNextIntentWithParentStack(upIntent)
                         // Navigate up to the closest parent
-                        .startActivities();
+                        .startActivities(options.toBundle());
             } else {
                 // This activity is part of this app's task, so simply
                 // navigate up to the logical parent activity.

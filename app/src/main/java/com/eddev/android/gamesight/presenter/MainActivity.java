@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
@@ -179,7 +180,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 if (id == R.id.action_o_grid_view) {
                     Intent gridIntent = new Intent(getApplicationContext(), GameGridActivity.class);
                     gridIntent.putExtra(getString(R.string.collection_key), Game.OWNED);
-                    startActivity(gridIntent);
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this);
+                    startActivity(gridIntent, options.toBundle());
                 }
 
                 return true;
@@ -201,7 +203,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 if (id == R.id.action_t_grid_view) {
                     Intent gridIntent = new Intent(getApplicationContext(), GameGridActivity.class);
                     gridIntent.putExtra(getString(R.string.collection_key), Game.TRACKING);
-                    startActivity(gridIntent);
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this);
+                    startActivity(gridIntent, options.toBundle());
                 }
 
                 return true;
@@ -223,7 +226,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 if (id == R.id.action_d_grid_view) {
                     Intent gridIntent = new Intent(getApplicationContext(), GameGridActivity.class);
                     gridIntent.putExtra(getString(R.string.collection_key), Game.DISCOVER);
-                    startActivity(gridIntent);
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this);
+                    startActivity(gridIntent, options.toBundle());
                 }
                 if (id == R.id.action_refresh_d_card) {
                     mDCardEmptyTextView.setVisibility(View.GONE);
@@ -344,10 +348,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             mOCardEmptyTextView.setVisibility(View.GONE);
             mOwnedCardAdapter = new CardRecyclerViewAdapter(mOwnedGames, this, new CardRecyclerViewAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(Game game) {
+                public void onItemClick(Game game, View view) {
                     Intent detailsIntent = new Intent(getApplicationContext(), GameDetailActivity.class);
                     detailsIntent.putExtra(getString(R.string.parcelable_game_key), game);
-                    startActivity(detailsIntent);
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this);
+                    startActivity(detailsIntent, options.toBundle());
                 }
             });
 
@@ -366,10 +371,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             mTCardEmptyTextView.setVisibility(View.GONE);
             mTrackingCardAdapter = new CardRecyclerViewAdapter(mTrackingGames, this, new CardRecyclerViewAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(Game game) {
+                public void onItemClick(Game game, View view) {
                     Intent detailsIntent = new Intent(getApplicationContext(), GameDetailActivity.class);
                     detailsIntent.putExtra(getString(R.string.parcelable_game_key), game);
-                    startActivity(detailsIntent);
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this);
+                    startActivity(detailsIntent, options.toBundle());
                 }
             });
             mTrackingCardRecyclerView.setAdapter(mTrackingCardAdapter);
@@ -407,10 +413,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private void initDiscoverCardRecyclerView() {
         mDiscoverCardAdapter = new CardRecyclerViewAdapter(mDiscoverGames, this, new CardRecyclerViewAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Game game) {
+            public void onItemClick(Game game, View view) {
                 Intent detailsIntent = new Intent(getApplicationContext(), GameDetailActivity.class);
                 detailsIntent.putExtra(getString(R.string.parcelable_game_key), game);
-                startActivity(detailsIntent);
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this);
+                startActivity(detailsIntent, options.toBundle());
             }
         });
         mDiscoverCardRecyclerView.setAdapter(mDiscoverCardAdapter);

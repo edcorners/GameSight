@@ -3,6 +3,8 @@ package com.eddev.android.gamesight.presenter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
@@ -94,12 +96,15 @@ public class GameGridActivity extends AppCompatActivity implements GameGridActiv
             detailFragment.setArguments(arguments);
 
             getSupportFragmentManager().beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .setCustomAnimations(R.anim.enter_from_bottom,R.anim.exit_to_bottom)
                     .replace(R.id.game_detail_pane, detailFragment, GAME_DETAIL_FRAGMENT_TAG)
                     .commit();
         } else {
             Intent detailsIntent = new Intent(this, GameDetailActivity.class);
             detailsIntent.putExtra(getString(R.string.parcelable_game_key), game);
-            startActivity(detailsIntent);
+            Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle();
+            startActivity(detailsIntent,bundle);
         }
     }
 }

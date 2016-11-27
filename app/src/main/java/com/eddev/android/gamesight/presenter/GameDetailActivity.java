@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
@@ -57,6 +58,7 @@ public class GameDetailActivity extends AppCompatActivity implements LoaderManag
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_game_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.details_toolbar);
         setSupportActionBar(toolbar);
@@ -73,6 +75,8 @@ public class GameDetailActivity extends AppCompatActivity implements LoaderManag
                 detailFragment.setArguments(arguments);
 
                 getSupportFragmentManager().beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .setCustomAnimations(R.anim.enter_from_bottom,R.anim.exit_to_bottom)
                         .add(R.id.game_detail_container, detailFragment)
                         .commit();
 
@@ -92,11 +96,15 @@ public class GameDetailActivity extends AppCompatActivity implements LoaderManag
 
             collapsingToolbarLayout.setTitle(mGame.getName());
             collapsingToolbarLayout.setContentDescription(mGame.getName());
+
+            // Collapsing toolbar wont mirror the title correctly with just the layout attributes,
+            // this is a work around to provide RTL
             boolean isRightToLeft = getResources().getBoolean(R.bool.is_right_to_left);
             if(isRightToLeft){
                 collapsingToolbarLayout.setExpandedTitleGravity(Gravity.RIGHT | Gravity.BOTTOM);
                 collapsingToolbarLayout.setCollapsedTitleGravity(Gravity.RIGHT);
             }
+
             Picasso.with(this)
                     .load(mGame.getImageUrl())
                     .placeholder(R.color.mainBackground)
@@ -117,6 +125,7 @@ public class GameDetailActivity extends AppCompatActivity implements LoaderManag
                         }
                     });
         }
+
     }
 
     private void createPlatformsView() {

@@ -28,7 +28,7 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
     private Context mContext;
 
     public interface OnItemClickListener {
-        void onItemClick(Game game);
+        void onItemClick(Game game, View view);
     }
 
     private final OnItemClickListener mListener;
@@ -101,7 +101,7 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
             mGameCoverImageView.setContentDescription(String.format(contentDescription, game.getName(), collectionName));
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
-                    listener.onItemClick(game);
+                    listener.onItemClick(game, v);
                 }
             });
         }
