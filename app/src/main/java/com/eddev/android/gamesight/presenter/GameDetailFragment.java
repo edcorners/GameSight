@@ -271,6 +271,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
         if (id == R.id.action_favorite && mGameLoaded) {
             if(!mGame.isFavorite()) {
                 mGameSightDatabaseService.insertFavorite(mGame);
+                GiantBombUtility.scheduleNotification(getContext(), 18000, mGame.getId(), mGame);
                 item.setIcon(R.drawable.ic_favorite_white);
                 updateProgressCard();
             }else{
