@@ -1,4 +1,4 @@
-package com.eddev.android.gamesight.presenter;
+package com.eddev.android.gamesight.free.presenter;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -30,12 +30,16 @@ import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.data.GameColumns;
 import com.eddev.android.gamesight.data.GameSightProvider;
 import com.eddev.android.gamesight.model.Game;
+import com.eddev.android.gamesight.presenter.GameDetailActivity;
+import com.eddev.android.gamesight.presenter.GameGridActivity;
 import com.eddev.android.gamesight.presenter.adapter.CardRecyclerViewAdapter;
 import com.eddev.android.gamesight.service.GiantBombSearchService;
 import com.eddev.android.gamesight.service.IGameSearchService;
 import com.eddev.android.gamesight.service.callback.IGamesLoadedCallback;
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,6 +116,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         initToolbar();
         ButterKnife.bind(this);
 
