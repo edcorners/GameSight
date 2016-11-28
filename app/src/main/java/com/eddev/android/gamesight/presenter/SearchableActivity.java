@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -95,7 +96,6 @@ public class SearchableActivity extends AppCompatActivity implements IGamesLoade
             getWindow().setEnterTransition(transition);
             getWindow().setReturnTransition(transition);
         }
-        supportStartPostponedEnterTransition();
     }
 
     @Override
@@ -151,7 +151,8 @@ public class SearchableActivity extends AppCompatActivity implements IGamesLoade
                     public void onItemClick(Game game) {
                         Intent detailsIntent = new Intent(getApplicationContext(), GameDetailActivity.class);
                         detailsIntent.putExtra(getString(R.string.parcelable_game_key), game);
-                        startActivity(detailsIntent);
+                        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(SearchableActivity.this);
+                        startActivity(detailsIntent, options.toBundle());
                     }
                 });
                 mSearchResultsRecyclerView.setAdapter(mSearchRecyclerViewAdapter);

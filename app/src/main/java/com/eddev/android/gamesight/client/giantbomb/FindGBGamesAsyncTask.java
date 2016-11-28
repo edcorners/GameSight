@@ -78,7 +78,7 @@ public class FindGBGamesAsyncTask extends AsyncTask<HashMap<String,String>, Void
             Log.v(LOG_TAG, response.raw().toString());
             gbGamesResponse = response.body();
             gBGames = gbGamesResponse.getResults();
-        } catch (IOException e) {
+        } catch (Exception e) {
             mError = mContext.getString(R.string.failed_to_connect_text);;
             Log.e(LOG_TAG, "Error ", e);
         }

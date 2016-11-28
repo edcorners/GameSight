@@ -68,5 +68,7 @@
     <string name="review_content_description">Game review by %1$s. %2$d out of 5 stars. %3$s</string>
     <string name="widget_content_description">Game sight widget displaying in my sight collection</string>
 
+    <string name="game_released_notification">%1$s is out today!"</string>
+
 
 </resources>

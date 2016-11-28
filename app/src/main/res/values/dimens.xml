@@ -65,4 +65,12 @@
     <dimen name="widget_scrim_height">60dp</dimen>
     <dimen name="widget_scrim_text_size">12sp</dimen>
 
+    <!-- Notification dimensions. -->
+    <dimen name="notification_text_horizontal_padding">4dp</dimen>
+    <dimen name="notification_title_size">18sp</dimen>
+    <dimen name="notification_description_size">14sp</dimen>
+    <dimen name="notification_game_cover_size">60dp</dimen>
+    <dimen name="notification_game_cover_padding">6dp</dimen>
+    <dimen name="notification_layout_padding">1dp</dimen>
+
 </resources>

@@ -271,7 +271,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
         if (id == R.id.action_favorite && mGameLoaded) {
             if(!mGame.isFavorite()) {
                 mGameSightDatabaseService.insertFavorite(mGame);
-                GiantBombUtility.scheduleNotification(getContext(), 18000, mGame.getId(), mGame);
+                GameReleaseNotification.scheduleNotification(getContext(), mGame);
                 item.setIcon(R.drawable.ic_favorite_white);
                 updateProgressCard();
             }else{
@@ -283,17 +283,14 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
             return true;
         }
         else if (id == android.R.id.home) {
+            getActivity().supportFinishAfterTransition();
             Intent upIntent = NavUtils.getParentActivityIntent(getActivity());
             if (NavUtils.shouldUpRecreateTask(getActivity(), upIntent)) {
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity());
                 TaskStackBuilder.create(getActivity())
-                        // Add all of this activity's parents to the back stack
                         .addNextIntentWithParentStack(upIntent)
-                        // Navigate up to the closest parent
                         .startActivities(options.toBundle());
             } else {
-                // This activity is part of this app's task, so simply
-                // navigate up to the logical parent activity.
                 NavUtils.navigateUpTo(getActivity(), upIntent);
             }
         }
