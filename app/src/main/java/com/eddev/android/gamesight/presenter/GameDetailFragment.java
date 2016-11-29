@@ -8,11 +8,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -281,18 +278,6 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
                 mProgressCard.setVisibility(View.GONE);
             }
             return true;
-        }
-        else if (id == android.R.id.home) {
-            getActivity().supportFinishAfterTransition();
-            Intent upIntent = NavUtils.getParentActivityIntent(getActivity());
-            if (NavUtils.shouldUpRecreateTask(getActivity(), upIntent)) {
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity());
-                TaskStackBuilder.create(getActivity())
-                        .addNextIntentWithParentStack(upIntent)
-                        .startActivities(options.toBundle());
-            } else {
-                NavUtils.navigateUpTo(getActivity(), upIntent);
-            }
         }
         return super.onOptionsItemSelected(item);
     }

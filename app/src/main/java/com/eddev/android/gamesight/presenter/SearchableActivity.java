@@ -102,7 +102,9 @@ public class SearchableActivity extends AppCompatActivity implements IGamesLoade
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                supportFinishAfterTransition();
                 finish();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

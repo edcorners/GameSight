@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
-
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.1"
@@ -22,13 +21,20 @@ android {
     buildTypes.each {
         it.buildConfigField 'String', 'GIANT_BOMB_API_KEY', GiantBombApiKey
     }
+    productFlavors{
+        free {
+            applicationId "com.eddev.android.gamesight.free"
+        }
+        paid {
+            applicationId "com.eddev.android.gamesight.paid"
+        }
+    }
 }
 
 buildscript {
     repositories {
         mavenCentral()
     }
-
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.2'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
@@ -59,4 +65,6 @@ dependencies {
     compile 'com.facebook.stetho:stetho-okhttp3:1.4.1'
     testCompile 'junit:junit:4.12'
     compile 'com.github.techery:properratingbar:0.0.5'
+    freeCompile 'com.google.firebase:firebase-ads:9.6.1'
 }
+apply plugin: 'com.google.gms.google-services'
