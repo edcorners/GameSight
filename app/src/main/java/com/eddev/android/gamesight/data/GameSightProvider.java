@@ -2,6 +2,8 @@ package com.eddev.android.gamesight.data;
 
 import android.net.Uri;
 
+import com.eddev.android.gamesight.BuildConfig;
+
 import net.simonvt.schematic.annotation.ContentProvider;
 import net.simonvt.schematic.annotation.ContentUri;
 import net.simonvt.schematic.annotation.InexactContentUri;
@@ -12,7 +14,7 @@ import net.simonvt.schematic.annotation.TableEndpoint;
  */
 @ContentProvider(authority = GameSightProvider.AUTHORITY, database = GameSightDatabase.class, packageName = "com.eddev.android.gamesight.provider")
 public class GameSightProvider {
-    public static final String AUTHORITY = "com.eddev.android.gamesight";
+    public static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".provider";
     static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     interface Path{

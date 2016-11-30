@@ -26,6 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eddev.android.gamesight.AnalyticsApplication;
 import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.data.GameColumns;
 import com.eddev.android.gamesight.data.GameSightProvider;
@@ -36,17 +37,16 @@ import com.eddev.android.gamesight.presenter.adapter.CardRecyclerViewAdapter;
 import com.eddev.android.gamesight.service.GiantBombSearchService;
 import com.eddev.android.gamesight.service.IGameSearchService;
 import com.eddev.android.gamesight.service.callback.IGamesLoadedCallback;
-import com.facebook.stetho.Stetho;
-import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, IGamesLoadedCallback{
 
@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private boolean mOwnedGamesLoaded = false;
 
     private IGameSearchService mIGameSearchService;
+    private Tracker mTracker;
 
     /**
      * Activity lifecycle
@@ -131,10 +132,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         loadTrackingData(savedInstanceState);
         loadOwnedData(savedInstanceState);
 
-        Stetho.initializeWithDefaults(this);
+        /*Stetho.initializeWithDefaults(this);
         new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())
-                .build();
+                .build();*/
+
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
     }
 
     private void initToolbar() {
@@ -438,6 +442,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     protected void onResume() {
         getSupportLoaderManager().restartLoader(OWNED_LOADER, null, this);
         getSupportLoaderManager().restartLoader(TRACKING_LOADER, null, this);
+        Log.i(LOG_TAG, getString(R.string.setting_screen_name_text) + getString(R.string.main_screen_name));
+        mTracker.setScreenName(getString(R.string.main_screen_name));
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         super.onResume();
     }
 }

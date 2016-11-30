@@ -1,64 +1,49 @@
 {
   "project_info": {
-    "project_id": "this-is-a-sample",
-    "project_number": "999999999999",
-    "name": "AdMob Samples",
-    "firebase_url": "https://this-is-a-sample-do-not-use.firebaseio.com",
-    "storage_bucket": "this-is-a-sample-do-not-use.storage.firebase.com"
+    "project_number": "926376088955",
+    "firebase_url": "https://fir-gamesight.firebaseio.com",
+    "project_id": "firebase-gamesight",
+    "storage_bucket": "firebase-gamesight.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:999999999999:android:0000000000000000",
-        "client_id": "com.eddev.android.gamesight.paid",
-        "client_type": 1,
+        "mobilesdk_app_id": "1:926376088955:android:700e475f2ff9a4ef",
         "android_client_info": {
-          "package_name": "com.eddev.android.gamesight.paid",
-          "certificate_hash": []
+          "package_name": "com.eddev.android.gamesight.paid"
         }
       },
       "oauth_client": [
         {
-          "client_id": "this-is-a-sample-do-not-use.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.google.android.gms.example.bannerexample",
-            "certificate_hash": "0000000000000000000000000000000000000000"
-          }
+          "client_id": "926376088955-q1c6dvf6vi05d5sk1ppv394tj97no7p2.apps.googleusercontent.com",
+          "client_type": 3
         },
         {
-          "client_id": "this-is-a-sample-do-not-use.apps.googleusercontent.com",
+          "client_id": "926376088955-7nmavj5nc3j2mntgdslh0ckd1vc5m94m.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "000000000000000000000000000000000000000"
+          "current_key": "AIzaSyA_Q96O43HSba9JowZJ9oV9_mpSLY4SIaE"
         }
       ],
       "services": {
         "analytics_service": {
-          "status": 1
-        },
-        "cloud_messaging_service": {
           "status": 2,
-          "apns_config": []
+          "analytics_property": {
+            "tracking_id": "UA-88154041-1"
+          }
         },
         "appinvite_service": {
-          "status": 2,
+          "status": 1,
           "other_platform_oauth_client": []
         },
-        "google_signin_service": {
-          "status": 2
-        },
         "ads_service": {
-          "status": 2,
-          "test_banner_ad_unit_id": "ca-app-pub-3940256099942544/6300978111",
-          "test_interstitial_ad_unit_id": "ca-app-pub-3940256099942544/1033173712"
+          "status": 2
         }
       }
     }
   ],
-  "client_info": [],
-  "ARTIFACT_VERSION": "1"
+  "configuration_version": "1"
 }

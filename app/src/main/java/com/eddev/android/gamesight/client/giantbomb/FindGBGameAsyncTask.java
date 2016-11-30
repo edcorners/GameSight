@@ -12,7 +12,6 @@ import com.eddev.android.gamesight.client.giantbomb.model.GBGameResponse;
 import com.eddev.android.gamesight.service.callback.IGameLoadedCallback;
 import com.eddev.android.gamesight.service.factory.GameFactoryFromGB;
 
-import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.HashMap;

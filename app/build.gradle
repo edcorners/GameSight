@@ -23,10 +23,10 @@ android {
     }
     productFlavors{
         free {
-            applicationId "com.eddev.android.gamesight.free"
+            applicationIdSuffix ".free"
         }
         paid {
-            applicationId "com.eddev.android.gamesight.paid"
+            applicationIdSuffix ".paid"
         }
     }
 }
@@ -66,5 +66,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.github.techery:properratingbar:0.0.5'
     freeCompile 'com.google.firebase:firebase-ads:9.6.1'
+    compile 'com.google.android.gms:play-services-analytics:9.6.1'
 }
 apply plugin: 'com.google.gms.google-services'

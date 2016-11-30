@@ -25,6 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eddev.android.gamesight.AnalyticsApplication;
 import com.eddev.android.gamesight.GiantBombUtility;
 import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.data.ClassificationAttributeColumns;
@@ -37,6 +38,8 @@ import com.eddev.android.gamesight.presenter.adapter.GridRecyclerViewAdapter;
 import com.eddev.android.gamesight.service.GiantBombSearchService;
 import com.eddev.android.gamesight.service.IGameSearchService;
 import com.eddev.android.gamesight.service.callback.IGamesLoadedCallback;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -77,6 +80,7 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
     private boolean mScrimEnabled = false;
     private ArrayList<String> mConsoleFilterSelectedItems;
     private String mFilterPlatformIds = null;
+    private Tracker mTracker;
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -115,7 +119,7 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
         Bundle arguments = getArguments();
         if (arguments != null) {
             mCollection = arguments.getString(getString(R.string.collection_key));
-            if(savedInstanceState != null) {
+            if(savedInstanceState != null && savedInstanceState.getParcelableArrayList(LOADED_GAMES_KEY).size() > 0) {
                 mGames = savedInstanceState.getParcelableArrayList(LOADED_GAMES_KEY);
                 mConsoleFilterSelectedItems = new ArrayList<>(Arrays.asList(GiantBombUtility.getConsolesArrayResourceAsStringArray(getContext())));
                 initRecyclerView();
@@ -132,6 +136,10 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
                 mConsoleFilterSelectedItems = new ArrayList<>(Arrays.asList(GiantBombUtility.getConsolesArrayResourceAsStringArray(getContext())));
             }
         }
+
+        AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
+        mTracker = application.getDefaultTracker();
+
         return root;
     }
 
@@ -143,6 +151,14 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
             getActivity().getWindow().setReturnTransition(transition);
             getActivity().getWindow().setExitTransition(transition);
         }
+    }
+
+    @Override
+    public void onResume() {
+        Log.i(LOG_TAG, getString(R.string.setting_screen_name_text) + getString(R.string.grid_screen_name));
+        mTracker.setScreenName(getString(R.string.grid_screen_name));
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        super.onResume();
     }
 
     @Override

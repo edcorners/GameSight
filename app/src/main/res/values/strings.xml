@@ -69,6 +69,11 @@
     <string name="widget_content_description">Game sight widget displaying in my sight collection</string>
 
     <string name="game_released_notification">%1$s is out today!"</string>
+    <string name="main_screen_name">Main</string>
+    <string name="grid_screen_name">Grid View</string>
+    <string name="detail_screen_name">Detail View</string>
+    <string name="search_screen_name">Search View</string>
+    <string name="setting_screen_name_text">Setting screen name: </string>
 
 
 </resources>

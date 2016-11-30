@@ -19,12 +19,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eddev.android.gamesight.AnalyticsApplication;
 import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.model.Game;
 import com.eddev.android.gamesight.presenter.adapter.SearchRecyclerViewAdapter;
 import com.eddev.android.gamesight.service.GiantBombSearchService;
 import com.eddev.android.gamesight.service.IGameSearchService;
 import com.eddev.android.gamesight.service.callback.IGamesLoadedCallback;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +52,7 @@ public class SearchableActivity extends AppCompatActivity implements IGamesLoade
     private List<Game> mResults;
     private boolean mResultsLoaded = false;
     private String mQuery;
+    private Tracker mTracker;
 
 
     @Override
@@ -71,8 +75,6 @@ public class SearchableActivity extends AppCompatActivity implements IGamesLoade
         });
         ButterKnife.bind(this);
         mIGameSearchService = new GiantBombSearchService(this);
-        // Get the intent, verify the action and get the query
-
         mSearchResultsRecyclerView.setHasFixedSize(true);
         mSearchRecyclerViewLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mSearchResultsRecyclerView.setLayoutManager(mSearchRecyclerViewLayoutManager);
@@ -87,6 +89,9 @@ public class SearchableActivity extends AppCompatActivity implements IGamesLoade
         }else{
             handleIntent(getIntent());
         }
+
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
     }
 
     private void initActivityTransitions() {
@@ -96,6 +101,14 @@ public class SearchableActivity extends AppCompatActivity implements IGamesLoade
             getWindow().setEnterTransition(transition);
             getWindow().setReturnTransition(transition);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        Log.i(LOG_TAG, getString(R.string.setting_screen_name_text) + getString(R.string.search_screen_name));
+        mTracker.setScreenName(getString(R.string.search_screen_name));
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        super.onResume();
     }
 
     @Override

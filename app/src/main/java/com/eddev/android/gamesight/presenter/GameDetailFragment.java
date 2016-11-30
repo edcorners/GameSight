@@ -35,6 +35,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eddev.android.gamesight.AnalyticsApplication;
 import com.eddev.android.gamesight.GiantBombUtility;
 import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.data.GameSightDatabaseService;
@@ -49,6 +50,8 @@ import com.eddev.android.gamesight.service.GiantBombSearchService;
 import com.eddev.android.gamesight.service.IGameSearchService;
 import com.eddev.android.gamesight.service.callback.IGameLoadedCallback;
 import com.eddev.android.gamesight.service.callback.IGameReviewsLoadedCallback;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.squareup.picasso.Picasso;
 
 import java.util.Date;
@@ -141,6 +144,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     LinearLayout mPlatformsLinearLayout;
 
     private boolean mTwoPane = false;
+    private Tracker mTracker;
 
     public GameDetailFragment() {   }
 
@@ -165,6 +169,8 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
         setMenuVisibility(false);
         mIGameSearchService = new GiantBombSearchService(getContext());
         mGameSightDatabaseService = new GameSightDatabaseService(getContext());
+        AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
+        mTracker = application.getDefaultTracker();
 
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -605,5 +611,13 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         mGameSightDatabaseService.updateProgress(mGame);
+    }
+
+    @Override
+    public void onResume() {
+        Log.i(LOG_TAG, getString(R.string.setting_screen_name_text) + getString(R.string.detail_screen_name));
+        mTracker.setScreenName(getString(R.string.detail_screen_name));
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        super.onResume();
     }
 }
