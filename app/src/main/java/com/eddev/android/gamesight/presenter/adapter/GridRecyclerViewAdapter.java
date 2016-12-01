@@ -66,17 +66,13 @@ public class GridRecyclerViewAdapter extends RecyclerView.Adapter<GridRecyclerVi
         holder.bind(dataset.get(position), mListener);
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return dataset != null ? dataset.size() : 0;
     }
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        // each data item is just a string in this case
+
         public ImageView mGameCoverImageView;
         public TextView mTextScrim;
         public ViewHolder(View v) {

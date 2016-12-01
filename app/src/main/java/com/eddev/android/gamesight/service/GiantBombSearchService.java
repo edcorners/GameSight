@@ -5,8 +5,8 @@ import android.support.annotation.NonNull;
 
 import com.eddev.android.gamesight.GiantBombUtility;
 import com.eddev.android.gamesight.client.giantbomb.FindGBGameAsyncTask;
-import com.eddev.android.gamesight.client.giantbomb.FindGBReviewsAsyncTask;
 import com.eddev.android.gamesight.client.giantbomb.FindGBGamesAsyncTask;
+import com.eddev.android.gamesight.client.giantbomb.FindGBReviewsAsyncTask;
 import com.eddev.android.gamesight.service.callback.IGameLoadedCallback;
 import com.eddev.android.gamesight.service.callback.IGameReviewsLoadedCallback;
 import com.eddev.android.gamesight.service.callback.IGamesLoadedCallback;
@@ -21,9 +21,12 @@ import java.util.HashMap;
 
 public class GiantBombSearchService implements IGameSearchService {
 
+    private final String LOG_TAG = GiantBombSearchService.class.getSimpleName();
+
     public static final int MONTHS_SPAN = 3;
     private final Context mContext;
     private HashMap<String, String> mParameters;
+    private int mOffset;
 
     public GiantBombSearchService(Context context) {
         this.mContext = context;
@@ -36,7 +39,7 @@ public class GiantBombSearchService implements IGameSearchService {
         Date now = cal.getTime();
         cal.add(Calendar.MONTH, MONTHS_SPAN);
         Date inThreeMonths = cal.getTime();
-
+        
         mParameters.put(FindGBGamesAsyncTask.FILTER, "original_release_date:"+ GiantBombUtility.dateTimeFormat.format(now)+"|"+ GiantBombUtility.dateTimeFormat.format(inThreeMonths));
         mParameters.put(FindGBGamesAsyncTask.SORT, "original_release_date:asc");
         mParameters.put(FindGBGamesAsyncTask.LIMIT, String.valueOf(limit));

@@ -68,11 +68,7 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
         return mDataset != null ? mDataset.size() : 0;
     }
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        // each data item is just a string in this case
         public ImageView mGameCoverImageView;
         public ViewHolder(View v) {
             super(v);
@@ -94,7 +90,7 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
                             });
                         }
 
-                        @Override public void onError() { }
+                        @Override public void onError() {}
                     });
             String contentDescription = itemView.getContext().getString(R.string.game_thumb_content_description);
             String collectionName = itemView.getContext().getString(GiantBombUtility.getTitle(game.getCollection()));

@@ -55,24 +55,17 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        //holder.mTextView.setText(mDataset.get(position));
         holder.bind(mDataset.get(position), mListener);
 
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return mDataset != null ? mDataset.size() : 0;
     }
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        // each data item is just a string in this case
+
         public ImageView mGameCoverImageView;
         public TextView mTitleTextView;
         public TextView mDescriptionTextView;
