@@ -12,6 +12,7 @@ import com.eddev.android.gamesight.client.giantbomb.model.GBGameResponse;
 import com.eddev.android.gamesight.service.callback.IGameLoadedCallback;
 import com.eddev.android.gamesight.service.factory.GameFactoryFromGB;
 
+import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.HashMap;
@@ -29,6 +30,8 @@ import static com.eddev.android.gamesight.client.giantbomb.FindGBGamesAsyncTask.
  */
 
 public class FindGBGameAsyncTask extends AsyncTask<HashMap<String,String>, Void, GBGame> {
+
+    public static final int OK_RESPONSE = 1;
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({FILTER, LIMIT, FORMAT, FIELD_LIST, GAME_ID})
@@ -73,10 +76,17 @@ public class FindGBGameAsyncTask extends AsyncTask<HashMap<String,String>, Void,
         GBGameResponse gbGamesResponse = null;
         try {
             Response<GBGameResponse> response = getGamesCall.execute();
-            Log.v(LOG_TAG, response.raw().toString());
-            gbGamesResponse = response.body();
-            gBGame = gbGamesResponse.getResults();
-        } catch (Exception e) {
+            Log.d(LOG_TAG, response.raw().toString());
+            if(response.body().getStatusCode() != OK_RESPONSE) {
+                mError = response.body().getError();
+            }else {
+                gbGamesResponse = response.body();
+                gBGame = gbGamesResponse.getResults();
+            }
+        } catch (IOException e) {
+            mError = mContext.getString(R.string.service_down_text);
+            Log.e(LOG_TAG, "Error ", e);
+        }catch (Exception e) {
             mError = mContext.getString(R.string.failed_to_connect_text);
             Log.e(LOG_TAG, "Error ", e);
         }

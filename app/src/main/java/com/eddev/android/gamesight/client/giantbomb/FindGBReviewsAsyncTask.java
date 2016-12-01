@@ -7,10 +7,10 @@ import android.util.Log;
 
 import com.eddev.android.gamesight.BuildConfig;
 import com.eddev.android.gamesight.R;
-import com.eddev.android.gamesight.client.giantbomb.model.GBReviewsResponse;
 import com.eddev.android.gamesight.client.giantbomb.model.GBReview;
-import com.eddev.android.gamesight.service.factory.GameFactoryFromGB;
+import com.eddev.android.gamesight.client.giantbomb.model.GBReviewsResponse;
 import com.eddev.android.gamesight.service.callback.IGameReviewsLoadedCallback;
+import com.eddev.android.gamesight.service.factory.GameFactoryFromGB;
 
 import java.io.IOException;
 import java.lang.annotation.Retention;
@@ -28,6 +28,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class FindGBReviewsAsyncTask extends AsyncTask<HashMap<String,String>, Void, List<GBReview>> {
+
+    public static final int OK_RESPONSE = 1;
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({FILTER, SORT, LIMIT, FORMAT, FIELD_LIST})
@@ -76,10 +78,17 @@ public class FindGBReviewsAsyncTask extends AsyncTask<HashMap<String,String>, Vo
         try {
             Response<GBReviewsResponse> response = getGamesCall.execute();
             Log.v(LOG_TAG, response.raw().toString());
-            GBResponse = response.body();
-            gbReviews = GBResponse.getResults();
-        } catch (Exception e) {
-            mError = mContext.getString(R.string.failed_to_retrieve_reviews_text);
+            if(response.body().getStatusCode() != OK_RESPONSE) {
+                mError = response.body().getError();
+            }else {
+                GBResponse = response.body();
+                gbReviews = GBResponse.getResults();
+            }
+        } catch (IOException e) {
+            mError = mContext.getString(R.string.service_down_text);
+            Log.e(LOG_TAG, "Error ", e);
+        }catch (Exception e) {
+            mError = mContext.getString(R.string.failed_to_connect_text);
             Log.e(LOG_TAG, "Error ", e);
         }
         return gbReviews;

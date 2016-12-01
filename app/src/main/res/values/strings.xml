@@ -34,6 +34,7 @@
     <string name="no_data_available">Not available</string>
     <string name="release_date_unknown">Release date unknown</string>
     <string name="failed_to_connect_text">Failed to connect to games service</string>
+    <string name="service_down_text">Unable to reach games service</string>
     <string name="failed_to_retrieve_reviews_text">Failed to retrieve reviews. Service not available</string>
     <string name="discover_games_no_connection_text">Connect to the internet to retrieve upcoming games</string>
     <string name="connect_to_retrieve_details_text">Connect to the internet to retrieve game information</string>
@@ -75,5 +76,7 @@
     <string name="search_screen_name">Search View</string>
     <string name="setting_screen_name_text">Setting screen name: </string>
 
+    <string name="action_share">Share</string>
+    <string name="share_text">I\'m playing %1$s and I have completed %2$d%% of the game - Shared from GameSight </string>
 
 </resources>

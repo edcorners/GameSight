@@ -13,9 +13,11 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.ShareActionProvider;
 import android.text.TextUtils;
 import android.transition.Slide;
 import android.util.Log;
@@ -144,6 +146,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     LinearLayout mPlatformsLinearLayout;
 
     private boolean mTwoPane = false;
+    private ShareActionProvider mShareActionProvider;
     private Tracker mTracker;
 
     public GameDetailFragment() {   }
@@ -260,11 +263,35 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
         inflater.inflate(R.menu.menu_game_detail, menu);
         if(mGame.isFavorite()) {
             for(int i=0;i<menu.size();i++) {
-                if(menu.getItem(i).getItemId() == R.id.action_favorite) {
+                if (menu.getItem(i).getItemId() == R.id.action_favorite) {
                     menu.getItem(i).setIcon(R.drawable.ic_favorite_white);
                 }
             }
         }
+
+        MenuItem shareMenuItem = menu.findItem(R.id.action_share);
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareMenuItem);
+
+        if (mGame.isInCollecion(Game.OWNED)) {
+            shareMenuItem.setVisible(true);
+            String shareText = String.format(getResources().getString(R.string.share_text), mGame.getName(), (int)mGame.getCompletion());
+            mShareActionProvider.setShareIntent(createShareIntent(shareText));
+        }else{
+            shareMenuItem.setVisible(false);
+            mShareActionProvider.setShareIntent(null);
+        }
+
+    }
+
+    private Intent createShareIntent(String shareText) {
+        Intent shareIntent = null;
+        if(!TextUtils.isEmpty(shareText)) {
+            shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+        }
+        return shareIntent;
     }
 
     @Override
@@ -277,11 +304,13 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
                 GameReleaseNotification.scheduleNotification(getContext(), mGame);
                 item.setIcon(R.drawable.ic_favorite_white);
                 updateProgressCard();
+                getActivity().invalidateOptionsMenu();
             }else{
                 mGameSightDatabaseService.removeFavorite(mGame);
                 item.setIcon(R.drawable.ic_favorite_border_white);
                 mGame.setCollection(Game.DISCOVER);
                 mProgressCard.setVisibility(View.GONE);
+                getActivity().invalidateOptionsMenu();
             }
             return true;
         }

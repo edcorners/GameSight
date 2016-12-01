@@ -14,4 +14,9 @@
         android:title="@string/track_game_menu_item_title"
         android:icon="@drawable/ic_favorite_border_white"
         app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_share"
+        android:title="@string/action_share"
+        app:showAsAction="ifRoom"
+        app:actionProviderClass="android.support.v7.widget.ShareActionProvider" />
 </menu>
