@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="@dimen/widget_thumb_size"
     android:layout_height="@dimen/widget_thumb_size"
@@ -15,7 +13,8 @@
         android:scaleType="centerCrop"
         android:layout_margin="@dimen/card_thumb_margin"
         android:padding="@dimen/card_thumb_padding"
-        android:background="@android:color/background_dark"/>
+        android:background="@android:color/background_dark"
+        android:contentDescription="@string/game_cover_content_description"/>
 
     <TextView
         android:id="@+id/widget_scrim_text"
@@ -23,13 +22,14 @@
         android:layout_height="@dimen/widget_scrim_height"
         android:background="@drawable/scrim_upwards_gradient"
         android:elevation="@dimen/grid_scrim_text_elevation"
-        android:text="Apr 12, 2016"
+        android:text="@string/widget_scrim_text_placeholder"
         android:gravity="bottom|end"
         android:textAlignment="viewEnd"
         android:textSize="@dimen/widget_scrim_text_size"
         android:textColor="@color/white"
         android:textStyle="normal|bold"
         android:paddingEnd="@dimen/grid_scrim_text_padding"
+        android:paddingStart="@dimen/no_padding"
         android:paddingBottom="@dimen/grid_scrim_text_padding"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"/>

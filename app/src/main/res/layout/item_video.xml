@@ -11,7 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_play_circle_filled_black"
-        android:id="@+id/item_video_icon"/>
+        android:id="@+id/item_video_icon"
+        android:contentDescription="@string/play_video_icon_content_description"/>
 
     <TextView
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -25,6 +26,7 @@
         android:gravity="center_vertical|start"
         android:layout_centerVertical="true"
         android:paddingStart="@dimen/detail_content_regular_margin"
+        android:paddingEnd="@dimen/no_padding"
         android:layout_toEndOf="@id/item_video_icon"/>
 
 </RelativeLayout>

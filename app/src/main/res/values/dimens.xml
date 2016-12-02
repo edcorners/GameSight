@@ -72,5 +72,6 @@
     <dimen name="notification_game_cover_size">60dp</dimen>
     <dimen name="notification_game_cover_padding">6dp</dimen>
     <dimen name="notification_layout_padding">1dp</dimen>
+    <dimen name="no_padding">0dp</dimen>
 
 </resources>

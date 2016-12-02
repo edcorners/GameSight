@@ -78,5 +78,20 @@
 
     <string name="action_share">Share</string>
     <string name="share_text">I\'m playing %1$s and I have completed %2$d%% of the game - Shared from GameSight </string>
+    <string name="details_completion_placeholder_text">10% complete</string>
+    <string name="details_description_placeholder_text">Description</string>
+    <string name="details_publisher_placeholder_text">Publisher</string>
+    <string name="details_release_date_placeholder">1990-10-1</string>
+    <string name="details_genre_placeholder_text">RPG</string>
+    <string name="details_platforms_placeholder_text">Wii U</string>
+    <string name="grid_item_scrim_text_placeholder">Apr 12, 2016</string>
+    <string name="notification_description_placeholder">Game is launching today!</string>
+    <string name="widget_scrim_text_placeholder">Apr 12, 2016</string>
+    <string name="collection_icon_content_description">Collection Icon</string>
+    <string name="game_thumbnail_content_description">Game thumbnail</string>
+    <string name="game_cover_content_description">Game cover</string>
+    <string name="platform_icon_content_description">Platform Icon</string>
+    <string name="play_video_icon_content_description">Play video icon</string>
+    <string name="gamesight_icon_content_description">Gamesight Icon</string>
 
 </resources>

@@ -12,6 +12,7 @@
         android:id="@+id/grid_item_image"
         android:adjustViewBounds="true"
         android:layout_margin="@dimen/grid_image_margin"
+        android:contentDescription="@string/game_cover_content_description"
         android:background="@android:color/background_dark" />
 
     <TextView
@@ -20,7 +21,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/scrim_upwards_gradient"
         android:elevation="@dimen/grid_scrim_text_elevation"
-        android:text="Apr 12, 2016"
+        android:text="@string/grid_item_scrim_text_placeholder"
         android:gravity="bottom|end"
         android:textAlignment="viewEnd"
         android:textSize="@dimen/grid_scrim_text_size"

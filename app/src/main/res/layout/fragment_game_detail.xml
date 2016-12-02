@@ -54,6 +54,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="@string/collection_icon_content_description"
                     app:srcCompat="@drawable/ic_videogame_asset_white"
                     android:id="@+id/detail_collection_icon"
                     android:layout_weight="0"
@@ -68,7 +69,7 @@
                     android:thumb="@android:drawable/star_on" />
 
                 <TextView
-                    android:text="10% complete"
+                    android:text="@string/details_completion_placeholder_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/detail_completion_text_view"
@@ -82,7 +83,7 @@
         </android.support.v7.widget.CardView>
 
         <TextView
-            android:text="Description"
+            android:text="@string/details_description_placeholder_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/detail_description_text_view"
@@ -112,14 +113,15 @@
                 android:textSize="@dimen/detail_content_text_size"
                 android:textStyle="normal|bold" />
             <TextView
-                android:text="Publisher"
+                android:text="@string/details_publisher_placeholder_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/detail_publisher_text_view"
                 android:textAlignment="viewStart"
                 android:layout_weight="1"
                 android:textSize="@dimen/detail_content_text_size"
-                android:paddingEnd="@dimen/detail_content_regular_padding" />
+                android:paddingEnd="@dimen/detail_content_regular_padding"
+                android:paddingStart="@dimen/no_padding"/>
 
         </LinearLayout>
 
@@ -145,14 +147,15 @@
                 android:textStyle="normal|bold" />
 
             <TextView
-                android:text="1990-10-1"
+                android:text="@string/details_release_date_placeholder"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/detail_release_date_text_view"
                 android:textAlignment="viewStart"
                 android:layout_weight="1"
                 android:textSize="@dimen/detail_content_text_size"
-                android:paddingEnd="@dimen/detail_content_regular_padding" />
+                android:paddingEnd="@dimen/detail_content_regular_padding"
+                android:paddingStart="@dimen/no_padding"/>
         </LinearLayout>
 
         <LinearLayout
@@ -178,7 +181,7 @@
                 />
 
             <TextView
-                android:text="RPG"
+                android:text="@string/details_genre_placeholder_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/detail_genre_text_view"
@@ -210,7 +213,7 @@
                 android:textStyle="normal|bold" />
 
             <TextView
-                android:text="Wii U"
+                android:text="@string/details_platforms_placeholder_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/detail_platforms_text_view"
