@@ -35,7 +35,8 @@ import java.util.LinkedHashSet;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class GameDetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class GameDetailActivity extends AppCompatActivity
+        implements LoaderManager.LoaderCallbacks<Cursor>{
 
     public static final String CURRENT_GAME_KEY = "currentGame";
     public static final String PLATFORMS_LOADED_KEY = "platformsLoaded";
@@ -59,74 +60,20 @@ public class GameDetailActivity extends AppCompatActivity implements LoaderManag
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_game_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.details_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         ButterKnife.bind(this);
         mGame = getIntent().getParcelableExtra(getString(R.string.parcelable_game_key));
-
         if(mGame !=null) {
-            if (savedInstanceState == null) {
-                Bundle arguments = new Bundle();
-                arguments.putParcelable(getString(R.string.parcelable_game_key), mGame);
-                GameDetailFragment detailFragment = new GameDetailFragment();
-                detailFragment.setArguments(arguments);
-
-                getSupportFragmentManager().beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .setCustomAnimations(R.anim.enter_from_bottom,R.anim.exit_to_bottom)
-                        .add(R.id.game_detail_container, detailFragment)
-                        .commit();
-
-                if (mGame.isFavorite()) {
-                    getSupportLoaderManager().initLoader(0, null, this);
-                }else{
-                    createPlatformsView();
-                }
-            } else {
-                if (mGame.isFavorite() && !savedInstanceState.getBoolean(PLATFORMS_LOADED_KEY)) {
-                    getSupportLoaderManager().initLoader(0, null, this);
-                }else {
-                    mGame = savedInstanceState.getParcelable(CURRENT_GAME_KEY);
-                    createPlatformsView();
-                }
-            }
-
-            collapsingToolbarLayout.setTitle(mGame.getName());
-            collapsingToolbarLayout.setContentDescription(mGame.getName());
-
-            // Collapsing toolbar wont mirror the title correctly with just the layout attributes,
-            // this is a work around to provide RTL
-            boolean isRightToLeft = getResources().getBoolean(R.bool.is_right_to_left);
-            if(isRightToLeft){
-                collapsingToolbarLayout.setExpandedTitleGravity(Gravity.RIGHT | Gravity.BOTTOM);
-                collapsingToolbarLayout.setCollapsedTitleGravity(Gravity.RIGHT);
-            }
-
-            Picasso.with(this)
-                    .load(mGame.getImageUrl())
-                    .placeholder(R.color.mainBackground)
-                    .error(R.color.mainBackground)
-                    .into(backdrop, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            Bitmap bitmap = ((BitmapDrawable) backdrop.getDrawable()).getBitmap();
-                            Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-                                public void onGenerated(Palette palette) {
-                                    applyPalette(palette);
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onError() {
-                        }
-                    });
+            loadGameDataAndUI(savedInstanceState);
+            initToolbar();
         }
+    }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(CURRENT_GAME_KEY, mGame);
+        outState.putBoolean(PLATFORMS_LOADED_KEY, mPlatformsLoaded);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -139,7 +86,56 @@ public class GameDetailActivity extends AppCompatActivity implements LoaderManag
         return super.onOptionsItemSelected(item);
     }
 
-    private void createPlatformsView() {
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.details_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        collapsingToolbarLayout.setTitle(mGame.getName());
+        collapsingToolbarLayout.setContentDescription(mGame.getName());
+        // Collapsing toolbar wont mirror the title correctly with just the layout attributes, this is a workaround to provide RTL
+        boolean isRightToLeft = getResources().getBoolean(R.bool.is_right_to_left);
+        if(isRightToLeft){
+            collapsingToolbarLayout.setExpandedTitleGravity(Gravity.RIGHT | Gravity.BOTTOM);
+            collapsingToolbarLayout.setCollapsedTitleGravity(Gravity.RIGHT);
+        }
+    }
+
+    private void loadGameDataAndUI(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            Bundle arguments = new Bundle();
+            arguments.putParcelable(getString(R.string.parcelable_game_key), mGame);
+            initFragment(arguments);
+
+            if (mGame.isFavorite()) {
+                getSupportLoaderManager().initLoader(0, null, this);
+            }else{
+                initPlatformsView();
+                initToolbarBackdrop();
+            }
+        } else {
+            if (mGame.isFavorite() && !savedInstanceState.getBoolean(PLATFORMS_LOADED_KEY)) {
+                getSupportLoaderManager().initLoader(0, null, this);
+            }else {
+                mGame = savedInstanceState.getParcelable(CURRENT_GAME_KEY);
+                initPlatformsView();
+                initToolbarBackdrop();
+            }
+        }
+    }
+
+    private void initFragment(Bundle arguments) {
+        GameDetailFragment detailFragment = new GameDetailFragment();
+        detailFragment.setArguments(arguments);
+
+        getSupportFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .setCustomAnimations(R.anim.enter_from_bottom,R.anim.exit_to_bottom)
+                .add(R.id.game_detail_container, detailFragment)
+                .commit();
+    }
+
+    private void initPlatformsView() {
         mPlatformsLinearLayout.removeAllViews();
 
         LinkedHashSet<Integer> platformsSet = new LinkedHashSet<>();
@@ -148,12 +144,36 @@ public class GameDetailActivity extends AppCompatActivity implements LoaderManag
         }
         for(int platform: platformsSet) {
             if(platform != -1) {
-                FrameLayout platformFrame = (FrameLayout) LayoutInflater.from(this).inflate(R.layout.item_platform, null, false);
-                ImageView platformIcon = (ImageView) platformFrame.findViewById(R.id.platform_icon_image_view);
+                FrameLayout platformFrame = (FrameLayout) LayoutInflater.
+                        from(this).inflate(R.layout.item_platform, null, false);
+                ImageView platformIcon = (ImageView) platformFrame.
+                        findViewById(R.id.platform_icon_image_view);
                 platformIcon.setImageResource(platform);
                 mPlatformsLinearLayout.addView(platformFrame);
             }
         }
+    }
+
+    private void initToolbarBackdrop() {
+        Picasso.with(this)
+                .load(mGame.getImageUrl())
+                .placeholder(R.color.mainBackground)
+                .error(R.color.mainBackground)
+                .into(backdrop, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        Bitmap bitmap = ((BitmapDrawable) backdrop.getDrawable()).getBitmap();
+                        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+                            public void onGenerated(Palette palette) {
+                                applyPalette(palette);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError() {
+                    }
+                });
     }
 
     private void applyPalette(Palette palette) {
@@ -164,12 +184,9 @@ public class GameDetailActivity extends AppCompatActivity implements LoaderManag
         supportStartPostponedEnterTransition();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable(CURRENT_GAME_KEY, mGame);
-        outState.putBoolean(PLATFORMS_LOADED_KEY, mPlatformsLoaded);
-        super.onSaveInstanceState(outState);
-    }
+    /**
+     * Loader
+     */
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -191,7 +208,8 @@ public class GameDetailActivity extends AppCompatActivity implements LoaderManag
         while (data.moveToNext()) {
             mGame.addClassificationAttribute(new ClassificationAttribute(data));
         }
-        createPlatformsView();
+        initPlatformsView();
+        initToolbarBackdrop();
         mPlatformsLoaded = true;
     }
 

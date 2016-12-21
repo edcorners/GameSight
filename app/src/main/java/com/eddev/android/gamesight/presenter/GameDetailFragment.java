@@ -262,11 +262,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.menu_game_detail, menu);
         if(mGame.isFavorite()) {
-            for(int i=0;i<menu.size();i++) {
-                if (menu.getItem(i).getItemId() == R.id.action_favorite) {
-                    menu.getItem(i).setIcon(R.drawable.ic_favorite_white);
-                }
-            }
+            menu.findItem(R.id.action_favorite).setIcon(R.drawable.ic_favorite_white);
         }
 
         MenuItem shareMenuItem = menu.findItem(R.id.action_share);
