@@ -1,4 +1,4 @@
-package com.eddev.android.gamesight;
+package com.eddev.android.gamersight;
 
 import org.junit.Test;
 

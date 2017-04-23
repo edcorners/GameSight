@@ -1,4 +1,4 @@
-package com.eddev.android.gamesight;
+package com.eddev.android.gamersight;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.eddev.android.gamesight", appContext.getPackageName());
+        assertEquals("com.eddev.android.gamersight", appContext.getPackageName());
     }
 }

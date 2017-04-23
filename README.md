@@ -1,4 +1,4 @@
-# GameSight
+# GamerSight
 
 Discover and keep track of your favorite games coming out soon. See full game information including videos, reviews, platforms and publisher. Keep track of progress at games you own. Receive notifications when games are launched.
 
