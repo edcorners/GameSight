@@ -24,7 +24,7 @@ import android.widget.LinearLayout;
 
 import com.eddev.android.gamesight.GiantBombUtility;
 import com.eddev.android.gamesight.R;
-import com.eddev.android.gamesight.data.GameSightProvider;
+import com.eddev.android.gamesight.data.GamerSightProvider;
 import com.eddev.android.gamesight.model.ClassificationAttribute;
 import com.eddev.android.gamesight.model.Game;
 import com.squareup.picasso.Callback;
@@ -192,7 +192,7 @@ public class GameDetailActivity extends AppCompatActivity
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.d(LOG_TAG, "onCreateLoader ");
         CursorLoader cursorLoader = new CursorLoader(this,
-                GameSightProvider.ClassificationAttributes.withGameId(String.valueOf(mGame.getId())),
+                GamerSightProvider.ClassificationAttributes.withGameId(String.valueOf(mGame.getId())),
                 ClassificationAttribute.CLASSIFICATION_ATTR_PROJECTION,
                 null,
                 null,

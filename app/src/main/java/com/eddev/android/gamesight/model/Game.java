@@ -11,7 +11,7 @@ import android.text.TextUtils;
 import com.eddev.android.gamesight.GiantBombUtility;
 import com.eddev.android.gamesight.data.ClassificationByGameColumns;
 import com.eddev.android.gamesight.data.GameColumns;
-import com.eddev.android.gamesight.data.GameSightDatabase;
+import com.eddev.android.gamesight.data.GamerSightDatabase;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -29,16 +29,16 @@ public class Game implements Parcelable {
     public static final String TRACKING = "TRACKING";
     public static final String DISCOVER = "DISCOVER";
 
-    public static String[] GAME_PROJECTION = {GameSightDatabase.GAMES+"."+GameColumns.GAME_ID,
-            GameSightDatabase.GAMES+"."+GameColumns.DESCRIPTION,
-            GameSightDatabase.GAMES+"."+GameColumns.EXPECTED_RELEASE_DATE,
-            GameSightDatabase.GAMES+"."+GameColumns.IMAGE_URL,
-            GameSightDatabase.GAMES+"."+GameColumns.THUMBNAIL_URL,
-            GameSightDatabase.GAMES+"."+GameColumns.NAME,
-            GameSightDatabase.GAMES+"."+GameColumns.NUMBER_OF_USER_REVIEWS,
-            GameSightDatabase.GAMES+"."+GameColumns.ORIGINAL_RELEASE_DATE,
-            GameSightDatabase.GAMES+"."+GameColumns.COMPLETION,
-            GameSightDatabase.GAMES+"."+GameColumns.COLLECTION};
+    public static String[] GAME_PROJECTION = {GamerSightDatabase.GAMES+"."+GameColumns.GAME_ID,
+            GamerSightDatabase.GAMES+"."+GameColumns.DESCRIPTION,
+            GamerSightDatabase.GAMES+"."+GameColumns.EXPECTED_RELEASE_DATE,
+            GamerSightDatabase.GAMES+"."+GameColumns.IMAGE_URL,
+            GamerSightDatabase.GAMES+"."+GameColumns.THUMBNAIL_URL,
+            GamerSightDatabase.GAMES+"."+GameColumns.NAME,
+            GamerSightDatabase.GAMES+"."+GameColumns.NUMBER_OF_USER_REVIEWS,
+            GamerSightDatabase.GAMES+"."+GameColumns.ORIGINAL_RELEASE_DATE,
+            GamerSightDatabase.GAMES+"."+GameColumns.COMPLETION,
+            GamerSightDatabase.GAMES+"."+GameColumns.COLLECTION};
 
     // these indices must match the projection
     private static final int INDEX_GAME_ID = 0;

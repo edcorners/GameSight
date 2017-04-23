@@ -7,7 +7,7 @@ import android.os.Parcelable;
 import android.support.annotation.StringDef;
 
 import com.eddev.android.gamesight.data.ClassificationAttributeColumns;
-import com.eddev.android.gamesight.data.GameSightDatabase;
+import com.eddev.android.gamesight.data.GamerSightDatabase;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -18,9 +18,9 @@ import java.lang.annotation.RetentionPolicy;
 public class ClassificationAttribute implements Parcelable {
 
     public static final String[] CLASSIFICATION_ATTR_PROJECTION =
-            {GameSightDatabase.CLASSIFICATION_ATTRIBUTES+"."+ ClassificationAttributeColumns.CLASSIFICATION_ID,
-             GameSightDatabase.CLASSIFICATION_ATTRIBUTES+"."+ClassificationAttributeColumns.TYPE,
-             GameSightDatabase.CLASSIFICATION_ATTRIBUTES+"."+ClassificationAttributeColumns.VALUE};
+            {GamerSightDatabase.CLASSIFICATION_ATTRIBUTES+"."+ ClassificationAttributeColumns.CLASSIFICATION_ID,
+             GamerSightDatabase.CLASSIFICATION_ATTRIBUTES+"."+ClassificationAttributeColumns.TYPE,
+             GamerSightDatabase.CLASSIFICATION_ATTRIBUTES+"."+ClassificationAttributeColumns.VALUE};
 
     private static final int INDEX_CLASSIFICATION_ID = 0;
     private static final int INDEX_TYPE = 1;

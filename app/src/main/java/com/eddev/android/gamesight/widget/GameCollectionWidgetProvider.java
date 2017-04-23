@@ -19,7 +19,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.eddev.android.gamesight.R;
-import com.eddev.android.gamesight.data.GameSightProvider;
+import com.eddev.android.gamesight.data.GamerSightProvider;
 import com.eddev.android.gamesight.presenter.GameDetailActivity;
 import com.eddev.android.gamesight.presenter.MainActivity;
 
@@ -62,9 +62,9 @@ public class GameCollectionWidgetProvider extends AppWidgetProvider {
         final ContentResolver r = context.getContentResolver();
         if (sDataObserver == null) {
             final AppWidgetManager mgr = AppWidgetManager.getInstance(context);
-            final ComponentName cn = new ComponentName(context, GameSightProvider.class);
+            final ComponentName cn = new ComponentName(context, GamerSightProvider.class);
             sDataObserver = new GameDataProviderObserver(mgr, cn, sWorkerQueue);
-            r.registerContentObserver(GameSightProvider.Games.CONTENT_URI , true, sDataObserver);
+            r.registerContentObserver(GamerSightProvider.Games.CONTENT_URI , true, sDataObserver);
         }
     }
 

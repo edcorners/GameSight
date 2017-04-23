@@ -40,8 +40,8 @@ import android.widget.Toast;
 import com.eddev.android.gamesight.AnalyticsApplication;
 import com.eddev.android.gamesight.GiantBombUtility;
 import com.eddev.android.gamesight.R;
-import com.eddev.android.gamesight.data.GameSightDatabaseService;
-import com.eddev.android.gamesight.data.GameSightProvider;
+import com.eddev.android.gamesight.data.GamerSightDatabaseService;
+import com.eddev.android.gamesight.data.GamerSightProvider;
 import com.eddev.android.gamesight.data.ReviewColumns;
 import com.eddev.android.gamesight.data.VideoColumns;
 import com.eddev.android.gamesight.model.ClassificationAttribute;
@@ -136,7 +136,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
     private boolean mReviewsLoaded = false;
     private boolean mVideosLoaded = false;
 
-    private GameSightDatabaseService mGameSightDatabaseService;
+    private GamerSightDatabaseService mGamerSightDatabaseService;
 
     @BindView(R.id.toolbar_game_title_text_view)
     TextView mGameTitleTextView;
@@ -171,14 +171,14 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
         ButterKnife.bind(this, rootView);
         setMenuVisibility(false);
         mIGameSearchService = new GiantBombSearchService(getContext());
-        mGameSightDatabaseService = new GameSightDatabaseService(getContext());
+        mGamerSightDatabaseService = new GamerSightDatabaseService(getContext());
         AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
         mTracker = application.getDefaultTracker();
 
         Bundle arguments = getArguments();
         if (arguments != null) {
             mGame = arguments.getParcelable(getString(R.string.parcelable_game_key));
-            if(mGame != null && mGameSightDatabaseService.canRetrieveFromLocalCollection(mGame)) {
+            if(mGame != null && mGamerSightDatabaseService.canRetrieveFromLocalCollection(mGame)) {
                 loadFavoriteGame(savedInstanceState);
             }else if(mGame != null ){
                 loadGameFromService(savedInstanceState);
@@ -296,13 +296,13 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
 
         if (id == R.id.action_favorite && mGameLoaded) {
             if(!mGame.isFavorite()) {
-                mGameSightDatabaseService.insertFavorite(mGame);
+                mGamerSightDatabaseService.insertFavorite(mGame);
                 GameReleaseNotification.scheduleNotification(getContext(), mGame);
                 item.setIcon(R.drawable.ic_favorite_white);
                 updateProgressCard();
                 getActivity().invalidateOptionsMenu();
             }else{
-                mGameSightDatabaseService.removeFavorite(mGame);
+                mGamerSightDatabaseService.removeFavorite(mGame);
                 item.setIcon(R.drawable.ic_favorite_border_white);
                 mGame.setCollection(Game.DISCOVER);
                 mProgressCard.setVisibility(View.GONE);
@@ -542,7 +542,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
             case REVIEWS_LOADER:
                 Log.d(LOG_TAG, "onCreateLoader TRACKING_LOADER");
                 cursorLoader = new CursorLoader(getActivity(),
-                        GameSightProvider.Reviews.CONTENT_URI,
+                        GamerSightProvider.Reviews.CONTENT_URI,
                         Review.REVIEW_PROJECTION,
                         ReviewColumns.GAME_ID + "=?",
                         new String[]{String.valueOf(mGame.getId())},
@@ -551,7 +551,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
             case VIDEOS_LOADER:
                 Log.d(LOG_TAG, "onCreateLoader OWNED_LOADER");
                 cursorLoader = new CursorLoader(getActivity(),
-                        GameSightProvider.Videos.CONTENT_URI,
+                        GamerSightProvider.Videos.CONTENT_URI,
                         Video.VIDEO_PROJECTION,
                         VideoColumns.GAME_ID + "=?",
                         new String[]{String.valueOf(mGame.getId())},
@@ -560,7 +560,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
             case CATTRIBUTES_LOADER:
                 Log.d(LOG_TAG, "onCreateLoader CATTRIBUTES_LOADER");
                 cursorLoader = new CursorLoader(getActivity(),
-                        GameSightProvider.ClassificationAttributes.withGameId(String.valueOf(mGame.getId())),
+                        GamerSightProvider.ClassificationAttributes.withGameId(String.valueOf(mGame.getId())),
                         ClassificationAttribute.CLASSIFICATION_ATTR_PROJECTION,
                         null,
                         null,
@@ -635,7 +635,7 @@ public class GameDetailFragment extends Fragment implements IGameLoadedCallback,
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        mGameSightDatabaseService.updateProgress(mGame);
+        mGamerSightDatabaseService.updateProgress(mGame);
     }
 
     @Override

@@ -12,8 +12,8 @@ import net.simonvt.schematic.annotation.TableEndpoint;
 /**
  * Created by Edison on 9/25/2016.
  */
-@ContentProvider(authority = GameSightProvider.AUTHORITY, database = GameSightDatabase.class, packageName = "com.eddev.android.gamesight.provider")
-public class GameSightProvider {
+@ContentProvider(authority = GamerSightProvider.AUTHORITY, database = GamerSightDatabase.class, packageName = "com.eddev.android.gamesight.provider")
+public class GamerSightProvider {
     public static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".provider";
     static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
@@ -25,7 +25,7 @@ public class GameSightProvider {
         String CLASSIFICATION_BY_GAME = "classification_by_game";
     }
 
-    @TableEndpoint(table = GameSightDatabase.GAMES) public static class Games {
+    @TableEndpoint(table = GamerSightDatabase.GAMES) public static class Games {
         @ContentUri(
                 path = Path.GAMES,
                 type = "vnd.android.cursor.dir/game",
@@ -47,22 +47,22 @@ public class GameSightProvider {
                 name = "GAME_BY_CLASSIFICATION_TYPE",
                 path = Path.GAMES +"/"+ Path.CLASSIFICATION_BY_GAME + "/*",
                 type = "vnd.android.cursor.dir/game",
-                whereColumn = GameSightDatabase.CLASSIFICATION_ATTRIBUTES+"."+ClassificationAttributeColumns.TYPE,
+                whereColumn = GamerSightDatabase.CLASSIFICATION_ATTRIBUTES+"."+ClassificationAttributeColumns.TYPE,
                 pathSegment = 2,
-                join = "INNER JOIN "+GameSightDatabase.CLASSIFICATION_BY_GAME +" ON "+
-                        GameSightDatabase.GAMES+"."+GameColumns.GAME_ID + " = " +
-                        GameSightDatabase.CLASSIFICATION_BY_GAME+"."+ClassificationByGameColumns.GAME_ID+
-                        " INNER JOIN "+GameSightDatabase.CLASSIFICATION_ATTRIBUTES+" ON "+
-                        GameSightDatabase.CLASSIFICATION_BY_GAME+"."+ClassificationByGameColumns.CLASSIFICATION_ID + " = " +
-                        GameSightDatabase.CLASSIFICATION_ATTRIBUTES+"."+ClassificationAttributeColumns.CLASSIFICATION_ID,
-                defaultSort = GameSightDatabase.GAMES+"."+ GameColumns.EXPECTED_RELEASE_DATE + " ASC",
-                groupBy = GameSightDatabase.GAMES+"."+GameColumns.GAME_ID
+                join = "INNER JOIN "+ GamerSightDatabase.CLASSIFICATION_BY_GAME +" ON "+
+                        GamerSightDatabase.GAMES+"."+GameColumns.GAME_ID + " = " +
+                        GamerSightDatabase.CLASSIFICATION_BY_GAME+"."+ClassificationByGameColumns.GAME_ID+
+                        " INNER JOIN "+ GamerSightDatabase.CLASSIFICATION_ATTRIBUTES+" ON "+
+                        GamerSightDatabase.CLASSIFICATION_BY_GAME+"."+ClassificationByGameColumns.CLASSIFICATION_ID + " = " +
+                        GamerSightDatabase.CLASSIFICATION_ATTRIBUTES+"."+ClassificationAttributeColumns.CLASSIFICATION_ID,
+                defaultSort = GamerSightDatabase.GAMES+"."+ GameColumns.EXPECTED_RELEASE_DATE + " ASC",
+                groupBy = GamerSightDatabase.GAMES+"."+GameColumns.GAME_ID
         )
         public static Uri withClassification(String type){
             return buildUri(Path.GAMES, Path.CLASSIFICATION_BY_GAME, type);
         }
     }
-    @TableEndpoint(table = GameSightDatabase.REVIEWS) public static class Reviews {
+    @TableEndpoint(table = GamerSightDatabase.REVIEWS) public static class Reviews {
         @ContentUri(
                 path = Path.REVIEWS,
                 type = "vnd.android.cursor.dir/review",
@@ -81,7 +81,7 @@ public class GameSightProvider {
         }
     }
 
-    @TableEndpoint(table = GameSightDatabase.VIDEOS) public static class Videos {
+    @TableEndpoint(table = GamerSightDatabase.VIDEOS) public static class Videos {
         @ContentUri(
                 path = Path.VIDEOS,
                 type = "vnd.android.cursor.dir/video",
@@ -100,7 +100,7 @@ public class GameSightProvider {
         }
     }
 
-    @TableEndpoint(table = GameSightDatabase.CLASSIFICATION_ATTRIBUTES) public static class ClassificationAttributes {
+    @TableEndpoint(table = GamerSightDatabase.CLASSIFICATION_ATTRIBUTES) public static class ClassificationAttributes {
         @ContentUri(
                 path = Path.CLASSIFICATION_ATTRIBUTES,
                 type = "vnd.android.cursor.dir/classification_attribute",
@@ -122,22 +122,22 @@ public class GameSightProvider {
                 name = "CLASSIFICATION_ATTRIBUTES_BY_GAME",
                 path = Path.GAMES +"/"+ Path.CLASSIFICATION_ATTRIBUTES + "/*",
                 type = "vnd.android.cursor.dir/classification_attribute",
-                whereColumn = GameSightDatabase.CLASSIFICATION_BY_GAME+"."+ClassificationByGameColumns.GAME_ID,
+                whereColumn = GamerSightDatabase.CLASSIFICATION_BY_GAME+"."+ClassificationByGameColumns.GAME_ID,
                 pathSegment = 2,
-                join = "INNER JOIN "+GameSightDatabase.CLASSIFICATION_BY_GAME+" ON "+
-                        GameSightDatabase.CLASSIFICATION_BY_GAME+"."+ClassificationByGameColumns.CLASSIFICATION_ID + " = " +
-                        GameSightDatabase.CLASSIFICATION_ATTRIBUTES+"."+ClassificationAttributeColumns.CLASSIFICATION_ID +
-                        " INNER JOIN "+GameSightDatabase.GAMES+" ON "+
-                        GameSightDatabase.GAMES+"."+GameColumns.GAME_ID + " = " +
-                        GameSightDatabase.CLASSIFICATION_BY_GAME+"."+ClassificationByGameColumns.GAME_ID,
-                defaultSort = GameSightDatabase.CLASSIFICATION_ATTRIBUTES+"."+ ClassificationAttributeColumns.TYPE + " ASC"
+                join = "INNER JOIN "+ GamerSightDatabase.CLASSIFICATION_BY_GAME+" ON "+
+                        GamerSightDatabase.CLASSIFICATION_BY_GAME+"."+ClassificationByGameColumns.CLASSIFICATION_ID + " = " +
+                        GamerSightDatabase.CLASSIFICATION_ATTRIBUTES+"."+ClassificationAttributeColumns.CLASSIFICATION_ID +
+                        " INNER JOIN "+ GamerSightDatabase.GAMES+" ON "+
+                        GamerSightDatabase.GAMES+"."+GameColumns.GAME_ID + " = " +
+                        GamerSightDatabase.CLASSIFICATION_BY_GAME+"."+ClassificationByGameColumns.GAME_ID,
+                defaultSort = GamerSightDatabase.CLASSIFICATION_ATTRIBUTES+"."+ ClassificationAttributeColumns.TYPE + " ASC"
         )
         public static Uri withGameId(String gameId){
             return buildUri(Path.GAMES, Path.CLASSIFICATION_ATTRIBUTES, gameId);
         }
     }
 
-    @TableEndpoint(table = GameSightDatabase.CLASSIFICATION_BY_GAME) public static class ClassificationByGame {
+    @TableEndpoint(table = GamerSightDatabase.CLASSIFICATION_BY_GAME) public static class ClassificationByGame {
         @ContentUri(
                 path = Path.CLASSIFICATION_BY_GAME,
                 type = "vnd.android.cursor.dir/classification_by_game",

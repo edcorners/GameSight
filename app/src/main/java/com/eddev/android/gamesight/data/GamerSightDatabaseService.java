@@ -21,14 +21,14 @@ import java.util.List;
  * Created by ed on 11/12/16.
  */
 
-public class GameSightDatabaseService {
+public class GamerSightDatabaseService {
     private Context mContext;
-    private final String LOG_TAG = GameSightDatabaseService.class.getSimpleName();
+    private final String LOG_TAG = GamerSightDatabaseService.class.getSimpleName();
 
     /**
      * Basic constructor
      */
-    public GameSightDatabaseService(Context context) {
+    public GamerSightDatabaseService(Context context) {
         this.mContext = context;
     }
 
@@ -39,7 +39,7 @@ public class GameSightDatabaseService {
         batchUpserts.addAll(upsertReviews(game.getReviews(), game.getId()));
         batchUpserts.addAll(upsertClassificationAttributes(game.getClassificationAttributes()));
         try {
-            ContentProviderResult[] results = mContext.getContentResolver().applyBatch(GameSightProvider.AUTHORITY, batchUpserts);
+            ContentProviderResult[] results = mContext.getContentResolver().applyBatch(GamerSightProvider.AUTHORITY, batchUpserts);
             Log.v(LOG_TAG, results.toString());
         } catch (RemoteException | OperationApplicationException e) {
             Log.e(LOG_TAG, "Error applying batch videos update", e);
@@ -49,7 +49,7 @@ public class GameSightDatabaseService {
 
     private void upsertGame(Game game) {
         int gameId = game.getId();
-        Cursor cursor = mContext.getContentResolver().query(GameSightProvider.Games.withGameId(gameId),
+        Cursor cursor = mContext.getContentResolver().query(GamerSightProvider.Games.withGameId(gameId),
                 null,
                 null,
                 null,
@@ -57,9 +57,9 @@ public class GameSightDatabaseService {
         if (cursor != null) {
             ContentValues gameCV = game.toContentValues();
             if (cursor.getCount() > 0) {
-                mContext.getContentResolver().update(GameSightProvider.Games.CONTENT_URI, gameCV, GameColumns.GAME_ID + "="+ gameId, null);
+                mContext.getContentResolver().update(GamerSightProvider.Games.CONTENT_URI, gameCV, GameColumns.GAME_ID + "="+ gameId, null);
             } else {
-                mContext.getContentResolver().insert(GameSightProvider.Games.CONTENT_URI, gameCV);
+                mContext.getContentResolver().insert(GamerSightProvider.Games.CONTENT_URI, gameCV);
             }
             cursor.close();
         }
@@ -72,7 +72,7 @@ public class GameSightDatabaseService {
         if(videos != null){
             for (Video current : videos) {
                 int videoId = current.getId();
-                Cursor cursor = mContext.getContentResolver().query(GameSightProvider.Videos.withGameId(gameId),
+                Cursor cursor = mContext.getContentResolver().query(GamerSightProvider.Videos.withGameId(gameId),
                         null,
                         null,
                         null,
@@ -80,9 +80,9 @@ public class GameSightDatabaseService {
                 if (cursor != null) {
                     ContentValues currentCV = current.toContentValues(gameId);
                     if (cursor.getCount() > 0) {
-                        builder = ContentProviderOperation.newUpdate(GameSightProvider.Videos.withGameId(videoId)).withValues(currentCV);
+                        builder = ContentProviderOperation.newUpdate(GamerSightProvider.Videos.withGameId(videoId)).withValues(currentCV);
                     } else {
-                        builder = ContentProviderOperation.newInsert(GameSightProvider.Videos.CONTENT_URI).withValues(currentCV);
+                        builder = ContentProviderOperation.newInsert(GamerSightProvider.Videos.CONTENT_URI).withValues(currentCV);
                     }
                     batchUpserts.add(builder.build());
                     cursor.close();
@@ -100,7 +100,7 @@ public class GameSightDatabaseService {
         if(reviews != null){
             for (Review current : reviews) {
                 int reviewId = current.getId();
-                Cursor cursor = mContext.getContentResolver().query(GameSightProvider.Reviews.withGameId(gameId),
+                Cursor cursor = mContext.getContentResolver().query(GamerSightProvider.Reviews.withGameId(gameId),
                         null,
                         null,
                         null,
@@ -108,9 +108,9 @@ public class GameSightDatabaseService {
                 if (cursor != null) {
                     ContentValues currentCV = current.toContentValues(gameId);
                     if (cursor.getCount() > 0) {
-                        builder = ContentProviderOperation.newUpdate(GameSightProvider.Reviews.withGameId(reviewId)).withValues(currentCV);
+                        builder = ContentProviderOperation.newUpdate(GamerSightProvider.Reviews.withGameId(reviewId)).withValues(currentCV);
                     } else {
-                        builder = ContentProviderOperation.newInsert(GameSightProvider.Reviews.CONTENT_URI).withValues(currentCV);
+                        builder = ContentProviderOperation.newInsert(GamerSightProvider.Reviews.CONTENT_URI).withValues(currentCV);
                     }
                     batchUpserts.add(builder.build());
                     cursor.close();
@@ -127,7 +127,7 @@ public class GameSightDatabaseService {
         if(classificationAttributes != null){
             for (ClassificationAttribute current : classificationAttributes) {
                 int classificationId = current.getId();
-                Cursor cursor = mContext.getContentResolver().query(GameSightProvider.ClassificationAttributes.withClassificationAttributeId(classificationId),
+                Cursor cursor = mContext.getContentResolver().query(GamerSightProvider.ClassificationAttributes.withClassificationAttributeId(classificationId),
                         null,
                         null,
                         null,
@@ -135,9 +135,9 @@ public class GameSightDatabaseService {
                 if (cursor != null) {
                     ContentValues currentCV = current.toContentValues(classificationId);
                     if (cursor.getCount() > 0) {
-                        builder = ContentProviderOperation.newUpdate(GameSightProvider.ClassificationAttributes.withClassificationAttributeId(classificationId)).withValues(currentCV);
+                        builder = ContentProviderOperation.newUpdate(GamerSightProvider.ClassificationAttributes.withClassificationAttributeId(classificationId)).withValues(currentCV);
                     } else {
-                        builder = ContentProviderOperation.newInsert(GameSightProvider.ClassificationAttributes.CONTENT_URI).withValues(currentCV);
+                        builder = ContentProviderOperation.newInsert(GamerSightProvider.ClassificationAttributes.CONTENT_URI).withValues(currentCV);
                     }
                     batchUpserts.add(builder.build());
                     cursor.close();
@@ -152,19 +152,19 @@ public class GameSightDatabaseService {
         ContentProviderOperation.Builder builder = null;
         ContentValues[] contentValues = game.getClassificationByGameContentValues();
         if(contentValues != null){
-            mContext.getContentResolver().delete(GameSightProvider.ClassificationByGame.CONTENT_URI, ClassificationByGameColumns.GAME_ID + " = "+game.getId(), null);
-            mContext.getContentResolver().bulkInsert(GameSightProvider.ClassificationByGame.CONTENT_URI, contentValues);
+            mContext.getContentResolver().delete(GamerSightProvider.ClassificationByGame.CONTENT_URI, ClassificationByGameColumns.GAME_ID + " = "+game.getId(), null);
+            mContext.getContentResolver().bulkInsert(GamerSightProvider.ClassificationByGame.CONTENT_URI, contentValues);
         }
     }
 
     public void removeFavorite(Game game) {
-        mContext.getContentResolver().delete(GameSightProvider.Games.CONTENT_URI, GameColumns.GAME_ID +" = "+ game.getId(), null);
+        mContext.getContentResolver().delete(GamerSightProvider.Games.CONTENT_URI, GameColumns.GAME_ID +" = "+ game.getId(), null);
     }
 
     public void updateProgress(Game game) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(GameColumns.COMPLETION, game.getCompletion());
-        mContext.getContentResolver().update(GameSightProvider.Games.CONTENT_URI,
+        mContext.getContentResolver().update(GamerSightProvider.Games.CONTENT_URI,
                     contentValues,
                     GameColumns.GAME_ID +" = "+ game.getId(), null);
     }
@@ -172,7 +172,7 @@ public class GameSightDatabaseService {
     public boolean canRetrieveFromLocalCollection(Game game){
         String selection = GameColumns.GAME_ID+ " =? ";
         String[] selectionArgs = {String.valueOf(game.getId())};
-        Cursor cursor = mContext.getContentResolver().query(GameSightProvider.Games.CONTENT_URI,
+        Cursor cursor = mContext.getContentResolver().query(GamerSightProvider.Games.CONTENT_URI,
                 new String[]{GameColumns.COLLECTION},
                 selection,
                 selectionArgs,

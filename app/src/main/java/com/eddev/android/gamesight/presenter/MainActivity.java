@@ -30,7 +30,7 @@ import android.widget.Toast;
 
 import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.data.GameColumns;
-import com.eddev.android.gamesight.data.GameSightProvider;
+import com.eddev.android.gamesight.data.GamerSightProvider;
 import com.eddev.android.gamesight.model.Game;
 import com.eddev.android.gamesight.presenter.adapter.CardRecyclerViewAdapter;
 import com.eddev.android.gamesight.service.GiantBombSearchService;
@@ -381,7 +381,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             case TRACKING_LOADER:
                 Log.d(LOG_TAG, "onCreateLoader TRACKING_LOADER");
                 cursorLoader = new CursorLoader(this,
-                        GameSightProvider.Games.CONTENT_URI,
+                        GamerSightProvider.Games.CONTENT_URI,
                         Game.GAME_PROJECTION,
                         GameColumns.COLLECTION + "=?",
                         new String[]{Game.TRACKING},
@@ -390,7 +390,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             case OWNED_LOADER:
                 Log.d(LOG_TAG, "onCreateLoader OWNED_LOADER");
                 cursorLoader = new CursorLoader(this,
-                        GameSightProvider.Games.CONTENT_URI,
+                        GamerSightProvider.Games.CONTENT_URI,
                         Game.GAME_PROJECTION,
                         GameColumns.COLLECTION + "=?",
                         new String[]{Game.OWNED},

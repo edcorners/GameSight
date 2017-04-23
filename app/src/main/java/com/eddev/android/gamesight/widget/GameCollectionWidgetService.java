@@ -13,7 +13,7 @@ import android.widget.RemoteViewsService;
 import com.eddev.android.gamesight.GiantBombUtility;
 import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.data.GameColumns;
-import com.eddev.android.gamesight.data.GameSightProvider;
+import com.eddev.android.gamesight.data.GamerSightProvider;
 import com.eddev.android.gamesight.model.Game;
 import com.squareup.picasso.Picasso;
 
@@ -111,7 +111,7 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         if (mCursor != null) {
             mCursor.close();
         }
-        mCursor = mContext.getContentResolver().query(GameSightProvider.Games.CONTENT_URI,
+        mCursor = mContext.getContentResolver().query(GamerSightProvider.Games.CONTENT_URI,
                 Game.GAME_PROJECTION,
                 GameColumns.COLLECTION + "=?",
                 new String[]{Game.TRACKING},

@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.eddev.android.gamesight.data.GameSightDatabase;
+import com.eddev.android.gamesight.data.GamerSightDatabase;
 import com.eddev.android.gamesight.data.ReviewColumns;
 
 import java.util.Date;
@@ -15,11 +15,11 @@ import java.util.Date;
  */
 public class Review implements Parcelable {
 
-    public static final String[] REVIEW_PROJECTION = {GameSightDatabase.REVIEWS+"."+ReviewColumns.REVIEW_ID,
-            GameSightDatabase.REVIEWS+"."+ReviewColumns.DESCRIPTION,
-            GameSightDatabase.REVIEWS+"."+ReviewColumns.DATE,
-            GameSightDatabase.REVIEWS+"."+ReviewColumns.SCORE,
-            GameSightDatabase.REVIEWS+"."+ReviewColumns.REVIEWER};
+    public static final String[] REVIEW_PROJECTION = {GamerSightDatabase.REVIEWS+"."+ReviewColumns.REVIEW_ID,
+            GamerSightDatabase.REVIEWS+"."+ReviewColumns.DESCRIPTION,
+            GamerSightDatabase.REVIEWS+"."+ReviewColumns.DATE,
+            GamerSightDatabase.REVIEWS+"."+ReviewColumns.SCORE,
+            GamerSightDatabase.REVIEWS+"."+ReviewColumns.REVIEWER};
 
     // these indices must match the projection
     private static final int INDEX_REVIEW_ID = 0;

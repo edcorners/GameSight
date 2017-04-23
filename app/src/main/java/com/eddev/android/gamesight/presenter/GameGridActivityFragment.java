@@ -30,8 +30,8 @@ import com.eddev.android.gamesight.GiantBombUtility;
 import com.eddev.android.gamesight.R;
 import com.eddev.android.gamesight.data.ClassificationAttributeColumns;
 import com.eddev.android.gamesight.data.GameColumns;
-import com.eddev.android.gamesight.data.GameSightDatabase;
-import com.eddev.android.gamesight.data.GameSightProvider;
+import com.eddev.android.gamesight.data.GamerSightDatabase;
+import com.eddev.android.gamesight.data.GamerSightProvider;
 import com.eddev.android.gamesight.model.ClassificationAttribute;
 import com.eddev.android.gamesight.model.Game;
 import com.eddev.android.gamesight.presenter.adapter.GridRecyclerViewAdapter;
@@ -257,7 +257,7 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
             case TRACKING_GRID_LOADER:
                 Log.d(LOG_TAG, "onCreateLoader TRACKING_GRID_LOADER");
                 cursorLoader = new CursorLoader(getContext(),
-                        GameSightProvider.Games.CONTENT_URI,
+                        GamerSightProvider.Games.CONTENT_URI,
                         Game.GAME_PROJECTION,
                         GameColumns.COLLECTION + "=?",
                         new String[]{Game.TRACKING},
@@ -266,7 +266,7 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
             case OWNED_GRID_LOADER:
                 Log.d(LOG_TAG, "onCreateLoader OWNED_GRID_LOADER");
                 cursorLoader = new CursorLoader(getContext(),
-                        GameSightProvider.Games.CONTENT_URI,
+                        GamerSightProvider.Games.CONTENT_URI,
                         Game.GAME_PROJECTION,
                         GameColumns.COLLECTION + "=?",
                         new String[]{Game.OWNED},
@@ -275,10 +275,10 @@ public class GameGridActivityFragment extends Fragment implements LoaderManager.
             case GAME_BY_CONSOLE_LOADER:
                 Log.d(LOG_TAG, "onCreateLoader GAME_BY_CONSOLE_LOADER");
                 cursorLoader = new CursorLoader(getContext(),
-                        GameSightProvider.Games.withClassification(ClassificationAttribute.PLATFORM) ,
+                        GamerSightProvider.Games.withClassification(ClassificationAttribute.PLATFORM) ,
                         Game.GAME_PROJECTION,
-                        GameSightDatabase.GAMES +"."+ GameColumns.COLLECTION +" =? and "+
-                                GameSightDatabase.CLASSIFICATION_ATTRIBUTES +"."+ ClassificationAttributeColumns.CLASSIFICATION_ID + " IN ("+mFilterPlatformIds+")",
+                        GamerSightDatabase.GAMES +"."+ GameColumns.COLLECTION +" =? and "+
+                                GamerSightDatabase.CLASSIFICATION_ATTRIBUTES +"."+ ClassificationAttributeColumns.CLASSIFICATION_ID + " IN ("+mFilterPlatformIds+")",
                         new String[]{mCollection},
                         null);
                 break;

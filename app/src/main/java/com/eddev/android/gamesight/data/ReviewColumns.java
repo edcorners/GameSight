@@ -21,7 +21,7 @@ public interface ReviewColumns {
     String REVIEW_ID = "review_id";
 
     @DataType(DataType.Type.INTEGER)
-    @References(column = GameColumns.GAME_ID, table = GameSightDatabase.GAMES)
+    @References(column = GameColumns.GAME_ID, table = GamerSightDatabase.GAMES)
     String GAME_ID = "game_id";
 
     @DataType(DataType.Type.TEXT)

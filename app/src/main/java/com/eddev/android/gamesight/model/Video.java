@@ -5,16 +5,16 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.eddev.android.gamesight.data.GameSightDatabase;
+import com.eddev.android.gamesight.data.GamerSightDatabase;
 import com.eddev.android.gamesight.data.VideoColumns;
 
 /**
  * Created by Edison on 9/24/2016.
  */
 public class Video implements Parcelable {
-    public static final String[] VIDEO_PROJECTION = {GameSightDatabase.VIDEOS+"."+ VideoColumns.VIDEO_ID,
-            GameSightDatabase.VIDEOS+"."+VideoColumns.NAME,
-            GameSightDatabase.VIDEOS+"."+VideoColumns.URL};
+    public static final String[] VIDEO_PROJECTION = {GamerSightDatabase.VIDEOS+"."+ VideoColumns.VIDEO_ID,
+            GamerSightDatabase.VIDEOS+"."+VideoColumns.NAME,
+            GamerSightDatabase.VIDEOS+"."+VideoColumns.URL};
 
     private static final int INDEX_VIDEO_ID = 0;
     private static final int INDEX_NAME = 1;
