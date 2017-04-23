@@ -4,7 +4,7 @@
     android:id="@+id/content_game_grid"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.eddev.android.gamesight.presenter.GameGridActivityFragment"
+    tools:context="com.eddev.android.gamersight.presenter.GameGridActivityFragment"
     tools:showIn="@layout/activity_game_grid"
     android:background="@color/mainBackground">
 

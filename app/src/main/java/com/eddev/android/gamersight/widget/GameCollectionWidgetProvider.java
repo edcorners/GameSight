@@ -1,0 +1,140 @@
+package com.eddev.android.gamersight.widget;
+
+import android.annotation.TargetApi;
+import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
+import android.database.ContentObserver;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.support.annotation.NonNull;
+import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
+import android.widget.RemoteViews;
+
+import com.eddev.android.gamersight.data.GamerSightProvider;
+import com.eddev.android.gamersight.presenter.MainActivity;
+import com.eddev.android.gamersight.R;
+import com.eddev.android.gamersight.presenter.GameDetailActivity;
+
+/**
+ * Created by ed on 11/25/16.
+ */
+/**
+ * Our data observer just notifies an update for all weather widgets when it detects a change.
+ */
+class GameDataProviderObserver extends ContentObserver {
+    private AppWidgetManager mAppWidgetManager;
+    private ComponentName mComponentName;
+    GameDataProviderObserver(AppWidgetManager mgr, ComponentName cn, Handler h) {
+        super(h);
+        mAppWidgetManager = mgr;
+        mComponentName = cn;
+    }
+    @Override
+    public void onChange(boolean selfChange) {
+        mAppWidgetManager.notifyAppWidgetViewDataChanged(
+                mAppWidgetManager.getAppWidgetIds(mComponentName), R.id.widget_list);
+    }
+}
+
+public class GameCollectionWidgetProvider extends AppWidgetProvider {
+    private String LOG_TAG = GameCollectionWidgetProvider.class.getSimpleName();
+
+    private static HandlerThread sWorkerThread;
+    private static Handler sWorkerQueue;
+    private static GameDataProviderObserver sDataObserver;
+
+    public GameCollectionWidgetProvider() {
+        sWorkerThread = new HandlerThread("GameWidgetProvider-worker");
+        sWorkerThread.start();
+        sWorkerQueue = new Handler(sWorkerThread.getLooper());
+    }
+
+    @Override
+    public void onEnabled(Context context) {
+        final ContentResolver r = context.getContentResolver();
+        if (sDataObserver == null) {
+            final AppWidgetManager mgr = AppWidgetManager.getInstance(context);
+            final ComponentName cn = new ComponentName(context, GamerSightProvider.class);
+            sDataObserver = new GameDataProviderObserver(mgr, cn, sWorkerQueue);
+            r.registerContentObserver(GamerSightProvider.Games.CONTENT_URI , true, sDataObserver);
+        }
+    }
+
+    private RemoteViews buildLayout(Context context, int appWidgetId) {
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_collection);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            setRemoteAdapter(context, views);
+        } else {
+            setRemoteAdapterV11(context, views);
+        }
+
+        Intent clickIntent = new Intent(context, GameDetailActivity.class);
+        PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
+                .addNextIntent(clickIntent)
+                .addParentStack(MainActivity.class)
+                .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setPendingIntentTemplate(R.id.widget_list, clickPendingIntentTemplate);
+
+        views.setEmptyView(R.id.widget_list, R.id.widget_empty_text_view);
+
+        return views;
+    }
+
+    @Override
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        // Update each of the widgets with the remote adapter
+        Log.v(LOG_TAG,"onUpdate");
+        for (int i = 0; i < appWidgetIds.length; ++i) {
+            RemoteViews layout = buildLayout(context, appWidgetIds[i]);
+            appWidgetManager.updateAppWidget(appWidgetIds[i], layout);
+        }
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
+    }
+
+    @Override
+    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager,
+                                          int appWidgetId, Bundle newOptions) {
+
+    }
+
+    @Override
+    public void onReceive(@NonNull Context context, @NonNull Intent intent) {
+        super.onReceive(context, intent);
+        Log.v(LOG_TAG,"onReceive");
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(
+                new ComponentName(context, getClass()));
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list);
+    }
+
+    /**
+     * Sets the remote adapter used to fill in the list items
+     *
+     * @param views RemoteViews to set the RemoteAdapter
+     */
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    private void setRemoteAdapter(Context context, @NonNull final RemoteViews views) {
+        views.setRemoteAdapter(R.id.widget_list,
+                new Intent(context, GameCollectionWidgetService.class));
+    }
+
+    /**
+     * Sets the remote adapter used to fill in the list items
+     *
+     * @param views RemoteViews to set the RemoteAdapter
+     */
+    @SuppressWarnings("deprecation")
+    private void setRemoteAdapterV11(Context context, @NonNull final RemoteViews views) {
+        views.setRemoteAdapter(0, R.id.widget_list,
+                new Intent(context, GameCollectionWidgetService.class));
+    }
+}

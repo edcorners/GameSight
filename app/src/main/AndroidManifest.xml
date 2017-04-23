@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.eddev.android.gamesight">
+    package="com.eddev.android.gamersight">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
 
     <application
-        android:name=".AnalyticsApplication"
+        android:name="com.eddev.android.gamersight.AnalyticsApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Gamesight">
         <activity
-            android:name=".presenter.MainActivity"
+            android:name="com.eddev.android.gamersight.presenter.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
          </activity>
-        <activity android:name="com.eddev.android.gamesight.presenter.SearchableActivity" android:launchMode="singleTop">
+        <activity android:name="com.eddev.android.gamersight.presenter.SearchableActivity" android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -27,34 +27,34 @@
                 android:resource="@xml/searchable"/>
         </activity>
         <activity
-            android:name=".presenter.GameGridActivity"
+            android:name="com.eddev.android.gamersight.presenter.GameGridActivity"
             android:label="@string/title_activity_game_grid"
-            android:parentActivityName=".presenter.MainActivity"
+            android:parentActivityName="com.eddev.android.gamersight.presenter.MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.eddev.android.gamesight.presenter.MainActivity" />
+                android:value="com.eddev.android.gamersight.presenter.MainActivity" />
         </activity>
         <activity
-            android:name=".presenter.GameDetailActivity"
+            android:name="com.eddev.android.gamersight.presenter.GameDetailActivity"
             android:label="@string/title_activity_game_detail"
-            android:parentActivityName=".presenter.GameGridActivity"
+            android:parentActivityName="com.eddev.android.gamersight.presenter.GameGridActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.eddev.android.gamesight.presenter.GameGridActivity" />
+                android:value="com.eddev.android.gamersight.presenter.GameGridActivity" />
         </activity>
         <!-- enable the search dialog to send searches to SearchableActivity -->
         <meta-data android:name="android.app.default_searchable"
             android:value="com.eddev.android.gamesight.presenter.SearchableActivity" />
 
         <!-- The service serving the RemoteViews to the collection widget -->
-        <service android:name=".widget.GameCollectionWidgetService"
+        <service android:name="com.eddev.android.gamersight.widget.GameCollectionWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS"
             android:exported="false" />
 
-        <receiver android:name=".widget.GameCollectionWidgetProvider" >
+        <receiver android:name="com.eddev.android.gamersight.widget.GameCollectionWidgetProvider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -62,11 +62,11 @@
                 android:resource="@xml/widget" />
         </receiver>
 
-        <receiver android:name=".presenter.GameReleaseNotification"/>
+        <receiver android:name="com.eddev.android.gamersight.presenter.GameReleaseNotification"/>
 
         <provider
             android:authorities="${applicationId}.provider"
-            android:name="com.eddev.android.gamesight.provider.GamerSightProvider"
+            android:name="com.eddev.android.gamersight.provider.GamerSightProvider"
             android:exported="true"
             android:syncable="true"/>
     </application>

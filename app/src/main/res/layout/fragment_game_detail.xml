@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.eddev.android.gamesight.presenter.GameDetailFragment"
+    tools:context="com.eddev.android.gamersight.presenter.GameDetailFragment"
     tools:showIn="@layout/activity_game_detail"
     android:id="@+id/details_contents_main_layout">
 
